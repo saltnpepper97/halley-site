@@ -291,7 +291,6 @@
   .nav-link.active {
     color: var(--text-1);
     background: rgba(255, 106, 42, 0.12);
-    box-shadow: inset 2px 0 0 var(--accent);
   }
 
   .parent {

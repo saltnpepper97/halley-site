@@ -19,7 +19,11 @@
         <tr>
           <td data-label="Option"><code>{option.option}</code></td>
           <td data-label="Type"><span class="type-pill">{option.type}</span></td>
-          <td data-label="Default"><code class="default-value">{option.defaultValue}</code></td>
+          <td class:empty-default={!option.defaultValue.trim()} data-label="Default">
+            {#if option.defaultValue.trim()}
+              <code class="default-value">{option.defaultValue}</code>
+            {/if}
+          </td>
           <td data-label="Notes">{option.notes}</td>
         </tr>
       {/each}
@@ -112,17 +116,26 @@
     border-color: rgba(40, 95, 115, 0.18);
   }
 
-  code {
+  .table-wrap code {
+    padding: 0.08rem 0.28rem;
     color: var(--accent-soft);
+    background: transparent;
+    border: 0;
+    border-radius: 0;
     font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
     font-size: 0.9em;
     overflow-wrap: anywhere;
+    white-space: normal;
+    word-break: break-word;
   }
 
   .default-value {
     display: inline-block;
     max-width: 100%;
     color: var(--ion);
+    background: transparent;
+    border: 0;
+    border-radius: 0;
     overflow-wrap: anywhere;
   }
 
@@ -143,6 +156,12 @@
   }
 
   @media (max-width: 720px) {
+    .table-wrap {
+      background: transparent;
+      border: 0;
+      overflow: visible;
+    }
+
     table,
     thead,
     tbody,
@@ -152,29 +171,61 @@
       display: block;
     }
 
+    tbody {
+      display: grid;
+      gap: 0.85rem;
+    }
+
     thead {
       display: none;
     }
 
     tr {
-      padding: 0.8rem;
-      border-bottom: 1px solid rgba(246, 239, 231, 0.08);
+      position: relative;
+      overflow: hidden;
+      padding: 0.9rem;
+      background:
+        radial-gradient(circle at 100% 0%, rgba(125, 220, 255, 0.07), transparent 10rem),
+        rgba(9, 13, 18, 0.52);
+      border: 1px solid rgba(246, 239, 231, 0.085);
+      border-radius: var(--radius-md);
+      box-shadow:
+        0 14px 34px rgba(0, 0, 0, 0.16),
+        inset 0 1px 0 rgba(246, 239, 231, 0.04);
     }
 
-    tr:last-child {
-      border-bottom: 0;
+    tr::before {
+      position: absolute;
+      inset: 0 0 auto;
+      height: 1px;
+      content: "";
+      background: linear-gradient(90deg, rgba(255, 106, 42, 0.52), transparent 72%);
     }
 
     td {
       display: grid;
-      grid-template-columns: minmax(4.75rem, 0.36fr) minmax(0, 1fr);
-      gap: 0.75rem;
-      padding: 0.35rem 0;
+      grid-template-columns: minmax(4.75rem, 0.34fr) minmax(0, 1fr);
+      align-items: start;
+      gap: 0.65rem;
+      padding: 0.42rem 0;
       width: auto !important;
       min-width: 0;
       text-align: left !important;
       border-bottom: 0;
       overflow-wrap: anywhere;
+    }
+
+    td.empty-default {
+      display: none;
+    }
+
+    td:first-child {
+      grid-template-columns: 1fr;
+      gap: 0.35rem;
+      padding-top: 0;
+      padding-bottom: 0.7rem;
+      margin-bottom: 0.25rem;
+      border-bottom: 1px solid rgba(246, 239, 231, 0.07);
     }
 
     td::before {
@@ -186,16 +237,73 @@
       letter-spacing: 0.08em;
       text-transform: uppercase;
     }
+
+    td:first-child::before {
+      color: var(--accent-soft);
+    }
+
+    td:first-child code {
+      display: inline-flex;
+      justify-self: start;
+      padding: 0.16rem 0.48rem;
+      color: var(--text-1);
+      background: rgba(255, 106, 42, 0.12);
+      border: 1px solid rgba(255, 106, 42, 0.18);
+      border-radius: 999px;
+      font-size: 0.94rem;
+      line-height: 1.35;
+    }
+
+    .type-pill {
+      min-width: 0;
+      justify-self: start;
+    }
+
+    .default-value {
+      display: inline-flex;
+      justify-self: start;
+      width: auto;
+      max-width: 100%;
+      padding: 0.12rem 0.38rem;
+      color: var(--ion);
+      background: rgba(125, 220, 255, 0.07);
+      border: 1px solid rgba(125, 220, 255, 0.12);
+      border-radius: 0.42rem;
+      line-height: 1.35;
+    }
+
+    :global(:root[data-theme="light"]) tr {
+      background:
+        radial-gradient(circle at 100% 0%, rgba(40, 95, 115, 0.055), transparent 10rem),
+        rgba(255, 255, 255, 0.5);
+      border-color: rgba(38, 27, 20, 0.12);
+      box-shadow:
+        0 12px 28px rgba(54, 37, 26, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.58);
+    }
+
+    :global(:root[data-theme="light"]) tr::before {
+      background: linear-gradient(90deg, rgba(184, 63, 17, 0.34), transparent 72%);
+    }
+
+    :global(:root[data-theme="light"]) td:first-child {
+      border-bottom-color: rgba(38, 27, 20, 0.09);
+    }
+
+    :global(:root[data-theme="light"]) td:first-child code {
+      background: rgba(184, 63, 17, 0.08);
+      border-color: rgba(184, 63, 17, 0.16);
+    }
   }
 
   @media (max-width: 420px) {
     tr {
-      padding: 0.7rem;
+      padding: 0.8rem;
     }
 
     td {
       grid-template-columns: 1fr;
-      gap: 0.15rem;
+      gap: 0.18rem;
     }
   }
 </style>

@@ -842,6 +842,20 @@
     .feature-copy {
       max-width: 100%;
     }
+
+    .feature-art {
+      background:
+        radial-gradient(circle at 50% 45%, rgba(255, 106, 42, 0.08), transparent 68%),
+        rgba(3, 6, 10, 0.5);
+      background-size: auto;
+    }
+
+    :global(:root[data-theme="light"]) .feature-art {
+      background:
+        radial-gradient(circle at 50% 45%, rgba(184, 63, 17, 0.06), transparent 68%),
+        rgba(255, 250, 244, 0.38);
+      border-color: rgba(65, 45, 32, 0.14);
+    }
   }
 
   @media (max-width: 560px) {
@@ -866,7 +880,6 @@
     }
 
     .feature-art {
-      background-size: 1.55rem 1.55rem;
       border-radius: var(--radius-lg);
     }
 

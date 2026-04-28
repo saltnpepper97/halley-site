@@ -285,6 +285,38 @@ code {
   max-width: 100%;
 }
 
+p code,
+li code,
+td code,
+th code,
+dd code,
+dt code,
+summary code,
+a code,
+strong code {
+  padding: 0.08rem 0.34rem;
+  color: var(--text-1);
+  background: rgba(246, 239, 231, 0.075);
+  border: 1px solid rgba(246, 239, 231, 0.1);
+  border-radius: 0.42rem;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 0.9em;
+  white-space: nowrap;
+}
+
+:root[data-theme="light"] p code,
+:root[data-theme="light"] li code,
+:root[data-theme="light"] td code,
+:root[data-theme="light"] th code,
+:root[data-theme="light"] dd code,
+:root[data-theme="light"] dt code,
+:root[data-theme="light"] summary code,
+:root[data-theme="light"] a code,
+:root[data-theme="light"] strong code {
+  background: rgba(38, 27, 20, 0.07);
+  border-color: rgba(38, 27, 20, 0.12);
+}
+
 img,
 svg,
 video,
