@@ -1,4 +1,8 @@
 <script lang="ts">
+  import { base } from "$app/paths";
+
+  const withBase = (href: string) => `${base}${href}`;
+
   const setupPath = [
     {
       title: "Check requirements",
@@ -53,7 +57,7 @@
     <ol class="setup-path">
       {#each setupPath as step, index}
         <li>
-          <a href={step.href}>
+          <a href={withBase(step.href)}>
             <span>{index + 1}</span>
             <strong>{step.title}</strong>
             <p>{step.text}</p>
@@ -64,17 +68,17 @@
   </section>
 
   <div class="quick-links">
-    <a class="quick-card" href="/wiki/install">
+    <a class="quick-card" href={withBase("/wiki/install")}>
       <span>Install</span>
       <strong>Requirements, Arch packages, and source builds.</strong>
     </a>
 
-    <a class="quick-card" href="/wiki/config">
+    <a class="quick-card" href={withBase("/wiki/config")}>
       <span>Config Reference</span>
       <strong>Canonical option names, types, defaults, and notes.</strong>
     </a>
 
-    <a class="quick-card" href="/wiki/ipc">
+    <a class="quick-card" href={withBase("/wiki/ipc")}>
       <span>IPC Reference</span>
       <strong>Versioned halleyctl commands and JSON response shapes.</strong>
     </a>
@@ -88,7 +92,7 @@
 
     <div class="task-grid">
       {#each commonTasks as task}
-        <a href={task.href}>{task.label}</a>
+        <a href={withBase(task.href)}>{task.label}</a>
       {/each}
     </div>
   </section>

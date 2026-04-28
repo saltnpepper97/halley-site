@@ -1,5 +1,6 @@
 <script lang="ts">
   import { browser } from "$app/environment";
+  import { base } from "$app/paths";
   import { page } from "$app/state";
   import WikiVersionControl from "$lib/components/wiki/WikiVersionControl.svelte";
   import type { WikiNavItem } from "$lib/wiki/navigation";
@@ -9,7 +10,19 @@
   let { items }: { items: WikiNavItem[] } = $props();
   let mobileOpen = $state(false);
 
-  const pathFromHref = (href: string) => href.split("#")[0];
+  const withBase = (href: string) => `${base}${href}`;
+
+  const normalizePath = (path: string) => path !== "/" && path.endsWith("/") ? path.slice(0, -1) : path;
+
+  const pathFromHref = (href: string) => normalizePath(href.split("#")[0].split("?")[0]);
+
+  const currentPath = () => {
+    const pathname = base && page.url.pathname.startsWith(base)
+      ? page.url.pathname.slice(base.length) || "/"
+      : page.url.pathname;
+
+    return normalizePath(pathname);
+  };
 
   const getHash = (href: string) => href.includes("#") ? `#${href.split("#")[1]}` : "";
 
@@ -17,7 +30,7 @@
     const hrefPath = pathFromHref(href);
     const hrefHash = getHash(href);
 
-    if (page.url.pathname !== hrefPath) {
+    if (currentPath() !== hrefPath) {
       return false;
     }
 
@@ -34,16 +47,16 @@
 
   const versionedHref = (href: string) => {
     if (!browser) {
-      return href;
+      return withBase(href);
     }
 
     const version = page.url.searchParams.get("version");
     if (!version) {
-      return href;
+      return withBase(href);
     }
 
     const [path, hash] = href.split("#");
-    return `${path}?version=${encodeURIComponent(version)}${hash ? `#${hash}` : ""}`;
+    return withBase(`${path}?version=${encodeURIComponent(version)}${hash ? `#${hash}` : ""}`);
   };
 
   const closeMobileNav = () => {
@@ -86,7 +99,7 @@
   ></button>
 
   <div id="wiki-sidebar-content" class="sidebar-scroll">
-    <a class="mobile-home-link" href="/" onclick={closeMobileNav}>Back to Halley home</a>
+    <a class="mobile-home-link" href={withBase("/")} onclick={closeMobileNav}>Back to Halley home</a>
 
     <WikiVersionControl />
 

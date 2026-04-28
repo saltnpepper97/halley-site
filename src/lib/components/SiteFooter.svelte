@@ -1,14 +1,17 @@
 <script lang="ts">
+  import { base } from "$app/paths";
+
   const year = new Date().getFullYear();
+  const withBase = (href: string) => `${base}${href}`;
 
   const columns = [
     {
       title: "Links",
       links: [
-        { href: "/", label: "Home" },
-        { href: "/wiki", label: "Wiki" },
-        { href: "/news", label: "News" },
-        { href: "/backstory", label: "Backstory" }
+        { href: withBase("/"), label: "Home" },
+        { href: withBase("/wiki"), label: "Wiki" },
+        { href: withBase("/news"), label: "News" },
+        { href: withBase("/backstory"), label: "Backstory" }
       ]
     },
     {
@@ -24,7 +27,7 @@
   <div class="footer-shell">
     <section class="footer-card" aria-labelledby="footer-title">
       <div class="footer-brand">
-        <a class="brand" href="/" id="footer-title">Halley</a>
+        <a class="brand" href={withBase("/")} id="footer-title">Halley</a>
         <p>Spatial Wayland workspaces for keeping context alive.</p>
       </div>
 

@@ -1,9 +1,11 @@
 <script lang="ts">
+  import { base } from "$app/paths";
   import ReleaseArticle from "$lib/components/news/ReleaseArticle.svelte";
   import SiteHeader from "$lib/components/SiteHeader.svelte";
   import type { PageData } from "./$types";
 
   let { data }: { data: PageData } = $props();
+  const withBase = (href: string) => `${base}${href}`;
 </script>
 
 <svelte:head>
@@ -15,7 +17,7 @@
   <SiteHeader />
 
   <main class="news-shell">
-    <a class="back-link" href="/news">Back to news</a>
+    <a class="back-link" href={withBase("/news")}>Back to news</a>
     <ReleaseArticle post={data.post} />
   </main>
 </div>

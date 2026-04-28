@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { base } from "$app/paths";
   import { lockBodyScroll } from "$lib/utils/scroll-lock";
   import { GithubLogoIcon, HandCoinsIcon, ListIcon, MoonIcon, SunIcon } from "phosphor-svelte";
 
@@ -32,11 +33,12 @@
     localStorage.setItem("halley-theme", theme);
   };
 
+  const withBase = (href: string) => `${base}${href}`;
   const links = [
-    { href: "/", label: "Home" },
-    { href: "/wiki", label: "Wiki" },
-    { href: "/news", label: "News" },
-    { href: "/backstory", label: "Backstory" }
+    { href: withBase("/"), label: "Home" },
+    { href: withBase("/wiki"), label: "Wiki" },
+    { href: withBase("/news"), label: "News" },
+    { href: withBase("/backstory"), label: "Backstory" }
   ];
 </script>
 
@@ -45,7 +47,7 @@
 <header class="site-header">
     <nav class="topnav" aria-label="Main-nav">
         <div class="nav-left">
-          <a class="brand" href="/" onclick={closeMenu}>
+          <a class="brand" href={withBase("/")} onclick={closeMenu}>
             Halley
           </a>
         </div>
@@ -62,7 +64,7 @@
         </button>
 
         <div id="site-mobile-menu" class:open={menuOpen} class="nav-menu">
-          <a class="mobile-drawer-brand" href="/" onclick={closeMenu}>Halley</a>
+          <a class="mobile-drawer-brand" href={withBase("/")} onclick={closeMenu}>Halley</a>
 
           <div class="nav-center">
             {#each links as link}
@@ -87,7 +89,7 @@
               {/if}
             </button>
             <a class="github" href="https://github.com/saltnpepper97/halley" rel="noreferrer" aria-label="Halley on GitHub" onclick={closeMenu}><GithubLogoIcon color="currentColor" weight="regular" size={24} /></a>
-            <a class="support" href="/support" onclick={closeMenu}><HandCoinsIcon color="currentColor" weight="bold" size={24} /><span>Support</span></a>
+            <a class="support" href={withBase("/support")} onclick={closeMenu}><HandCoinsIcon color="currentColor" weight="bold" size={24} /><span>Support</span></a>
           </div>
         </div>
     </nav>

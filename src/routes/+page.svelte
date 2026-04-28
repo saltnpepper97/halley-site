@@ -1,5 +1,8 @@
 <script lang="ts">
+  import { base } from "$app/paths";
   import SiteHeader from "$lib/components/SiteHeader.svelte";
+
+  const withBase = (href: string) => `${base}${href}`;
 </script>
 
 <svelte:head>
@@ -23,8 +26,8 @@
         <p class="lede">Windows as nodes, displays as fields, clusters as deliberate workspaces.</p>
 
         <div class="hero-actions" aria-label="Primary actions">
-          <a class="primary-action" href="/wiki/install">Install Halley</a>
-          <a class="secondary-action" href="/wiki">Read the wiki</a>
+          <a class="primary-action" href={withBase("/wiki/install")}>Install Halley</a>
+          <a class="secondary-action" href={withBase("/wiki")}>Read the wiki</a>
         </div>
       </div>
 
@@ -93,7 +96,7 @@
           The focus ring is an eye-shaped region on each field. Windows inside it stay prominent;
           windows outside it can begin to fade, collapse, or wait for you to return.
         </p>
-        <a href="/wiki/config/viewport#viewport-connector-focus-ring">Configure focus rings</a>
+        <a href={withBase("/wiki/config/viewport#viewport-connector-focus-ring")}>Configure focus rings</a>
       </div>
     </section>
 
@@ -105,7 +108,7 @@
           Halley lets inactive or offscreen windows decay into compact nodes. The field keeps their
           location and identity, but reduces visual noise until you need them again.
         </p>
-        <a href="/wiki/config/node">Tune node behavior</a>
+        <a href={withBase("/wiki/config/node")}>Tune node behavior</a>
       </div>
 
       <div class="feature-art node-art" aria-hidden="true">
@@ -136,7 +139,7 @@
           Clusters gather related windows into a core that can reopen into tiling or stacking layouts.
           They are spatial, visible, and per-monitor instead of hidden behind abstract workspace numbers.
         </p>
-        <a href="/wiki/config/clusters">Explore cluster settings</a>
+        <a href={withBase("/wiki/config/clusters")}>Explore cluster settings</a>
       </div>
     </section>
 
@@ -148,7 +151,7 @@
           Bearings are directional cues for spatial navigation. They behave like a lightweight game HUD,
           pointing toward useful context when the field is bigger than the visible monitor.
         </p>
-        <a href="/wiki/config/bearings">Adjust bearings</a>
+        <a href={withBase("/wiki/config/bearings")}>Adjust bearings</a>
       </div>
 
       <div class="feature-art bearings-art" aria-hidden="true">
@@ -178,7 +181,7 @@
           Multi-monitor is not an afterthought. Each output has its own field, camera, focus behavior,
           and cluster slots, so moving between displays feels deliberate instead of chaotic.
         </p>
-        <a href="/wiki/config/viewport">Set up monitors</a>
+        <a href={withBase("/wiki/config/viewport")}>Set up monitors</a>
       </div>
     </section>
   </main>

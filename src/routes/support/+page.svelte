@@ -1,6 +1,9 @@
 <script lang="ts">
+  import { base } from "$app/paths";
   import SiteHeader from "$lib/components/SiteHeader.svelte";
   import { GithubLogoIcon, HandHeartIcon, StarIcon } from "phosphor-svelte";
+
+  const withBase = (href: string) => `${base}${href}`;
 </script>
 
 <svelte:head>
@@ -49,7 +52,7 @@
       <article class="support-card surface">
         <h2>Try it</h2>
         <p>Install a release, run it on real hardware, and report where the model breaks down.</p>
-        <a href="/wiki/install">Install guide</a>
+        <a href={withBase("/wiki/install")}>Install guide</a>
       </article>
 
       <article class="support-card surface">
@@ -61,7 +64,7 @@
       <article class="support-card surface">
         <h2>Share it</h2>
         <p>If the project resonates, point other Wayland and desktop-environment people at it.</p>
-        <a href="/news/second-orbit">Second Orbit release</a>
+        <a href={withBase("/news/second-orbit")}>Second Orbit release</a>
       </article>
     </section>
   </main>

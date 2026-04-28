@@ -1,7 +1,9 @@
 <script lang="ts">
+  import { base } from "$app/paths";
   import type { NewsPost } from "$lib/news/releases";
 
   let { posts }: { posts: NewsPost[] } = $props();
+  const withBase = (href: string) => `${base}${href}`;
 </script>
 
 <section class="news-feed surface">
@@ -13,7 +15,7 @@
 
   <div class="feed-list" aria-label="News posts">
     {#each posts as post}
-      <a class="feed-card" href={`/news/${post.slug}`}>
+      <a class="feed-card" href={withBase(`/news/${post.slug}`)}>
         <div class="card-main">
           <div>
             <p class="card-kicker">{post.eyebrow}</p>
