@@ -300,10 +300,5 @@
     tr {
       padding: 0.8rem;
     }
-
-    td {
-      grid-template-columns: 1fr;
-      gap: 0.18rem;
-    }
   }
 </style>

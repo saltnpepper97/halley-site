@@ -175,6 +175,7 @@ halleyctl cluster inspect current --json`;
   .shape-card {
     display: grid;
     gap: 0.85rem;
+    min-width: 0;
     padding: clamp(1rem, 3vw, 1.35rem);
     background: rgba(9, 13, 18, 0.5);
     border: 1px solid var(--border-1);
@@ -205,11 +206,13 @@ halleyctl cluster inspect current --json`;
   .socket-copy {
     display: grid;
     gap: 0.8rem;
+    min-width: 0;
   }
 
   .socket-path {
     display: grid;
     gap: 0.35rem;
+    min-width: 0;
     padding: 0.85rem 0.95rem;
     background: rgba(255, 106, 42, 0.075);
     border: 1px solid rgba(255, 106, 42, 0.16);
@@ -267,6 +270,10 @@ halleyctl cluster inspect current --json`;
     border-radius: var(--radius-md);
   }
 
+  .command-row > * {
+    min-width: 0;
+  }
+
   .command-row span {
     display: inline-flex;
     align-items: center;
@@ -318,6 +325,8 @@ halleyctl cluster inspect current --json`;
     font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
     font-size: 0.9em;
     overflow-wrap: anywhere;
+    white-space: normal;
+    word-break: break-word;
   }
 
   .command-row > code {

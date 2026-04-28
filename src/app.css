@@ -301,7 +301,9 @@ strong code {
   border-radius: 0.42rem;
   font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
   font-size: 0.9em;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
+  white-space: normal;
+  word-break: break-word;
 }
 
 :root[data-theme="light"] p code,
@@ -325,6 +327,7 @@ canvas {
 }
 
 .surface {
+  min-width: 0;
   background: rgba(16, 23, 34, 0.82);
   border: 1px solid var(--border-1);
   border-radius: var(--radius-lg);

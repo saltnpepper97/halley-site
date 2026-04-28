@@ -48,6 +48,7 @@
   .config-index {
     display: grid;
     gap: 1.25rem;
+    min-width: 0;
     padding: clamp(1.2rem, 4vw, 2rem);
   }
 
@@ -75,6 +76,7 @@
   .section-card {
     display: grid;
     gap: 0.55rem;
+    min-width: 0;
     min-height: 8rem;
     padding: 1rem;
     background: rgba(9, 13, 18, 0.5);
@@ -98,11 +100,15 @@
     font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
     font-weight: 800;
     overflow-wrap: anywhere;
+    white-space: normal;
+    word-break: break-word;
   }
 
   .section-card span {
+    min-width: 0;
     color: var(--text-2);
     line-height: 1.4;
+    overflow-wrap: anywhere;
   }
 
   @media (max-width: 560px) {

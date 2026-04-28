@@ -152,10 +152,17 @@ systemctl --user start xdg-desktop-portal-wlr.service`;
     scroll-margin-top: calc(var(--header-height) + 2rem);
     display: grid;
     gap: 0.9rem;
+    min-width: 0;
+    max-width: 100%;
     padding: clamp(1rem, 3vw, 1.45rem);
     background: rgba(9, 13, 18, 0.5);
     border: 1px solid var(--border-1);
     border-radius: var(--radius-lg);
+  }
+
+  .requirements-card > *,
+  .install-card > * {
+    min-width: 0;
   }
 
   .requirements-card:target,
@@ -167,9 +174,16 @@ systemctl --user start xdg-desktop-portal-wlr.service`;
   ul {
     display: grid;
     gap: 0.55rem;
+    min-width: 0;
     margin: 0;
     padding-left: 1.15rem;
     color: var(--text-2);
+  }
+
+  li,
+  p {
+    min-width: 0;
+    overflow-wrap: anywhere;
   }
 
   li::marker {
@@ -211,6 +225,8 @@ systemctl --user start xdg-desktop-portal-wlr.service`;
     font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
     font-size: 0.92rem;
     overflow-wrap: anywhere;
+    white-space: normal;
+    word-break: break-word;
   }
 
   p code {
@@ -229,6 +245,7 @@ systemctl --user start xdg-desktop-portal-wlr.service`;
   .portal-panel {
     display: grid;
     gap: 0.45rem;
+    min-width: 0;
     padding: 0.8rem;
     background: rgba(246, 239, 231, 0.035);
     border: 1px solid rgba(246, 239, 231, 0.06);

@@ -102,6 +102,7 @@
   .getting-started {
     display: grid;
     gap: 1.35rem;
+    min-width: 0;
     padding: clamp(1.2rem, 4vw, 2rem);
   }
 
@@ -129,6 +130,7 @@
   .task-panel {
     display: grid;
     gap: 1rem;
+    min-width: 0;
     padding: clamp(1rem, 3vw, 1.35rem);
     background:
       radial-gradient(circle at 100% 0%, rgba(125, 220, 255, 0.09), transparent 16rem),
@@ -160,6 +162,7 @@
   .setup-path a {
     display: grid;
     gap: 0.5rem;
+    min-width: 0;
     height: 100%;
     padding: 0.95rem;
     background: rgba(246, 239, 231, 0.035);
@@ -193,14 +196,18 @@
   }
 
   .setup-path strong {
+    min-width: 0;
     font-family: var(--font-display);
     font-size: 1.02rem;
     line-height: 1.25;
+    overflow-wrap: anywhere;
   }
 
   .setup-path p {
+    min-width: 0;
     font-size: 0.94rem;
     line-height: 1.45;
+    overflow-wrap: anywhere;
   }
 
   .quick-links {
@@ -212,6 +219,7 @@
   .quick-card {
     display: grid;
     gap: 0.55rem;
+    min-width: 0;
     padding: 1.1rem;
     background: rgba(9, 13, 18, 0.5);
     border: 1px solid var(--border-1);
@@ -236,9 +244,11 @@
   }
 
   .quick-card strong {
+    min-width: 0;
     color: var(--text-1);
     font-size: 1.05rem;
     line-height: 1.35;
+    overflow-wrap: anywhere;
   }
 
   .task-grid {
@@ -255,6 +265,7 @@
     border: 1px solid rgba(246, 239, 231, 0.07);
     border-radius: var(--radius-md);
     font-weight: 750;
+    overflow-wrap: anywhere;
     transition:
       border-color 160ms ease,
       background 160ms ease,

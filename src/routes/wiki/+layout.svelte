@@ -36,13 +36,19 @@
     align-items: start;
     gap: clamp(1rem, 3vw, 1.5rem);
     width: min(100% - 2rem, var(--page-max-width));
+    min-width: 0;
     margin-inline: auto;
     padding: 1.25rem 0 max(8rem, 18vh);
+  }
+
+  .wiki-shell > * {
+    min-width: 0;
   }
 
   .wiki-content {
     grid-column: 2;
     min-width: 0;
+    max-width: 100%;
   }
 
   @media (max-width: 880px) {
