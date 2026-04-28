@@ -1,17 +1,22 @@
 <script lang="ts">
+  import { browser } from "$app/environment";
   import { page as routePage } from "$app/state";
   import { configPageForVersion, type ConfigPage } from "$lib/wiki/config-reference";
-  import { wikiVersionFromSearch } from "$lib/wiki/versions";
+  import { defaultWikiVersion, wikiVersionFromSearch } from "$lib/wiki/versions";
 
   let { pages }: { pages: ConfigPage[] } = $props();
 
-  const activeVersion = () => wikiVersionFromSearch(routePage.url.searchParams);
+  const activeVersion = () => browser ? wikiVersionFromSearch(routePage.url.searchParams) : defaultWikiVersion;
   const displayPages = () =>
     pages
       .map((page) => configPageForVersion(page, activeVersion().value))
       .filter((page) => page.sections.length > 0);
 
   const versionedHref = (href: string) => {
+    if (!browser) {
+      return href;
+    }
+
     const version = routePage.url.searchParams.get("version");
     return version ? `${href}?version=${encodeURIComponent(version)}` : href;
   };

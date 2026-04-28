@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { browser } from "$app/environment";
   import { page } from "$app/state";
   import WikiVersionControl from "$lib/components/wiki/WikiVersionControl.svelte";
   import type { WikiNavItem } from "$lib/wiki/navigation";
@@ -32,6 +33,10 @@
     isActive(item.href) || hasActiveChild(item) || (item.defaultOpen && !hasActiveTopLevel());
 
   const versionedHref = (href: string) => {
+    if (!browser) {
+      return href;
+    }
+
     const version = page.url.searchParams.get("version");
     if (!version) {
       return href;

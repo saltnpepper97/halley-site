@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { browser } from "$app/environment";
   import { page } from "$app/state";
   import CodeBlock from "$lib/components/CodeBlock.svelte";
   import {
@@ -8,9 +9,9 @@
     responseShapes,
     selectors
   } from "$lib/wiki/ipc-reference";
-  import { wikiVersionFromSearch } from "$lib/wiki/versions";
+  import { defaultWikiVersion, wikiVersionFromSearch } from "$lib/wiki/versions";
 
-  const activeVersion = () => wikiVersionFromSearch(page.url.searchParams);
+  const activeVersion = () => browser ? wikiVersionFromSearch(page.url.searchParams) : defaultWikiVersion;
   const ipcExamples = `XDG_RUNTIME_DIR=/run/user/1000 halleyctl outputs --json
 halleyctl node list --json
 halleyctl cluster inspect current --json`;

@@ -1,13 +1,15 @@
 <script lang="ts">
+  import { browser } from "$app/environment";
   import { page } from "$app/state";
   import SiteHeader from "$lib/components/SiteHeader.svelte";
   import WikiSidebar from "$lib/components/wiki/WikiSidebar.svelte";
   import { wikiNavigationForVersion } from "$lib/wiki/navigation";
-  import { wikiVersionFromSearch } from "$lib/wiki/versions";
+  import { defaultWikiVersion, wikiVersionFromSearch } from "$lib/wiki/versions";
 
   let { children } = $props();
 
-  const navigation = () => wikiNavigationForVersion(wikiVersionFromSearch(page.url.searchParams).value);
+  const activeVersion = () => browser ? wikiVersionFromSearch(page.url.searchParams) : defaultWikiVersion;
+  const navigation = () => wikiNavigationForVersion(activeVersion().value);
 </script>
 
 <div class="wiki-page">

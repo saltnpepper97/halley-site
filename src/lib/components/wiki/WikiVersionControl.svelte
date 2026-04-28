@@ -1,11 +1,16 @@
 <script lang="ts">
+  import { browser } from "$app/environment";
   import { page } from "$app/state";
   import { CaretDownIcon } from "phosphor-svelte";
-  import { wikiVersionFromSearch, wikiVersions } from "$lib/wiki/versions";
+  import { defaultWikiVersion, wikiVersionFromSearch, wikiVersions } from "$lib/wiki/versions";
 
-  const activeVersion = () => wikiVersionFromSearch(page.url.searchParams);
+  const activeVersion = () => browser ? wikiVersionFromSearch(page.url.searchParams) : defaultWikiVersion;
 
   const versionHref = (value: string) => {
+    if (!browser) {
+      return `?version=${encodeURIComponent(value)}`;
+    }
+
     const nextUrl = new URL(page.url);
     nextUrl.searchParams.set("version", value);
     return `${nextUrl.pathname}?${nextUrl.searchParams.toString()}${nextUrl.hash}`;
