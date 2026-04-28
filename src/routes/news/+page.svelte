@@ -1,0 +1,42 @@
+<script lang="ts">
+  import NewsFeed from "$lib/components/news/NewsFeed.svelte";
+  import SiteHeader from "$lib/components/SiteHeader.svelte";
+  import { newsPosts } from "$lib/news/releases";
+</script>
+
+<svelte:head>
+  <title>News | Halley</title>
+  <meta
+    name="description"
+    content="Halley news and release announcements, including the v0.2.0 Second Orbit release."
+  />
+</svelte:head>
+
+<div class="news-page">
+  <SiteHeader />
+
+  <main class="news-shell">
+    <NewsFeed posts={newsPosts} />
+  </main>
+</div>
+
+<style>
+  .news-page {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+  }
+
+  .news-shell {
+    width: min(100% - 2rem, var(--page-max-width));
+    margin-inline: auto;
+    padding: 1.25rem 0 6rem;
+  }
+
+  @media (max-width: 560px) {
+    .news-shell {
+      width: min(100% - 1rem, var(--page-max-width));
+      padding: 0.75rem 0 4rem;
+    }
+  }
+</style>
