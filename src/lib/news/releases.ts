@@ -23,6 +23,46 @@ export type NewsPost = {
 
 export const newsPosts: NewsPost[] = [
   {
+    slug: "v0-3-1-hotfix",
+    title: "0.3.1 Hotfix",
+    version: "v0.3.1",
+    eyebrow: "Release News",
+    summary: "Halley v0.3.1 is a focused hotfix for landmark/window overlap transfer and fullscreen game reveal regressions in v0.3.0.",
+    intro: [
+      "Halley v0.3.1 is a small emergency release for two regressions found after the third orbit release.",
+      "This update keeps the v0.3.0 presentation and overlap model intact while restoring the missing handoff paths that made landmark collisions and fullscreen game launches unreliable."
+    ],
+    features: [
+      {
+        title: "Landmark transfer restored",
+        description: "Dragged windows once again transfer force through landmarks into passive expanded windows, preventing landmarks from sliding underneath neighboring windows after release."
+      },
+      {
+        title: "Release overlap cleanup",
+        description: "Any remaining landmark/window overlap is resolved after a drag ends while expanded windows can still overlap each other directly."
+      },
+      {
+        title: "Game reveal fixed",
+        description: "Fullscreen and presentation-state windows now finish their initial commit reveal path before later commits use the presentation-only fast path, fixing games that launched with audio but no image."
+      }
+    ],
+    install: {
+      aur: ["yay -S halley", "paru -S halley"],
+      aurDev: ["yay -S halley-dev", "paru -S halley-dev"],
+      source: "git clone https://github.com/saltnpepper97/halley\ncd halley\ngit checkout v0.3.1\ncargo build --release"
+    },
+    notes: [
+      "This release is recommended for all v0.3.0 users.",
+      "No config changes are required.",
+      "The release keeps expanded-window overlap behavior from v0.3.0 while restoring non-overlap guarantees for landmark/window contacts."
+    ],
+    thanks: [
+      "Thanks to the users who reproduced the landmark collision and fullscreen game launch regressions quickly after v0.3.0.",
+      "The focused reports made it possible to isolate both fixes without rolling back the rest of the release."
+    ],
+    closing: "0.3.1 steadies the third orbit."
+  },
+  {
     slug: "third-orbit",
     title: "Third Orbit",
     version: "v0.3.0",
