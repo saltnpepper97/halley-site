@@ -82,9 +82,9 @@ systemctl --user start xdg-desktop-portal-wlr.service`;
       <p class="card-kicker">Display Manager</p>
       <h2>Launch as a Wayland session</h2>
       <p>
-        v0.2.0 ships session assets for display managers such as SDDM. When installed from a
-        package, pick Halley from the Wayland session list. The session entry starts Halley through
-        the native session path.
+        Current Halley releases ship session assets for display managers such as SDDM. When
+        installed from a package, pick Halley from the Wayland session list. The session entry
+        starts Halley through the native session path.
       </p>
     </div>
 

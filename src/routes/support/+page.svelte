@@ -64,7 +64,7 @@
       <article class="support-card surface">
         <h2>Share it</h2>
         <p>If the project resonates, point other Wayland and desktop-environment people at it.</p>
-        <a href={withBase("/news/second-orbit")}>Second Orbit release</a>
+        <a href={withBase("/news/third-orbit")}>Third Orbit release</a>
       </article>
     </section>
   </main>

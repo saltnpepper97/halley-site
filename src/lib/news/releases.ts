@@ -23,6 +23,70 @@ export type NewsPost = {
 
 export const newsPosts: NewsPost[] = [
   {
+    slug: "third-orbit",
+    title: "Third Orbit",
+    version: "v0.3.0",
+    eyebrow: "Release News",
+    summary: "Halley v0.3.0 is preparing to launch with normal overlapping windows, presentation-only maximize and fullscreen, stricter config diagnostics, and smoother native tty performance.",
+    intro: [
+      "Halley's third release is about making the spatial model feel less fragile and more direct. Expanded windows can now overlap like real windows, while nodes, cluster cores, and pinned landmarks remain readable map objects on the field.",
+      "v0.3.0 also changes maximize and fullscreen into presentation states instead of placement operations. They preserve field geometry, stop shoving nearby work out of the way, and participate in normal raise order so another window can appear above them until you explicitly raise the maximized or fullscreen window again."
+    ],
+    features: [
+      {
+        title: "Normal window overlap",
+        description: "Expanded windows may overlap other expanded windows. Collapsed nodes, cluster cores, and pinned landmarks still keep non-overlapping readable positions."
+      },
+      {
+        title: "Presentation-only maximize and fullscreen",
+        description: "Maximize and fullscreen preserve field geometry, avoid displacing bystanders, and use normal focus and raise ordering."
+      },
+      {
+        title: "Pinned field objects",
+        description: "Pinned windows, nodes, and cluster cores stay locked in place, show pin badges, and remain visible in Bearings without forcing global top-layer rendering."
+      },
+      {
+        title: "Placement controls",
+        description: "A new placement block controls expanded spawn strategy, landmark blocker behavior, and post-placement reveal panning."
+      },
+      {
+        title: "Config diagnostics",
+        description: "Startup and reload failures now surface as scrollable compositor overlays with strict unknown-key diagnostics and suggestions."
+      },
+      {
+        title: "Aperture improvements",
+        description: "Aperture can follow the cursor, target fixed outputs, or run on every output, with styling controls and status IPC."
+      },
+      {
+        title: "Animation polish",
+        description: "Close animations can shrink or fade, maximize animates visually without moving field geometry, and collapsed nodes slide out reliably when decay condenses crowded work."
+      },
+      {
+        title: "Native tty pacing",
+        description: "Presentation feedback, targeted redraws, direct-scanout guards, cursor pacing, and render filtering reduce unnecessary multi-monitor work."
+      },
+      {
+        title: "Game and fullscreen stability",
+        description: "Pointer constraints, client cursors, fullscreen video pacing, and direct scanout behavior are more stable across native tty sessions."
+      }
+    ],
+    install: {
+      aur: ["yay -S halley", "paru -S halley"],
+      aurDev: ["yay -S halley-dev", "paru -S halley-dev"],
+      source: "git clone https://github.com/saltnpepper97/halley\ncd halley\ngit checkout v0.3.0\ncargo build --release"
+    },
+    notes: [
+      "The wiki now defaults to v0.3.0 while v0.2.0 and v0.1.0 remain available from the version picker.",
+      "Existing configs are migrated forward where possible. New sections include placement, field.pins, input.raise-on-click, animation controls, and stricter overlay diagnostics.",
+      "The old rule overlap-policy key is retained as a no-op compatibility alias; use spawn-placement and cluster-participation \"float\" for current floating dialog behavior."
+    ],
+    thanks: [
+      "Thanks to everyone testing overlap, fullscreen games, native tty behavior, config reloads, and multi-monitor workflows during the 0.3.0 cycle.",
+      "The detailed bug reports around maximize, fullscreen, cursor pacing, and collapsed-node motion directly shaped this release."
+    ],
+    closing: "Third orbit makes the field feel steadier."
+  },
+  {
     slug: "second-orbit",
     title: "Second Orbit",
     version: "v0.2.0",

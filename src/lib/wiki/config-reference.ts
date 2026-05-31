@@ -66,6 +66,7 @@ export const configSections: ConfigSection[] = [
       { option: "repeat-rate", type: "i32", defaultValue: "30", notes: "Keyboard repeat rate." },
       { option: "repeat-delay", type: "i32", defaultValue: "500", notes: "Delay before keyboard repeat starts, in milliseconds." },
       { option: "focus-mode", type: "string", defaultValue: "click", notes: "Accepted values: click, hover. hover focuses windows under the pointer and, when the pointer is on an otherwise empty monitor, default new windows spawn on that monitor." },
+      { option: "raise-on-click", type: "bool", defaultValue: "true", notes: "Raises clicked windows independently from focus mode. Hover focus does not imply raise.", addedIn: "0.3.0" },
       { option: "keyboard", type: "nested block", defaultValue: "see input.keyboard", notes: "Keyboard layout, variant, and option strings.", addedIn: "0.2.0" }
     ]
   },
@@ -164,10 +165,24 @@ export const configSections: ConfigSection[] = [
     options: [
       { option: "gap", type: "f32", defaultValue: "20.0", notes: "Gap between windows and layout elements in the field." },
       { option: "active-windows-allowed", type: "usize", defaultValue: "5", notes: "Maximum number of non-node active windows before decay becomes more aggressive." },
+      { option: "pins", type: "nested block", defaultValue: "see field.pins", notes: "Pinned object badge styling and position.", addedIn: "0.3.0" },
       { option: "pan-to-new", type: "string", defaultValue: "if-needed", notes: "Controls how strongly the camera pans to newly opened windows. Accepted values: never, if-needed, always." },
       { option: "close-restore-focus", type: "bool", defaultValue: "true", notes: "Restores focus when a window closes." },
       { option: "close-restore-pan", type: "string", defaultValue: "if-offscreen", notes: "Controls camera pan restoration after close. Accepted values: never, if-offscreen, always." },
       { option: "zoom", type: "nested block", defaultValue: "see field.zoom", notes: "Field zoom settings." }
+    ]
+  },
+  {
+    slug: "field-pins",
+    name: "field.pins",
+    title: "Pins",
+    summary: "Pinned object badge position, color, background, and scale.",
+    addedIn: "0.3.0",
+    options: [
+      { option: "corner", type: "string", defaultValue: "top-right", notes: "Pin badge corner. Accepted values: top-left, top-right." },
+      { option: "colour", type: "string", defaultValue: "auto", notes: "Pin glyph color. Accepted values: auto, light, dark, or a hex color." },
+      { option: "background-colour", type: "string", defaultValue: "auto", notes: "Circular badge background color. Accepted values: auto, light, dark, or a hex color." },
+      { option: "size", type: "f32", defaultValue: "1.0", notes: "Scale for the circular pin badge and glyph." }
     ]
   },
   {
@@ -182,6 +197,55 @@ export const configSections: ConfigSection[] = [
       { option: "max", type: "f32", defaultValue: "1.35", notes: "Maximum zoom scale." },
       { option: "smooth", type: "bool", defaultValue: "true", notes: "Enables smooth zoom interpolation." },
       { option: "smooth-rate", type: "f32", defaultValue: "12.5", notes: "Rate used for smooth zooming." }
+    ]
+  },
+  {
+    slug: "placement",
+    name: "placement",
+    title: "Placement",
+    summary: "Initial expanded-window placement, landmark placement, and reveal behavior.",
+    addedIn: "0.3.0",
+    options: [
+      { option: "expanded", type: "nested block", defaultValue: "see placement.expanded", notes: "Initial spawn placement for expanded windows." },
+      { option: "landmarks", type: "nested block", defaultValue: "see placement.landmarks", notes: "Placement behavior for readable map objects such as nodes, cores, and collapsed clusters." },
+      { option: "reveal", type: "nested block", defaultValue: "see placement.reveal", notes: "Post-placement camera reveal behavior." }
+    ]
+  },
+  {
+    slug: "placement-expanded",
+    name: "placement.expanded",
+    title: "Expanded Placement",
+    summary: "Initial placement for newly opened expanded windows.",
+    addedIn: "0.3.0",
+    options: [
+      { option: "strategy", type: "string", defaultValue: "center", notes: "Initial spawn strategy. Accepted values include center and find-empty." },
+      { option: "fallback", type: "string", defaultValue: "center", notes: "Fallback strategy when the primary strategy cannot place a window." },
+      { option: "find-empty-mode", type: "string", defaultValue: "best-effort", notes: "Find-empty behavior. Expanded windows are ignored as hard blockers because expanded overlap is normal in v0.3.0." }
+    ]
+  },
+  {
+    slug: "placement-landmarks",
+    name: "placement.landmarks",
+    title: "Landmark Placement",
+    summary: "Placement behavior for collapsed readable objects on the field.",
+    addedIn: "0.3.0",
+    options: [
+      { option: "strategy", type: "string", defaultValue: "nearest-free", notes: "Strategy for collapsed nodes, cluster cores, and landmarks." },
+      { option: "normal-blocker", type: "string", defaultValue: "relocate", notes: "Behavior when an unpinned landmark blocks placement." },
+      { option: "pinned-blocker", type: "string", defaultValue: "preserve", notes: "Behavior when a pinned landmark blocks placement." }
+    ]
+  },
+  {
+    slug: "placement-reveal",
+    name: "placement.reveal",
+    title: "Reveal Placement",
+    summary: "Camera reveal behavior after window placement.",
+    addedIn: "0.3.0",
+    options: [
+      { option: "enabled", type: "bool", defaultValue: "true", notes: "Enables post-placement reveal panning." },
+      { option: "max-pan-px", type: "f32", defaultValue: "360", notes: "Maximum reveal pan distance in pixels." },
+      { option: "animation-ms", type: "u64", defaultValue: "180", notes: "Reveal pan animation duration." },
+      { option: "pan-to-new", type: "string", defaultValue: "if-needed", notes: "Controls new-window reveal panning. Accepted values: never, if-needed, always." }
     ]
   },
   {
@@ -233,6 +297,7 @@ export const configSections: ConfigSection[] = [
     options: [
       { option: "show-distance", type: "bool", defaultValue: "true", notes: "Shows distance text for bearings." },
       { option: "show-icons", type: "bool", defaultValue: "true", notes: "Shows icons in bearings." },
+      { option: "show-pinned", type: "bool", defaultValue: "true", notes: "Shows pinned windows, nodes, and cores in Bearings.", addedIn: "0.3.0" },
       { option: "fade-distance", type: "f32", defaultValue: "1200.0", notes: "Distance over which bearings fade." }
     ]
   },
@@ -293,18 +358,19 @@ export const configSections: ConfigSection[] = [
       { option: "window-open", type: "nested block", defaultValue: "see animations.window-open", notes: "Window open animation settings." },
       { option: "window-close", type: "nested block", defaultValue: "see animations.window-close", notes: "Window close animation settings." },
       { option: "tile", type: "nested block", defaultValue: "see animations.tile", notes: "Tile animation settings." },
-      { option: "stack", type: "nested block", defaultValue: "see animations.stack", notes: "Stack animation settings." }
+      { option: "stack", type: "nested block", defaultValue: "see animations.stack", notes: "Stack animation settings." },
+      { option: "raise", type: "nested block", defaultValue: "see animations.raise", notes: "Click/selection raise pulse settings.", addedIn: "0.3.0" }
     ]
   },
   {
     slug: "animations-maximize",
     name: "maximize",
     title: "Maximize Animation",
-    summary: "Maximize transition timing.",
+    summary: "Visual-only maximize transition timing.",
     addedIn: "0.2.0",
     options: [
-      { option: "enabled", type: "bool", defaultValue: "true", notes: "Enables animated maximize transitions." },
-      { option: "duration-ms", type: "u64", defaultValue: "240", notes: "Maximize animation duration." }
+      { option: "enabled", type: "bool", defaultValue: "true", notes: "Enables visual maximize and unmaximize transitions." },
+      { option: "duration-ms", type: "u64", defaultValue: "240", notes: "Maximize animation duration. The animation only tweens the presented rect; field geometry stays unchanged in v0.3.0." }
     ]
   },
   {
@@ -335,7 +401,7 @@ export const configSections: ConfigSection[] = [
     options: [
       { option: "enabled", type: "bool", defaultValue: "true", notes: "Enables animated window close transitions." },
       { option: "duration-ms", type: "u64", defaultValue: "270", notes: "Close animation duration." },
-      { option: "style", type: "string", defaultValue: "shrink", notes: "Current close animation style. Accepted value: shrink." }
+      { option: "style", type: "string", defaultValue: "shrink", notes: "Close animation style. Accepted values: shrink, fade. fade is available in v0.3.0 and newer." }
     ]
   },
   {
@@ -356,6 +422,19 @@ export const configSections: ConfigSection[] = [
     options: [
       { option: "enabled", type: "bool", defaultValue: "true", notes: "Enables stack layout animations." },
       { option: "duration-ms", type: "u64", defaultValue: "220", notes: "Stack animation duration." }
+    ]
+  },
+  {
+    slug: "animations-raise",
+    name: "raise",
+    title: "Raise Animation",
+    summary: "Pulse animation used when a window is explicitly raised.",
+    addedIn: "0.3.0",
+    options: [
+      { option: "enabled", type: "bool", defaultValue: "true", notes: "Enables the raise pulse animation." },
+      { option: "duration-ms", type: "u64", defaultValue: "140", notes: "Raise pulse duration." },
+      { option: "scale", type: "f32", defaultValue: "1.025", notes: "Peak scale multiplier for the raised window." },
+      { option: "shadow-boost", type: "f32", defaultValue: "0.18", notes: "Temporary shadow boost during the raise pulse." }
     ]
   },
   {
@@ -448,6 +527,7 @@ export const configSections: ConfigSection[] = [
     options: [
       { option: "background-colour", type: "string", defaultValue: "auto", notes: "Overlay background color. Accepted values: auto, light, dark, or a hex color." },
       { option: "text-colour", type: "string", defaultValue: "auto", notes: "Overlay text color. Accepted values: auto, light, dark, or a hex color." },
+      { option: "error-colour", type: "string", defaultValue: "#fb4934", notes: "Accent color used by startup and config reload error overlays.", addedIn: "0.3.0" },
       { option: "shape", type: "string", defaultValue: "square", notes: "Overlay shape style. Accepted values: square, rounded." },
       { option: "borders", type: "bool", defaultValue: "true", notes: "Enables overlay borders." },
       { option: "border-source", type: "string", defaultValue: "primary", notes: "Border palette source. Accepted values: primary, secondary." }
@@ -460,7 +540,7 @@ export const configSections: ConfigSection[] = [
     summary: "Modifier token and chord-to-action mappings.",
     options: [
       { option: "mod", type: "modifier token", defaultValue: "super", notes: "Base modifier token used by $var.mod and $mod." },
-      { option: "<chord>", type: "action string", defaultValue: "starter config bindings", notes: "Any additional entry maps a chord such as $var.mod+return, alt+tab, or $var.mod+1 to an action string. v0.2.0 adds defaults for maximize-focused, cycle-focus, cycle-focus-backward, and cluster slot 1 through 10." }
+      { option: "<chord>", type: "action string", defaultValue: "starter config bindings", notes: "Any additional entry maps a chord such as $var.mod+return, alt+tab, or $var.mod+1 to an action string. v0.2.0 adds defaults for maximize-focused, cycle-focus, cycle-focus-backward, and cluster slot 1 through 10; v0.3.0 adds toggle-focused-pin by default." }
     ]
   },
   {
@@ -480,8 +560,8 @@ export const configSections: ConfigSection[] = [
     options: [
       { option: "app-id", type: "quoted string, regex, or array", defaultValue: "required if title omitted", notes: "Matches window app IDs. Arrays can mix literals and regex literals like r\"Firefox.*\"." },
       { option: "title", type: "quoted string, regex, or array", defaultValue: "required if app-id omitted", notes: "Matches window titles." },
-      { option: "overlap-policy", type: "string", defaultValue: "none", notes: "Controls overlap allowed during initial placement. Accepted values: none, parent-only, all." },
-      { option: "spawn-placement", type: "string", defaultValue: "adjacent", notes: "Initial placement strategy for matching windows. Accepted values: adjacent, center, viewport-center, cursor, app." },
+      { option: "overlap-policy", type: "string", defaultValue: "deprecated", notes: "Deprecated no-op in v0.3.0. Expanded windows can overlap normally; use spawn-placement for initial position and cluster-participation \"float\" for floating dialogs." },
+      { option: "spawn-placement", type: "string", defaultValue: "placement.expanded.strategy", notes: "Initial placement strategy for matching windows. Accepted values include center, viewport-center, cursor, app, and find-empty." },
       { option: "cluster-participation", type: "string", defaultValue: "layout", notes: "Controls whether matching windows join layout management or float. Accepted values: layout, float." }
     ]
   }
@@ -506,6 +586,7 @@ end`,
   repeat-rate 30
   repeat-delay 500
   focus-mode "click"
+  raise-on-click true
   keyboard:
     layout "us"
     variant ""
@@ -547,6 +628,13 @@ end`,
   close-restore-focus true
   close-restore-pan "if-offscreen"
 
+  pins:
+    corner "top-right"
+    colour "auto"
+    background-colour "auto"
+    size 1.0
+  end
+
   zoom:
     enabled true
     step 1.10
@@ -564,6 +652,26 @@ end`,
     max 1.35
     smooth true
     smooth-rate 12.5
+  end
+end`,
+  placement: `placement:
+  expanded:
+    strategy "center"
+    fallback "center"
+    find-empty-mode "best-effort"
+  end
+
+  landmarks:
+    strategy "nearest-free"
+    normal-blocker "relocate"
+    pinned-blocker "preserve"
+  end
+
+  reveal:
+    enabled true
+    max-pan-px 360
+    animation-ms 180
+    pan-to-new "if-needed"
   end
 end`,
   node: `node:
@@ -587,9 +695,10 @@ end`,
   history-length 25
   wrap true
 end`,
-  bearings: `bearings:
+bearings: `bearings:
   show-distance true
   show-icons true
+  show-pinned true
   fade-distance 1200
 end`,
   clusters: `clusters:
@@ -646,6 +755,13 @@ end`,
     enabled true
     duration-ms 220
   end
+
+  raise:
+    enabled true
+    duration-ms 140
+    scale 1.025
+    shadow-boost 0.18
+  end
 end`,
   decorations: `decorations:
   border:
@@ -694,6 +810,106 @@ end`,
 
   resize-using-border true
 end`,
+overlays: `overlays:
+  background-colour "auto"
+  text-colour "auto"
+  error-colour "#fb4934"
+  shape "square"
+  borders true
+  border-source "primary"
+end`,
+  keybinds: `keybinds:
+  mod "super"
+  "$var.mod+m" "maximize-focused"
+  "$var.mod+p" "toggle-focused-pin"
+  "$var.mod+1" "cluster slot 1"
+  "alt+tab" "cycle-focus"
+  "alt+shift+tab" "cycle-focus-backward"
+  "$var.mod+return" "spawn ghostty"
+end`,
+  rules: `rules:
+  rule:
+    app-id "firefox"
+    title [r"File Upload.*", r"Open File.*"]
+    spawn-placement "center"
+    cluster-participation "float"
+  end
+end`,
+  "rules-rule": `rules:
+  rule:
+    app-id "firefox"
+    spawn-placement "center"
+    cluster-participation "layout"
+  end
+end`
+};
+
+const configExamplesV02: Partial<Record<string, string>> = {
+  input: `input:
+  repeat-rate 30
+  repeat-delay 500
+  focus-mode "click"
+  keyboard:
+    layout "us"
+    variant ""
+    options ""
+  end
+end`,
+  field: `field:
+  gap 20.0
+  active-windows-allowed 5
+  pan-to-new "if-needed"
+  close-restore-focus true
+  close-restore-pan "if-offscreen"
+
+  zoom:
+    enabled true
+    step 1.10
+    min 0.35
+    max 1.35
+    smooth true
+    smooth-rate 12.5
+  end
+end`,
+  bearings: `bearings:
+  show-distance true
+  show-icons true
+  fade-distance 1200
+end`,
+  animations: `animations:
+  enabled true
+
+  smooth-resize:
+    enabled true
+    duration-ms 90
+  end
+
+  maximize:
+    enabled true
+    duration-ms 240
+  end
+
+  window-open:
+    enabled true
+    duration-ms 620
+  end
+
+  window-close:
+    enabled true
+    duration-ms 270
+    style "shrink"
+  end
+
+  tile:
+    enabled true
+    duration-ms 240
+  end
+
+  stack:
+    enabled true
+    duration-ms 220
+  end
+end`,
   overlays: `overlays:
   background-colour "auto"
   text-colour "auto"
@@ -730,6 +946,18 @@ end`
 
 const groupedPageDefinitions = [
   {
+    slug: "field",
+    title: "Field",
+    summary: "Field spacing, active-window limits, pinned badge styling, close restore, and zoom settings.",
+    sectionSlugs: ["field", "field-pins", "field-zoom"]
+  },
+  {
+    slug: "placement",
+    title: "Placement",
+    summary: "Expanded window spawn placement, landmark blocker handling, and reveal panning.",
+    sectionSlugs: ["placement", "placement-expanded", "placement-landmarks", "placement-reveal"]
+  },
+  {
     slug: "input",
     title: "Input",
     summary: "Keyboard repeat behavior, focus policy, and keyboard layout settings.",
@@ -752,7 +980,8 @@ const groupedPageDefinitions = [
       "animations-window-open",
       "animations-window-close",
       "animations-tile",
-      "animations-stack"
+      "animations-stack",
+      "animations-raise"
     ]
   },
   {
@@ -841,8 +1070,13 @@ export const configPageForVersion = (page: ConfigPage, version: string): ConfigP
 };
 
 export const configExampleForVersion = (slug: string, version: string) => {
-  if (version >= "0.2.0") {
+  if (version >= "0.3.0") {
     return configExamples[slug] ?? `${slug}:
+end`;
+  }
+
+  if (version >= "0.2.0") {
+    return configExamplesV02[slug] ?? configExamples[slug] ?? `${slug}:
 end`;
   }
 

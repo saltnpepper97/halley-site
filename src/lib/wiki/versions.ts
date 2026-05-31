@@ -5,7 +5,8 @@ export type WikiVersion = {
 };
 
 export const wikiVersions: WikiVersion[] = [
-  { label: "0.2.0", value: "0.2.0", status: "current" },
+  { label: "0.3.0", value: "0.3.0", status: "current" },
+  { label: "0.2.0", value: "0.2.0", status: "archived" },
   { label: "0.1.0", value: "0.1.0", status: "archived" }
 ];
 

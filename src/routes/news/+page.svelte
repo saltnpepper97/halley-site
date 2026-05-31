@@ -8,7 +8,7 @@
   <title>News | Halley</title>
   <meta
     name="description"
-    content="Halley news and release announcements, including the v0.2.0 Second Orbit release."
+    content="Halley news and release announcements, including the upcoming v0.3.0 Third Orbit release."
   />
 </svelte:head>
 

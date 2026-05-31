@@ -24,6 +24,7 @@
         <p class="eyebrow">Wayland compositor</p>
         <h1 id="home-title">Periodic. Precise. Returning.</h1>
         <p class="lede">Windows as nodes, displays as fields, clusters as deliberate workspaces.</p>
+        <a class="release-link" href={withBase("/news/third-orbit")}>Preparing v0.3.0: Third Orbit</a>
 
         <div class="hero-actions" aria-label="Primary actions">
           <a class="primary-action" href={withBase("/wiki/install")}>Install Halley</a>
@@ -302,6 +303,24 @@
     color: var(--text-2);
     font-size: clamp(1.12rem, 2vw, 1.5rem);
     line-height: 1.45;
+  }
+
+  .release-link {
+    justify-self: start;
+    padding: 0.42rem 0.7rem;
+    color: var(--accent-soft);
+    background: rgba(255, 106, 42, 0.09);
+    border: 1px solid rgba(255, 106, 42, 0.24);
+    border-radius: 999px;
+    font-family: var(--font-display);
+    font-size: 0.86rem;
+    font-weight: 850;
+    letter-spacing: 0.02em;
+  }
+
+  .release-link:hover {
+    color: var(--text-1);
+    border-color: var(--border-2);
   }
 
   .hero-actions {
