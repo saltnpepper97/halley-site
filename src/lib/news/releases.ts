@@ -23,6 +23,46 @@ export type NewsPost = {
 
 export const newsPosts: NewsPost[] = [
   {
+    slug: "v0-3-2-small-fixes",
+    title: "0.3.2 Small Fixes",
+    version: "v0.3.2",
+    eyebrow: "Release News",
+    summary: "Halley v0.3.2 is a focused patch for stale rendered textures in tiled cluster members.",
+    intro: [
+      "Halley v0.3.2 is a small follow-up release for one tiled-cluster reveal regression found after v0.3.1.",
+      "The patch keeps the v0.3.x behavior unchanged while making newly committed tiled cluster members clear their pending reveal state at the right time."
+    ],
+    features: [
+      {
+        title: "Tiled cluster reveal fixed",
+        description: "Pending initial reveal state is cleared once committed geometry arrives for tiled cluster members."
+      },
+      {
+        title: "Focused terminals repaint correctly",
+        description: "Focused terminals in tiled clusters no longer keep stale rendered textures while input continues to reach the client."
+      },
+      {
+        title: "No config changes",
+        description: "This release does not require wiki content or configuration changes; it only advances the current release links to v0.3.2."
+      }
+    ],
+    install: {
+      aur: ["yay -S halley", "paru -S halley"],
+      aurDev: ["yay -S halley-dev", "paru -S halley-dev"],
+      source: "git clone https://github.com/saltnpepper97/halley\ncd halley\ngit checkout v0.3.2\ncargo build --release"
+    },
+    notes: [
+      "This release is recommended for v0.3.1 users working in tiled clusters.",
+      "No config changes are required.",
+      "The wiki version picker now defaults to v0.3.2 while keeping v0.3.1 available as an archived release."
+    ],
+    thanks: [
+      "Thanks to the users who caught the tiled cluster stale-texture behavior quickly after v0.3.1.",
+      "The focused reproduction kept this patch small."
+    ],
+    closing: "0.3.2 keeps the third orbit steady."
+  },
+  {
     slug: "v0-3-1-hotfix",
     title: "0.3.1 Hotfix",
     version: "v0.3.1",
