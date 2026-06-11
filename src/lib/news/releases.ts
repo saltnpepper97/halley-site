@@ -134,10 +134,6 @@ export const newsPosts: NewsPost[] = [
         description: "Startup and reload failures now surface as scrollable compositor overlays with strict unknown-key diagnostics and suggestions."
       },
       {
-        title: "Aperture improvements",
-        description: "Aperture can follow the cursor, target fixed outputs, or run on every output, with styling controls and status IPC."
-      },
-      {
         title: "Animation polish",
         description: "Close animations can shrink or fade, maximize animates visually without moving field geometry, and collapsed nodes slide out reliably when decay condenses crowded work."
       },
