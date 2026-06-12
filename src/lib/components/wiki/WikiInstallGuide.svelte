@@ -5,16 +5,20 @@
   import { defaultWikiVersion, wikiVersionFromSearch } from "$lib/wiki/versions";
 
   const activeVersion = () => browser ? wikiVersionFromSearch(page.url.searchParams) : defaultWikiVersion;
-  const sourceInstall = `git clone https://github.com/saltnpepper97/halley
+  const sourceInstall = () => `git clone https://github.com/saltnpepper97/halley
 cd halley
+git checkout v${activeVersion().label}
 cargo build --release`;
+  const helpCommand = "halley --help";
+  const configCommand = "halley --config ~/.config/halley/halley.rune";
   const portalPackages = `xdg-desktop-portal-wlr
 xdg-desktop-portal-gtk`;
   const portalEnvironment = `XDG_CURRENT_DESKTOP=Halley
 XDG_SESSION_TYPE=wayland`;
   const portalRestart = `systemctl --user restart xdg-desktop-portal.service
 systemctl --user start xdg-desktop-portal-wlr.service`;
-  const sessionCommand = "halley --session";
+  const sessionCommand = "halley-session";
+  const sessionWrapperCommand = "halley --session";
 </script>
 
 <section id="install" class="install-guide surface">
@@ -44,6 +48,7 @@ systemctl --user start xdg-desktop-portal-wlr.service`;
     <p class="optional-title">Optional, but commonly useful:</p>
     <ul>
       <li><code>xwayland-satellite</code> for X11 app support</li>
+      <li><code>gamescope</code> for wrapping game launches through <code>halleyctl gamescope</code></li>
       <li><code>xdg-desktop-portal-wlr</code> plus <code>xdg-desktop-portal-gtk</code> for portal screenshot and screencast flows</li>
       <li><code>fuzzel</code> and a Wayland terminal if using the default launch bindings</li>
     </ul>
@@ -72,9 +77,24 @@ systemctl --user start xdg-desktop-portal-wlr.service`;
       <p>Clone the repository and build the release binary locally.</p>
     </div>
 
-    <CodeBlock code={sourceInstall} label="source build" />
+    <CodeBlock code={sourceInstall()} label="source build" />
 
     <p>The compositor binary will be available at <code>target/release/halley</code>.</p>
+  </article>
+
+  <article id="install-config" class="install-card">
+    <div>
+      <p class="card-kicker">Startup Options</p>
+      <h2>Help and config selection</h2>
+      <p>
+        v0.4.0 documents startup flags through <code>halley --help</code>. Use
+        <code>halley --config</code> to launch with an explicit config file; that path takes precedence over
+        <code>HALLEY_WL_CONFIG</code>, the user config, the system config, and generated defaults.
+      </p>
+    </div>
+
+    <CodeBlock code={helpCommand} label="help" />
+    <CodeBlock code={configCommand} label="explicit config" />
   </article>
 
   <article id="install-session" class="install-card">
@@ -84,16 +104,18 @@ systemctl --user start xdg-desktop-portal-wlr.service`;
       <p>
         Current Halley releases ship session assets for display managers such as SDDM. When
         installed from a package, pick Halley from the Wayland session list. The session entry
-        starts Halley through the native session path.
+        starts Halley through the recommended public session launcher.
       </p>
     </div>
 
     <CodeBlock code={sessionCommand} label="session entry" />
 
     <p>
-      Running the same command manually is useful for debugging startup outside a display manager.
-      It sets up the compositor session path directly instead of relying on the older wrapper chain.
+      Packagers, service files, and session wrappers can call the lower-level session flag directly
+      when they already control the surrounding login environment.
     </p>
+
+    <CodeBlock code={sessionWrapperCommand} label="session wrapper" />
   </article>
 
   <article id="install-portal" class="install-card portal-card">

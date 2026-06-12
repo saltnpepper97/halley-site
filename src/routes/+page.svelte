@@ -24,7 +24,7 @@
         <p class="eyebrow">Wayland compositor</p>
         <h1 id="home-title">Periodic. Precise. Returning.</h1>
         <p class="lede">Windows as nodes, displays as fields, clusters as deliberate workspaces.</p>
-        <a class="release-link" href={withBase("/news/v0-3-2-small-fixes")}>Halley v0.3.2: Small Fixes</a>
+        <a class="release-link" href={withBase("/news/fourth-orbit")}>Halley v0.4.0: Fourth Orbit</a>
 
         <div class="hero-actions" aria-label="Primary actions">
           <a class="primary-action" href={withBase("/wiki/install")}>Install Halley</a>

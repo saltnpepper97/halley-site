@@ -23,6 +23,66 @@ export type NewsPost = {
 
 export const newsPosts: NewsPost[] = [
   {
+    slug: "fourth-orbit",
+    title: "Fourth Orbit",
+    version: "v0.4.0",
+    eyebrow: "Release News",
+    summary: "Halley v0.4.0 brings compositor fullscreen controls, Gamescope launch support, fixed-size and translucent window rules, and deeper game/session stability.",
+    intro: [
+      "Halley's fourth release is about making the compositor easier to launch, debug, and trust during fullscreen-heavy daily use.",
+      "v0.4.0 adds compositor-owned fullscreen toggling, first-class Gamescope wrapping, explicit config selection, and new rule controls while tightening the cluster, Steam, popup, and game paths that matter most when the desktop is under load."
+    ],
+    features: [
+      {
+        title: "Fullscreen on demand",
+        description: "A new mod+f default binding toggles compositor-initiated fullscreen on the focused window, with configurable fullscreen animations for browser videos and apps."
+      },
+      {
+        title: "Gamescope launch support",
+        description: "The new gamescope config block and halleyctl gamescope run helper wrap game launches with monitor-aware dimensions, per-game profiles, and safe fallback when gamescope is unavailable."
+      },
+      {
+        title: "More capable window rules",
+        description: "Rules can now set opacity and optional initial width or height, including live opacity updates when config or app metadata changes."
+      },
+      {
+        title: "Explicit config selection",
+        description: "halley --help documents startup options, and halley --config can select a config path with precedence over HALLEY_WL_CONFIG."
+      },
+      {
+        title: "Debug controls",
+        description: "A new debug block exposes an FPS overlay and focus-ring resize preview control for diagnosing compositor behavior without changing normal defaults."
+      },
+      {
+        title: "Cluster workspace fixes",
+        description: "Tiled and stacking clusters handle transitions, detachments, monitor transfers, stale captures, and drag/drop behavior more reliably."
+      },
+      {
+        title: "Steam and game stability",
+        description: "Gamescope-managed and Steam game windows get safer pointer routing, overlay suppression, popup placement, and fullscreen close/restore handling."
+      },
+      {
+        title: "Rendering and lifecycle cleanup",
+        description: "Window render routing, close teardown, spawn reveal state, frame-loop activity, and render-state ownership are split into clearer internal paths."
+      }
+    ],
+    install: {
+      aur: ["yay -S halley", "paru -S halley"],
+      aurDev: ["yay -S halley-dev", "paru -S halley-dev"],
+      source: "git clone https://github.com/saltnpepper97/halley\ncd halley\ngit checkout v0.4.0\ncargo build --release"
+    },
+    notes: [
+      "The wiki now defaults to v0.4.0 while v0.3.2 and earlier releases remain available from the version picker.",
+      "Existing configs are migrated forward where possible. New public config areas include debug, gamescope, animations.fullscreen, and window-rule opacity, width, and height.",
+      "halley-session remains the recommended full-session launcher; halley --session is documented for session wrappers, packagers, and service files."
+    ],
+    thanks: [
+      "Thanks to everyone testing fullscreen games, Steam workflows, cluster layouts, config reloads, and native sessions through the fourth release cycle.",
+      "The detailed reports around pointer locks, stacked clusters, tiled transitions, popup placement, and fullscreen restore behavior shaped this release directly."
+    ],
+    closing: "Fourth orbit clears the path for the next one."
+  },
+  {
     slug: "v0-3-2-small-fixes",
     title: "0.3.2 Small Fixes",
     version: "v0.3.2",

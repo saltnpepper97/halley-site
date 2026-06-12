@@ -104,6 +104,17 @@ export const configSections: ConfigSection[] = [
     ]
   },
   {
+    slug: "debug",
+    name: "debug",
+    title: "Debug",
+    summary: "Optional compositor diagnostics for troubleshooting and tuning.",
+    addedIn: "0.4.0",
+    options: [
+      { option: "overlay-fps", type: "bool", defaultValue: "false", notes: "Shows a small top-left FPS HUD for render diagnostics." },
+      { option: "show-ring-when-resizing", type: "bool", defaultValue: "true", notes: "Controls whether focus-ring config-change previews stay visible while resizing or reloading focus-ring settings." }
+    ]
+  },
+  {
     slug: "viewport",
     name: "viewport",
     title: "Viewport",
@@ -347,6 +358,48 @@ export const configSections: ConfigSection[] = [
     ]
   },
   {
+    slug: "gamescope",
+    name: "gamescope",
+    title: "Gamescope",
+    summary: "Defaults for launching selected games through gamescope from halleyctl.",
+    addedIn: "0.4.0",
+    options: [
+      { option: "enabled", type: "bool", defaultValue: "true", notes: "Enables gamescope wrapping for matching launches." },
+      { option: "monitor", type: "string", defaultValue: "focused", notes: "Monitor selector used for automatic dimensions. Accepted values: focused, cursor, primary, or a connector name." },
+      { option: "output-width", type: "u32 or auto", defaultValue: "auto", notes: "Gamescope output width. auto resolves from the selected monitor when possible." },
+      { option: "output-height", type: "u32 or auto", defaultValue: "auto", notes: "Gamescope output height. auto resolves from the selected monitor when possible." },
+      { option: "game-width", type: "u32 or auto", defaultValue: "auto", notes: "Internal game width passed to gamescope." },
+      { option: "game-height", type: "u32 or auto", defaultValue: "auto", notes: "Internal game height passed to gamescope." },
+      { option: "refresh", type: "u32 or auto", defaultValue: "auto", notes: "Refresh rate passed to gamescope when known." },
+      { option: "fullscreen", type: "bool", defaultValue: "true", notes: "Launches gamescope fullscreen. Fullscreen wins if both fullscreen and borderless are true." },
+      { option: "borderless", type: "bool", defaultValue: "false", notes: "Launches gamescope borderless when fullscreen is false." },
+      { option: "suppress-overlays", type: "bool", defaultValue: "true", notes: "Suppresses Halley overlay reveals while a managed game holds pointer lock or confinement." },
+      { option: "passthrough-pointer-lock", type: "bool", defaultValue: "true", notes: "Preserves game pointer lock behavior for wrapped launches." },
+      { option: "bypass-spatial-camera", type: "bool", defaultValue: "true", notes: "Routes pointer input to gamescope-managed surfaces without spatial-camera remapping." },
+      { option: "game", type: "nested block", defaultValue: "none", notes: "Repeated per-game profile block. Profiles match by app-id and inherit global defaults." }
+    ]
+  },
+  {
+    slug: "gamescope-game",
+    name: "game",
+    title: "Gamescope Game Profile",
+    summary: "Per-game Gamescope overrides matched by app id.",
+    addedIn: "0.4.0",
+    options: [
+      { option: "name", type: "string", defaultValue: "optional", notes: "Human-readable profile name." },
+      { option: "app-id", type: "string", defaultValue: "required", notes: "Steam or app id matched by halleyctl gamescope run." },
+      { option: "enabled", type: "bool", defaultValue: "inherited", notes: "Set false to opt a matching game out of wrapping." },
+      { option: "monitor", type: "string", defaultValue: "inherited", notes: "Profile-specific monitor selector." },
+      { option: "output-width", type: "u32 or auto", defaultValue: "inherited", notes: "Profile-specific gamescope output width." },
+      { option: "output-height", type: "u32 or auto", defaultValue: "inherited", notes: "Profile-specific gamescope output height." },
+      { option: "game-width", type: "u32 or auto", defaultValue: "inherited", notes: "Profile-specific internal game width." },
+      { option: "game-height", type: "u32 or auto", defaultValue: "inherited", notes: "Profile-specific internal game height." },
+      { option: "refresh", type: "u32 or auto", defaultValue: "inherited", notes: "Profile-specific refresh rate." },
+      { option: "fullscreen", type: "bool", defaultValue: "inherited", notes: "Profile-specific fullscreen flag." },
+      { option: "borderless", type: "bool", defaultValue: "inherited", notes: "Profile-specific borderless flag." }
+    ]
+  },
+  {
     slug: "animations",
     name: "animations",
     title: "Animations",
@@ -355,6 +408,7 @@ export const configSections: ConfigSection[] = [
       { option: "enabled", type: "bool", defaultValue: "true", notes: "Master animation toggle." },
       { option: "smooth-resize", type: "nested block", defaultValue: "see animations.smooth-resize", notes: "Resize animation settings." },
       { option: "maximize", type: "nested block", defaultValue: "see animations.maximize", notes: "Maximize transition settings.", addedIn: "0.2.0" },
+      { option: "fullscreen", type: "nested block", defaultValue: "see animations.fullscreen", notes: "Fullscreen transition settings.", addedIn: "0.4.0" },
       { option: "window-open", type: "nested block", defaultValue: "see animations.window-open", notes: "Window open animation settings." },
       { option: "window-close", type: "nested block", defaultValue: "see animations.window-close", notes: "Window close animation settings." },
       { option: "tile", type: "nested block", defaultValue: "see animations.tile", notes: "Tile animation settings." },
@@ -381,6 +435,17 @@ export const configSections: ConfigSection[] = [
     options: [
       { option: "enabled", type: "bool", defaultValue: "true", notes: "Enables animated resize transitions." },
       { option: "duration-ms", type: "u64", defaultValue: "90", notes: "Resize animation duration." }
+    ]
+  },
+  {
+    slug: "animations-fullscreen",
+    name: "fullscreen",
+    title: "Fullscreen Animation",
+    summary: "Visual transition into compositor-managed fullscreen.",
+    addedIn: "0.4.0",
+    options: [
+      { option: "enabled", type: "bool", defaultValue: "true", notes: "Enables visual fullscreen transitions." },
+      { option: "duration-ms", type: "u64", defaultValue: "240", notes: "Fullscreen animation duration." }
     ]
   },
   {
@@ -537,10 +602,48 @@ export const configSections: ConfigSection[] = [
     slug: "keybinds",
     name: "keybinds",
     title: "Keybinds",
-    summary: "Modifier token and chord-to-action mappings.",
+    summary: "Modifier token and chord-to-action mappings. The 0.4.0 example mirrors the shipped fresh-config defaults.",
     options: [
       { option: "mod", type: "modifier token", defaultValue: "super", notes: "Base modifier token used by $var.mod and $mod." },
-      { option: "<chord>", type: "action string", defaultValue: "starter config bindings", notes: "Any additional entry maps a chord such as $var.mod+return, alt+tab, or $var.mod+1 to an action string. v0.2.0 adds defaults for maximize-focused, cycle-focus, cycle-focus-backward, and cluster slot 1 through 10; v0.3.0 adds toggle-focused-pin by default." }
+      { option: "<chord>", type: "action string", defaultValue: "fresh-config bindings", notes: "Any additional entry maps a chord such as $var.mod+return, alt+tab, or $var.mod+1 to an action string. v0.2.0 adds defaults for maximize-focused, cycle-focus, cycle-focus-backward, and cluster slot 1 through 10; v0.3.0 adds toggle-focused-pin; v0.4.0 adds toggle-fullscreen." }
+    ]
+  },
+  {
+    slug: "keybinds-actions",
+    name: "action keywords",
+    title: "Built-in Keybind Actions",
+    summary: "Action strings parsed by Halley before falling back to launching a command.",
+    addedIn: "0.4.0",
+    options: [
+      { option: "reload", type: "global action", defaultValue: "builtin", notes: "Reloads the active config." },
+      { option: "open-terminal", type: "global action", defaultValue: "builtin", notes: "Opens the first supported Wayland terminal found in PATH. Alias: open_terminal." },
+      { option: "toggle-state", type: "global action", defaultValue: "builtin", notes: "Toggles the focused window state. Aliases: toggle_state, minimize-focused, minimize_focused." },
+      { option: "maximize-focused", type: "field action", defaultValue: "builtin", notes: "Toggles monitor-local maximize for the focused field window. Aliases: maximize_focused, toggle-maximize, toggle_maximize." },
+      { option: "toggle-fullscreen", type: "field action", defaultValue: "builtin", notes: "Toggles compositor-initiated fullscreen for the focused window. Aliases: toggle_fullscreen, fullscreen." },
+      { option: "toggle-focused-pin", type: "field action", defaultValue: "builtin", notes: "Pins or unpins the focused window. Aliases: toggle-pin, toggle_pin, pin-toggle, pin_toggle, toggle_focused_pin." },
+      { option: "close-focused", type: "global action", defaultValue: "builtin", notes: "Closes the focused window. Aliases: close_focused, close-window, close_window." },
+      { option: "quit", type: "global action", defaultValue: "builtin", notes: "Quits Halley. The default binding includes Shift." },
+      { option: "zoom-in", type: "global action", defaultValue: "builtin", notes: "Zooms the field camera in. Alias: zoom_in." },
+      { option: "zoom-out", type: "global action", defaultValue: "builtin", notes: "Zooms the field camera out. Alias: zoom_out." },
+      { option: "zoom-reset", type: "global action", defaultValue: "builtin", notes: "Resets field zoom. Alias: zoom_reset." },
+      { option: "node-move <dir>", type: "field action", defaultValue: "builtin", notes: "Moves the selected/latest field node. Directions: left, right, up, down. Legacy aliases: move-left, move-right, move-up, move-down." },
+      { option: "monitor-focus <dir|output>", type: "global action", defaultValue: "builtin", notes: "Focuses a monitor by direction or output name. Directions: left, right, up, down. Alias: monitor_focus." },
+      { option: "cluster-mode", type: "global action", defaultValue: "builtin", notes: "Enters cluster mode. Alias: cluster_mode." },
+      { option: "cluster-layout cycle", type: "cluster action", defaultValue: "builtin", notes: "Cycles cluster layout. Accepted forms include cluster layout cycle and cluster_layout cycle." },
+      { option: "cluster slot <1-10>", type: "global action", defaultValue: "builtin", notes: "Activates a per-monitor cluster slot. Accepted forms include cluster-slot N and cluster_slot N." },
+      { option: "cycle-focus", type: "global action", defaultValue: "builtin", notes: "Cycles focus forward. Aliases: cycle_focus, focus-cycle, focus_cycle." },
+      { option: "cycle-focus-backward", type: "global action", defaultValue: "builtin", notes: "Cycles focus backward. Aliases: cycle_focus_backward, focus-cycle-backward, focus_cycle_backward." },
+      { option: "bearings-show", type: "global action", defaultValue: "builtin", notes: "Shows bearings while the binding is active. Alias: bearings_show." },
+      { option: "bearings-toggle", type: "global action", defaultValue: "builtin", notes: "Toggles persistent bearings. Alias: bearings_toggle." },
+      { option: "trail-prev", type: "global action", defaultValue: "builtin", notes: "Moves to the previous trail entry. Aliases: trail_prev, trail prev." },
+      { option: "trail-next", type: "global action", defaultValue: "builtin", notes: "Moves to the next trail entry. Aliases: trail_next, trail next." },
+      { option: "tile-focus <dir>", type: "tile action", defaultValue: "builtin", notes: "Focuses a tile in the given direction. Alias forms: tile_focus <dir>, tile focus <dir>." },
+      { option: "tile-swap <dir>", type: "tile action", defaultValue: "builtin", notes: "Swaps a tile in the given direction. Alias forms: tile_swap <dir>, tile swap <dir>." },
+      { option: "stack-cycle <dir>", type: "stack action", defaultValue: "builtin", notes: "Cycles a stack. Directions: forward, next, backward, back, prev, previous. Alias: stack_cycle." },
+      { option: "move-window", type: "pointer action", defaultValue: "builtin", notes: "Moves a window when used with a pointer button chord. Alias: move_window." },
+      { option: "resize-window", type: "pointer action", defaultValue: "builtin", notes: "Resizes a window when used with a pointer button chord. Alias: resize_window." },
+      { option: "pan-field", type: "pointer action", defaultValue: "builtin", notes: "Pans the field when used with a pointer button chord. Aliases: pan_field, drag-pan, drag_pan, field-jump, field_jump." },
+      { option: "<command>", type: "launch command", defaultValue: "fallback", notes: "Any unrecognized action string is treated as a command to launch, so fuzzel, halleyctl capture menu, wpctl commands, and spawn-style shell commands are valid." }
     ]
   },
   {
@@ -560,6 +663,9 @@ export const configSections: ConfigSection[] = [
     options: [
       { option: "app-id", type: "quoted string, regex, or array", defaultValue: "required if title omitted", notes: "Matches window app IDs. Arrays can mix literals and regex literals like r\"Firefox.*\"." },
       { option: "title", type: "quoted string, regex, or array", defaultValue: "required if app-id omitted", notes: "Matches window titles." },
+      { option: "opacity", type: "f32", defaultValue: "1.0", notes: "Matched opacity from 0.0 through 1.0. Translucent windows block direct scanout.", addedIn: "0.4.0" },
+      { option: "width", type: "u32", defaultValue: "unset", notes: "Optional fixed initial width for matching windows.", addedIn: "0.4.0" },
+      { option: "height", type: "u32", defaultValue: "unset", notes: "Optional fixed initial height for matching windows.", addedIn: "0.4.0" },
       { option: "overlap-policy", type: "string", defaultValue: "deprecated", notes: "Deprecated no-op in v0.3.0. Expanded windows can overlap normally; use spawn-placement for initial position and cluster-participation \"float\" for floating dialogs." },
       { option: "spawn-placement", type: "string", defaultValue: "placement.expanded.strategy", notes: "Initial placement strategy for matching windows. Accepted values include center, viewport-center, cursor, app, and find-empty." },
       { option: "cluster-participation", type: "string", defaultValue: "layout", notes: "Controls whether matching windows join layout management or float. Accepted values: layout, float." }
@@ -601,6 +707,10 @@ end`,
   directory "$env.HOME/Pictures/Screenshots/"
   highlight-color "auto"
   background-color "auto"
+end`,
+  debug: `debug:
+  overlay-fps false
+  show-ring-when-resizing true
 end`,
   viewport: `viewport:
   DP-1:
@@ -722,6 +832,26 @@ end`,
   enabled true
   damping 0.45
 end`,
+  gamescope: `gamescope:
+  enabled true
+  monitor "focused"
+  output-width "auto"
+  output-height "auto"
+  game-width "auto"
+  game-height "auto"
+  refresh "auto"
+  fullscreen true
+  borderless false
+  suppress-overlays true
+  passthrough-pointer-lock true
+  bypass-spatial-camera true
+
+  game:
+    name "Example Game"
+    app-id "steam_app_123456"
+    enabled true
+  end
+end`,
   animations: `animations:
   enabled true
 
@@ -731,6 +861,11 @@ end`,
   end
 
   maximize:
+    enabled true
+    duration-ms 240
+  end
+
+  fullscreen:
     enabled true
     duration-ms 240
   end
@@ -817,6 +952,157 @@ overlays: `overlays:
   shape "square"
   borders true
   border-source "primary"
+end`,
+  keybinds: `keybinds:
+  mod "super"
+
+  # Basic compositor controls.
+  "$var.mod+shift+r" "reload"
+  "$var.mod+n" "toggle-state"
+  "$var.mod+m" "maximize-focused"
+  "$var.mod+f" "toggle-fullscreen"
+  "$var.mod+p" "toggle-focused-pin"
+  "$var.mod+q" "close-focused"
+
+  # Zoom controls for the field camera.
+  "$var.mod+mousewheelup" "zoom-in"
+  "$var.mod+mousewheeldown" "zoom-out"
+  "$var.mod+middlemouse" "zoom-reset"
+
+  "$var.mod+shift+e" "quit"
+
+  # Move the selected/latest node in the field.
+  "$var.mod+left" "node-move left"
+  "$var.mod+right" "node-move right"
+  "$var.mod+up" "node-move up"
+  "$var.mod+down" "node-move down"
+
+  # Switch active monitor focus.
+  "$var.mod+shift+left" "monitor-focus left"
+  "$var.mod+shift+right" "monitor-focus right"
+  "$var.mod+shift+up" "monitor-focus up"
+  "$var.mod+shift+down" "monitor-focus down"
+
+  # Cluster controls.
+  "$var.mod+shift+c" "cluster-mode"
+  "$var.mod+l" "cluster-layout cycle"
+  "$var.mod+1" "cluster slot 1"
+  "$var.mod+2" "cluster slot 2"
+  "$var.mod+3" "cluster slot 3"
+  "$var.mod+4" "cluster slot 4"
+  "$var.mod+5" "cluster slot 5"
+  "$var.mod+6" "cluster slot 6"
+  "$var.mod+7" "cluster slot 7"
+  "$var.mod+8" "cluster slot 8"
+  "$var.mod+9" "cluster slot 9"
+  "$var.mod+0" "cluster slot 10"
+
+  # Bearings controls.
+  "$var.mod+z" "bearings-show"
+  "$var.mod+shift+z" "bearings-toggle"
+
+  # Trail navigation.
+  "$var.mod+," "trail-prev"
+  "$var.mod+." "trail-next"
+
+  # Focus cycling.
+  "alt+tab" "cycle-focus"
+  "alt+shift+tab" "cycle-focus-backward"
+
+  # Applications.
+  "$var.mod+return" "open-terminal"
+  "$var.mod+d" "fuzzel"
+
+  # Mouse actions.
+  "$var.mod+leftmouse" "move-window"
+  "$var.mod+rightmouse" "resize-window"
+  "$var.mod+shift+leftmouse" "pan-field"
+
+  # Tile layout controls.
+  "$var.mod+left" "tile-focus left"
+  "$var.mod+right" "tile-focus right"
+  "$var.mod+up" "tile-focus up"
+  "$var.mod+down" "tile-focus down"
+
+  "$var.mod+ctrl+left" "tile-swap left"
+  "$var.mod+ctrl+right" "tile-swap right"
+  "$var.mod+ctrl+up" "tile-swap up"
+  "$var.mod+ctrl+down" "tile-swap down"
+
+  # Stacking layout controls.
+  "$var.mod+left" "stack-cycle forward"
+  "$var.mod+right" "stack-cycle backward"
+
+  # Screenshot UI.
+  "$var.mod+shift+s" "halleyctl capture menu"
+
+  # Media keys.
+  "XF86AudioRaiseVolume" "wpctl set-volume -l 1 @default_audio_sink@ 5%+"
+  "XF86AudioLowerVolume" "wpctl set-volume @default_audio_sink@ 5%-"
+  "XF86AudioMute" "wpctl set-mute @default_audio_sink@ toggle"
+end`,
+  rules: `rules:
+  rule:
+    app-id "firefox"
+    title [r"File Upload.*", r"Open File.*"]
+    opacity 0.96
+    width 720
+    height 520
+    spawn-placement "center"
+    cluster-participation "float"
+  end
+end`,
+  "rules-rule": `rules:
+  rule:
+    app-id "firefox"
+    opacity 1.0
+    spawn-placement "center"
+    cluster-participation "layout"
+  end
+end`
+};
+
+const configExamplesV03: Partial<Record<string, string>> = {
+  animations: `animations:
+  enabled true
+
+  smooth-resize:
+    enabled true
+    duration-ms 90
+  end
+
+  maximize:
+    enabled true
+    duration-ms 240
+  end
+
+  window-open:
+    enabled true
+    duration-ms 620
+  end
+
+  window-close:
+    enabled true
+    duration-ms 270
+    style "shrink"
+  end
+
+  tile:
+    enabled true
+    duration-ms 240
+  end
+
+  stack:
+    enabled true
+    duration-ms 220
+  end
+
+  raise:
+    enabled true
+    duration-ms 140
+    scale 1.025
+    shadow-boost 0.18
+  end
 end`,
   keybinds: `keybinds:
   mod "super"
@@ -977,6 +1263,7 @@ const groupedPageDefinitions = [
       "animations",
       "animations-smooth-resize",
       "animations-maximize",
+      "animations-fullscreen",
       "animations-window-open",
       "animations-window-close",
       "animations-tile",
@@ -998,10 +1285,22 @@ const groupedPageDefinitions = [
     ]
   },
   {
+    slug: "keybinds",
+    title: "Keybinds",
+    summary: "Fresh-config keybind defaults, chord mapping syntax, and built-in action keywords.",
+    sectionSlugs: ["keybinds", "keybinds-actions"]
+  },
+  {
     slug: "rules",
     title: "Rules",
     summary: "Window rule blocks and individual matching/placement policy options.",
     sectionSlugs: ["rules", "rules-rule"]
+  },
+  {
+    slug: "gamescope",
+    title: "Gamescope",
+    summary: "Gamescope launch defaults and per-game profile overrides.",
+    sectionSlugs: ["gamescope", "gamescope-game"]
   }
 ];
 
@@ -1070,8 +1369,13 @@ export const configPageForVersion = (page: ConfigPage, version: string): ConfigP
 };
 
 export const configExampleForVersion = (slug: string, version: string) => {
-  if (version >= "0.3.0") {
+  if (version >= "0.4.0") {
     return configExamples[slug] ?? `${slug}:
+end`;
+  }
+
+  if (version >= "0.3.0") {
+    return configExamplesV03[slug] ?? configExamples[slug] ?? `${slug}:
 end`;
   }
 

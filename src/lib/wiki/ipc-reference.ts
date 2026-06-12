@@ -29,6 +29,14 @@ export const ipcGroups: IpcGroup[] = [
     ]
   },
   {
+    title: "Gamescope",
+    summary: "Resolve and launch game commands through the configured gamescope wrapper.",
+    commands: [
+      { command: "halleyctl gamescope run [--app-id ID] -- <command...>", description: "Wrap and exec a game command through gamescope using the gamescope config. Use this in Steam launch options as halleyctl gamescope run -- %command%.", addedIn: "0.4.0" },
+      { command: "halleyctl gamescope print [--app-id ID] -- <command...>", description: "Print the resolved gamescope command without running it.", addedIn: "0.4.0" }
+    ]
+  },
+  {
     title: "Capture",
     summary: "Start Halley-native screenshot capture modes.",
     commands: [

@@ -8,7 +8,7 @@
   <title>News | Halley</title>
   <meta
     name="description"
-    content="Halley news and release announcements, including the latest v0.3.2 Small Fixes release."
+    content="Halley news and release announcements, including the latest v0.4.0 Fourth Orbit release."
   />
 </svelte:head>
 
