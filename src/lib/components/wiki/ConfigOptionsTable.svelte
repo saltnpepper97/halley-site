@@ -148,7 +148,7 @@
     color: var(--text-1);
     background: rgba(125, 220, 255, 0.1);
     border: 1px solid rgba(125, 220, 255, 0.16);
-    border-radius: 999px;
+    border-radius: var(--radius-sm);
     font-size: 0.86rem;
     line-height: 1.25;
     text-align: center;
@@ -249,7 +249,7 @@
       color: var(--text-1);
       background: rgba(255, 106, 42, 0.12);
       border: 1px solid rgba(255, 106, 42, 0.18);
-      border-radius: 999px;
+      border-radius: var(--radius-sm);
       font-size: 0.94rem;
       line-height: 1.35;
     }
@@ -268,7 +268,7 @@
       color: var(--ion);
       background: rgba(125, 220, 255, 0.07);
       border: 1px solid rgba(125, 220, 255, 0.12);
-      border-radius: 0.42rem;
+      border-radius: var(--radius-sm);
       line-height: 1.35;
     }
 

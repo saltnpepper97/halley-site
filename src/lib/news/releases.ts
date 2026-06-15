@@ -8,10 +8,13 @@ export type NewsPost = {
   title: string;
   version: string;
   eyebrow: string;
+  // "release" is a shipped version; "preview" is a forward-looking teaser
+  // that hides release-only chrome (version badge, install commands).
+  kind?: "release" | "preview";
   summary: string;
   intro: string[];
   features: NewsFeature[];
-  install: {
+  install?: {
     aur: string[];
     aurDev: string[];
     source: string;
@@ -22,6 +25,42 @@ export type NewsPost = {
 };
 
 export const newsPosts: NewsPost[] = [
+  {
+    slug: "the-ecosystem-begins",
+    title: "The Ecosystem Begins",
+    version: "v0.5.0",
+    eyebrow: "On the Horizon",
+    kind: "preview",
+    summary: "A look ahead: Halley's first ecosystem app — a compositor-integrated app launcher — is on approach in the next release, alongside a new halley-full package for everything the ecosystem will carry.",
+    intro: [
+      "Halley has always been one compositor on its own field. The next release is where that begins to change: it brings the first app built to live alongside it.",
+      "This is a heads-up rather than a changelog — nothing to install yet. But the shape of what comes next is worth a quiet look."
+    ],
+    features: [
+      {
+        title: "A first ecosystem app",
+        description: "The next release introduces a Halley-integrated app launcher — the first companion app designed to work directly with the compositor rather than beside it."
+      },
+      {
+        title: "The halley-full package",
+        description: "A new halley-full AUR package will pull in every ecosystem app at once, so you can adopt the whole set with a single install as it grows."
+      },
+      {
+        title: "Still à la carte",
+        description: "Each ecosystem app will also ship as its own package. halley-full is the convenience path; individual installs stay available for those who want only certain pieces."
+      }
+    ],
+    notes: [
+      "Nothing here is released yet — halley remains the current stable package until the launcher lands.",
+      "When it ships, halley-full will bundle all ecosystem apps, current and future, and grow as the ecosystem grows.",
+      "Ecosystem apps will also be published individually for users who prefer to pick and choose."
+    ],
+    thanks: [
+      "Thanks to everyone who stuck around long enough to watch Halley grow past a single window on the field.",
+      "This is the start of the ecosystem, not the end of the compositor work."
+    ],
+    closing: "More to come as it gets closer."
+  },
   {
     slug: "fourth-orbit",
     title: "Fourth Orbit",

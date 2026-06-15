@@ -1,8 +1,14 @@
 <script lang="ts">
   import { base } from "$app/paths";
+  import { newsPosts } from "$lib/news/releases";
 
   const year = new Date().getFullYear();
   const withBase = (href: string) => `${base}${href}`;
+
+  // Derive the orbit label from the latest shipped release (skip preview teasers)
+  // so this never goes stale.
+  const latestRelease = newsPosts.find((post) => post.kind !== "preview");
+  const latestOrbit = latestRelease?.title.split(" ")[0] ?? "First";
 
   const columns = [
     {
@@ -46,7 +52,7 @@
 
     <div class="footer-bottom">
       <p>© {year} Halley. Built for deliberate desktops.</p>
-      <p class="orbit-note">First orbit in progress.</p>
+      <p class="orbit-note">{latestOrbit} orbit in progress.</p>
     </div>
   </div>
 </footer>
@@ -74,13 +80,13 @@
     gap: clamp(1.5rem, 4vw, 3rem);
     padding: clamp(1.25rem, 3vw, 2rem);
     background:
-      radial-gradient(circle at 9% 8%, rgba(255, 106, 42, 0.18), transparent 18rem),
-      linear-gradient(135deg, rgba(246, 239, 231, 0.065), transparent 32%),
-      rgba(16, 23, 34, 0.72);
+      radial-gradient(circle at 9% 8%, rgba(255, 106, 42, 0.16), transparent 18rem),
+      rgba(11, 17, 27, 0.92);
     border: 1px solid var(--border-1);
+    border-top-color: var(--hud-line-faint);
     border-radius: var(--radius-xl);
-    box-shadow: var(--shadow-1), inset 0 1px 0 rgba(246, 239, 231, 0.08);
-    backdrop-filter: blur(16px) saturate(140%);
+    box-shadow: var(--shadow-1), inset 0 1px 0 var(--hud-line-soft);
+    backdrop-filter: blur(6px) saturate(120%);
   }
 
   .footer-card::before {

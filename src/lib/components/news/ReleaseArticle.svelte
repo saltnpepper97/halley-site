@@ -3,6 +3,8 @@
   import type { NewsPost } from "$lib/news/releases";
 
   let { post }: { post: NewsPost } = $props();
+
+  const isPreview = $derived(post.kind === "preview");
 </script>
 
 <article class="release-article">
@@ -11,7 +13,7 @@
       <p class="eyebrow">{post.eyebrow}</p>
       <div class="title-row">
         <h1>{post.title}</h1>
-        <span>{post.version}</span>
+        <span>{isPreview ? "Upcoming" : post.version}</span>
       </div>
       <p class="summary">{post.summary}</p>
     </div>
@@ -26,7 +28,7 @@
     </div>
   </section>
 
-  <section class="release-body surface">
+  <section class="release-body surface hud-corners">
     <div class="intro-copy">
       {#each post.intro as paragraph}
         <p>{paragraph}</p>
@@ -35,8 +37,8 @@
 
     <section class="news-section" aria-labelledby="included-heading">
       <div class="section-heading">
-        <p class="eyebrow">Included</p>
-        <h2 id="included-heading">In This Release</h2>
+        <p class="eyebrow">{isPreview ? "Preview" : "Included"}</p>
+        <h2 id="included-heading">{isPreview ? "On The Horizon" : "In This Release"}</h2>
       </div>
 
       <div class="feature-grid">
@@ -49,38 +51,40 @@
       </div>
     </section>
 
-    <section class="news-section install-section" aria-labelledby="install-heading">
-      <div class="section-heading">
-        <p class="eyebrow">Installation</p>
-        <h2 id="install-heading">Get {post.version}</h2>
-      </div>
-
-      <div class="install-grid">
-        <div class="install-card">
-          <h3>AUR</h3>
-          {#each post.install.aur as command}
-            <CodeBlock code={command} label="AUR" />
-          {/each}
+    {#if post.install}
+      <section class="news-section install-section" aria-labelledby="install-heading">
+        <div class="section-heading">
+          <p class="eyebrow">Installation</p>
+          <h2 id="install-heading">Get {post.version}</h2>
         </div>
 
-        <div class="install-card">
-          <h3>Development Version</h3>
-          {#each post.install.aurDev as command}
-            <CodeBlock code={command} label="dev package" />
-          {/each}
-        </div>
+        <div class="install-grid">
+          <div class="install-card">
+            <h3>AUR</h3>
+            {#each post.install.aur as command}
+              <CodeBlock code={command} label="AUR" />
+            {/each}
+          </div>
 
-        <div class="install-card source-card">
-          <h3>From Source</h3>
-          <CodeBlock code={post.install.source} label="source build" />
+          <div class="install-card">
+            <h3>Development Version</h3>
+            {#each post.install.aurDev as command}
+              <CodeBlock code={command} label="dev package" />
+            {/each}
+          </div>
+
+          <div class="install-card source-card">
+            <h3>From Source</h3>
+            <CodeBlock code={post.install.source} label="source build" />
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    {/if}
 
     <section class="news-section notes-section" aria-labelledby="notes-heading">
       <div>
         <p class="eyebrow">Notes</p>
-        <h2 id="notes-heading">Still Growing</h2>
+        <h2 id="notes-heading">{isPreview ? "What To Expect" : "Still Growing"}</h2>
       </div>
 
       <ul>
@@ -159,10 +163,10 @@
     padding: 0.35rem 0.7rem;
     color: #170b06;
     background: linear-gradient(135deg, var(--accent), var(--accent-soft));
-    border-radius: 999px;
-    font-family: var(--font-display);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-mono);
     font-size: clamp(0.9rem, 2vw, 1.05rem);
-    font-weight: 900;
+    font-weight: 700;
   }
 
   .summary {
@@ -215,7 +219,7 @@
       radial-gradient(circle at 35% 28%, rgba(255, 155, 84, 0.48), transparent 45%),
       rgba(9, 13, 18, 0.9);
     border: 1px solid var(--accent);
-    border-radius: 1.35rem;
+    border-radius: var(--radius-lg);
     box-shadow:
       0 0 38px rgba(255, 106, 42, 0.42),
       inset 0 1px 0 rgba(246, 239, 231, 0.14);

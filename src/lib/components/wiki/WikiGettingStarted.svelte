@@ -37,7 +37,7 @@
   ];
 </script>
 
-<section class="getting-started surface">
+<section class="getting-started surface hud-corners">
   <div class="intro">
     <p class="eyebrow">Halley Wiki</p>
     <h1>Getting Started</h1>

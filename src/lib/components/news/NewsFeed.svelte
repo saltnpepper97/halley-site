@@ -6,7 +6,7 @@
   const withBase = (href: string) => `${base}${href}`;
 </script>
 
-<section class="news-feed surface">
+<section class="news-feed surface hud-corners">
   <div class="feed-heading">
     <p class="eyebrow">News</p>
     <h1>Latest Signals</h1>
@@ -25,8 +25,8 @@
         </div>
 
         <div class="card-meta">
-          <span>{post.version}</span>
-          <span>Read update</span>
+          <span>{post.kind === "preview" ? "Upcoming" : post.version}</span>
+          <span class="read-update">{post.kind === "preview" ? "Read preview →" : "Read update →"}</span>
         </div>
       </a>
     {/each}
@@ -85,11 +85,17 @@
 
   .feed-card::before {
     position: absolute;
-    inset: 0 auto 0 0;
-    width: 3px;
+    inset: 0 0 auto 0;
+    height: 2px;
     content: "";
-    background: linear-gradient(var(--accent), var(--ion));
-    opacity: 0.75;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 106, 42, 0.6),
+      rgba(125, 220, 255, 0.2),
+      transparent
+    );
+    opacity: 0.85;
   }
 
   .feed-card:hover {
@@ -152,15 +158,22 @@
     padding: 0.35rem 0.65rem;
     color: #170b06;
     background: linear-gradient(135deg, var(--accent), var(--accent-soft));
-    border-radius: 999px;
-    font-family: var(--font-display);
-    font-weight: 900;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-mono);
+    font-weight: 700;
   }
 
-  .card-meta span:last-child {
-    color: var(--text-3);
-    font-size: 0.92rem;
+  .read-update {
+    color: var(--coord);
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
     font-weight: 700;
+    letter-spacing: 0.04em;
+    transition: transform 160ms ease;
+  }
+
+  .feed-card:hover .read-update {
+    transform: translateX(3px);
   }
 
   @media (max-width: 720px) {

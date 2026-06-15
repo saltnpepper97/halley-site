@@ -32,7 +32,7 @@
       </div>
     </section>
 
-    <article class="story-body surface">
+    <article class="story-body surface hud-corners">
       <p>Halley began as a frustration with the traditional desktop.</p>
 
       <p>
@@ -188,7 +188,7 @@
       linear-gradient(135deg, rgba(246, 239, 231, 0.18), rgba(246, 239, 231, 0.05)),
       rgba(9, 13, 18, 0.88);
     border: 1px solid rgba(255, 106, 42, 0.55);
-    border-radius: 0.65rem;
+    border-radius: var(--radius-sm);
     box-shadow: 0 0 22px rgba(255, 106, 42, 0.24);
   }
 
@@ -216,7 +216,7 @@
       radial-gradient(circle at 35% 30%, rgba(255, 155, 84, 0.35), transparent 48%),
       rgba(9, 13, 18, 0.92);
     border-color: var(--accent);
-    border-radius: 1rem;
+    border-radius: var(--radius-md);
     box-shadow:
       0 0 34px rgba(255, 106, 42, 0.42),
       inset 0 1px 0 rgba(246, 239, 231, 0.14);

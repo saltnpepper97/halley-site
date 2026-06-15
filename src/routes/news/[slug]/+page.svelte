@@ -43,8 +43,8 @@
     color: var(--text-2);
     background: rgba(16, 23, 34, 0.7);
     border: 1px solid var(--border-1);
-    border-radius: 999px;
-    font-weight: 800;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
     transition:
       color 160ms ease,
       border-color 160ms ease,

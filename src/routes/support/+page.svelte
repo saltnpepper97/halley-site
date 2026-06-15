@@ -43,28 +43,32 @@
     </section>
 
     <section class="support-grid">
-      <article class="support-card sponsor-card surface">
+      <article class="support-card sponsor-card surface hud-corners">
+        <span class="coord" aria-hidden="true">01 · Sponsor</span>
         <h2>Sponsor it</h2>
         <p>If Halley is useful or you want to help it keep moving, GitHub Sponsors is the direct support route.</p>
-        <a href="https://github.com/sponsors/saltnpepper97" rel="noreferrer">GitHub Sponsors</a>
+        <a class="link-comet" href="https://github.com/sponsors/saltnpepper97" rel="noreferrer">GitHub Sponsors</a>
       </article>
 
-      <article class="support-card surface">
+      <article class="support-card surface hud-corners">
+        <span class="coord" aria-hidden="true">02 · Try</span>
         <h2>Try it</h2>
         <p>Install a release, run it on real hardware, and report where the model breaks down.</p>
-        <a href={withBase("/wiki/install")}>Install guide</a>
+        <a class="link-comet" href={withBase("/wiki/install")}>Install guide</a>
       </article>
 
-      <article class="support-card surface">
+      <article class="support-card surface hud-corners">
+        <span class="coord" aria-hidden="true">03 · Feedback</span>
         <h2>Give feedback</h2>
         <p>Open issues for bugs, rough edges, confusing docs, or workflows Halley should handle better.</p>
-        <a href="https://github.com/saltnpepper97/halley/issues" rel="noreferrer">GitHub issues</a>
+        <a class="link-comet" href="https://github.com/saltnpepper97/halley/issues" rel="noreferrer">GitHub issues</a>
       </article>
 
-      <article class="support-card surface">
+      <article class="support-card surface hud-corners">
+        <span class="coord" aria-hidden="true">04 · Share</span>
         <h2>Share it</h2>
         <p>If the project resonates, point other Wayland and desktop-environment people at it.</p>
-        <a href={withBase("/news/fourth-orbit")}>Fourth Orbit release</a>
+        <a class="link-comet" href={withBase("/news/fourth-orbit")}>Fourth Orbit release</a>
       </article>
     </section>
   </main>
@@ -180,6 +184,11 @@
     align-content: start;
     gap: 0.75rem;
     padding: 1.25rem;
+  }
+
+  .support-card :global(.coord),
+  .support-card a {
+    justify-self: start;
   }
 
   .sponsor-card {

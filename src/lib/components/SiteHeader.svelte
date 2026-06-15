@@ -161,7 +161,7 @@
     font-size: 0.92rem;
     font-weight: 700;
     letter-spacing: -0.015em;
-    border-radius: 999px;
+    border-radius: var(--radius-sm);
     transition:
       color 160ms ease,
       background 160ms ease,

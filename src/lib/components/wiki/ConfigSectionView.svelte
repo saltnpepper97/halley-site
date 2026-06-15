@@ -12,7 +12,7 @@
   const displayPage = () => configPageForVersion(page, activeVersion().value);
 </script>
 
-<article class="config-section surface">
+<article class="config-section surface hud-corners">
   <header class="section-header">
     <p class="eyebrow">Config Reference</p>
     <h1><code>{displayPage().title}</code></h1>

@@ -21,7 +21,7 @@ systemctl --user start xdg-desktop-portal-wlr.service`;
   const sessionWrapperCommand = "halley --session";
 </script>
 
-<section id="install" class="install-guide surface">
+<section id="install" class="install-guide surface hud-corners">
   <div class="section-heading">
     <p class="eyebrow">Getting started</p>
     <h1>Install Halley</h1>
@@ -255,7 +255,7 @@ systemctl --user start xdg-desktop-portal-wlr.service`;
     padding: 0.12rem 0.35rem;
     color: var(--accent-soft);
     background: rgba(255, 106, 42, 0.1);
-    border-radius: 0.35rem;
+    border-radius: var(--radius-sm);
   }
 
   .portal-grid {

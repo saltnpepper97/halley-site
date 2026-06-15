@@ -83,9 +83,9 @@
     color: var(--text-1);
     background: rgba(255, 106, 42, 0.12);
     border: 1px solid rgba(255, 106, 42, 0.24);
-    border-radius: 999px;
+    border-radius: var(--radius-sm);
     font-size: 0.78rem;
-    font-weight: 800;
+    font-weight: 700;
     transition:
       background 160ms ease,
       border-color 160ms ease,

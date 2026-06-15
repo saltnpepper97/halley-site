@@ -20,7 +20,7 @@ halleyctl cluster inspect current --json`;
     commands.filter((command) => commandAvailableInVersion(command, activeVersion().value));
 </script>
 
-<article class="ipc-reference surface">
+<article class="ipc-reference surface hud-corners">
   <header id="ipc-overview" class="section-header">
     <p class="eyebrow">IPC Reference</p>
     <h1>halleyctl and IPC</h1>
@@ -283,9 +283,9 @@ halleyctl cluster inspect current --json`;
     color: var(--ion);
     background: rgba(125, 220, 255, 0.09);
     border: 1px solid rgba(125, 220, 255, 0.16);
-    border-radius: 999px;
+    border-radius: var(--radius-sm);
     font-size: 0.72rem;
-    font-weight: 800;
+    font-weight: 700;
     letter-spacing: 0.08em;
     line-height: 1;
     text-align: center;
@@ -338,7 +338,7 @@ halleyctl cluster inspect current --json`;
     padding: 0.28rem 0.48rem;
     background: rgba(255, 106, 42, 0.1);
     border: 1px solid rgba(255, 106, 42, 0.14);
-    border-radius: 999px;
+    border-radius: var(--radius-sm);
   }
 
   @media (max-width: 980px) {

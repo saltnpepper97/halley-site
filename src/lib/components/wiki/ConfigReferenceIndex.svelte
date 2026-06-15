@@ -24,7 +24,7 @@
   };
 </script>
 
-<section class="config-index surface">
+<section class="config-index surface hud-corners">
   <div class="intro">
     <p class="eyebrow">Config Reference</p>
     <h1>Config Sections</h1>

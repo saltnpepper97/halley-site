@@ -13,6 +13,8 @@
 </script>
 
 <div class="wiki-page">
+  <div class="wiki-backdrop" aria-hidden="true"></div>
+
   <SiteHeader />
 
   <main class="wiki-shell">
@@ -24,6 +26,23 @@
 </div>
 
 <style>
+  .wiki-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+    background:
+      radial-gradient(circle at 12% 8%, rgba(255, 106, 42, 0.18), transparent 30rem),
+      radial-gradient(circle at 90% 88%, rgba(125, 220, 255, 0.16), transparent 30rem);
+  }
+
+  :global(:root[data-theme="light"]) .wiki-backdrop {
+    background:
+      radial-gradient(circle at 12% 8%, rgba(184, 63, 17, 0.08), transparent 30rem),
+      radial-gradient(circle at 90% 88%, rgba(40, 95, 115, 0.06), transparent 30rem);
+  }
+
   .wiki-page {
     position: relative;
     z-index: 1;
