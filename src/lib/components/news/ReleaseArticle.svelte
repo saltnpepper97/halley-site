@@ -1,10 +1,12 @@
 <script lang="ts">
-  import CodeBlock from "$lib/components/CodeBlock.svelte";
-  import type { NewsPost } from "$lib/news/releases";
+  import InstallCard from "$lib/components/news/InstallCard.svelte";
+  import { formatNewsDate, newsKindLabel, type NewsPost } from "$lib/news/releases";
 
   let { post }: { post: NewsPost } = $props();
 
   const isPreview = $derived(post.kind === "preview");
+  const kindLabel = $derived(newsKindLabel(post));
+  const formattedDate = $derived(formatNewsDate(post.date));
 </script>
 
 <article class="release-article">
@@ -16,16 +18,14 @@
         <span>{isPreview ? "Upcoming" : post.version}</span>
       </div>
       <p class="summary">{post.summary}</p>
+      <p class="hero-date"><time datetime={post.date}>{formattedDate}</time></p>
     </div>
 
-    <div class="orbit-badge" aria-hidden="true">
-      <div class="orbit-ring ring-one"></div>
-      <div class="orbit-ring ring-two"></div>
-      <div class="release-core"></div>
-      <div class="comet-orbit">
-        <div class="release-comet"></div>
-      </div>
-    </div>
+    <aside class="release-plate">
+      <span class="plate-kind">{kindLabel}</span>
+      <span class="plate-version">{isPreview ? "Soon" : post.version}</span>
+      <time class="plate-date" datetime={post.date}>{formattedDate}</time>
+    </aside>
   </section>
 
   <section class="release-body surface hud-corners">
@@ -59,24 +59,9 @@
         </div>
 
         <div class="install-grid">
-          <div class="install-card">
-            <h3>AUR</h3>
-            {#each post.install.aur as command}
-              <CodeBlock code={command} label="AUR" />
-            {/each}
-          </div>
-
-          <div class="install-card">
-            <h3>Development Version</h3>
-            {#each post.install.aurDev as command}
-              <CodeBlock code={command} label="dev package" />
-            {/each}
-          </div>
-
-          <div class="install-card source-card">
-            <h3>From Source</h3>
-            <CodeBlock code={post.install.source} label="source build" />
-          </div>
+          <InstallCard title="AUR" label="AUR" commands={post.install.aur} />
+          <InstallCard title="Development Version" label="dev package" commands={post.install.aurDev} />
+          <InstallCard title="From Source" label="source build" code={post.install.source} wide />
         </div>
       </section>
     {/if}
@@ -97,7 +82,7 @@
     <section class="thanks-panel" aria-labelledby="thanks-heading">
       <div>
         <p class="eyebrow">Thanks</p>
-        <h2 id="thanks-heading">To The Early Orbit</h2>
+        <h2 id="thanks-heading">To The Early Field</h2>
       </div>
 
       {#each post.thanks as paragraph}
@@ -177,72 +162,67 @@
     line-height: 1.35;
   }
 
-  .orbit-badge {
+  .hero-date {
+    color: var(--text-2);
+    font-family: var(--font-mono);
+    font-size: 0.86rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+
+  .release-plate {
     position: relative;
+    z-index: 1;
     justify-self: center;
-    width: min(19rem, 55vw);
-    aspect-ratio: 1;
-    filter: drop-shadow(0 0 34px rgba(255, 106, 42, 0.22));
-  }
-
-  .orbit-ring,
-  .release-core,
-  .comet-orbit,
-  .release-comet {
-    position: absolute;
-    inset: 0;
-    margin: auto;
-  }
-
-  .orbit-ring {
-    border: 1px solid rgba(255, 106, 42, 0.36);
-    border-radius: 50%;
-  }
-
-  .ring-one {
-    width: 82%;
-    height: 82%;
-    box-shadow: 0 0 24px rgba(255, 106, 42, 0.12);
-  }
-
-  .ring-two {
-    width: 58%;
-    height: 58%;
-    border-color: rgba(125, 220, 255, 0.24);
-    animation: orbit-spin 18s linear infinite;
-  }
-
-  .release-core {
-    width: 4.8rem;
-    height: 4.8rem;
+    display: grid;
+    gap: 0.4rem;
+    justify-items: center;
+    width: min(15rem, 60vw);
+    padding: clamp(1.4rem, 4vw, 2rem) 1.25rem;
+    text-align: center;
     background:
-      radial-gradient(circle at 35% 28%, rgba(255, 155, 84, 0.48), transparent 45%),
-      rgba(9, 13, 18, 0.9);
+      radial-gradient(circle at 50% 0%, rgba(255, 106, 42, 0.16), transparent 70%),
+      rgba(9, 13, 18, 0.55);
     border: 1px solid var(--accent);
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-xl);
     box-shadow:
-      0 0 38px rgba(255, 106, 42, 0.42),
-      inset 0 1px 0 rgba(246, 239, 231, 0.14);
-    animation: core-pulse 4.4s ease-in-out infinite;
+      0 0 38px rgba(255, 106, 42, 0.18),
+      inset 0 1px 0 rgba(246, 239, 231, 0.12);
   }
 
-  .comet-orbit {
-    width: 82%;
-    height: 82%;
-    border-radius: 50%;
-    animation: comet-loop 9s linear infinite;
+  .release-plate::before {
+    position: absolute;
+    inset: 0.45rem;
+    pointer-events: none;
+    content: "";
+    border: 1px solid rgba(255, 106, 42, 0.22);
+    border-radius: calc(var(--radius-xl) - 0.35rem);
   }
 
-  .release-comet {
-    inset: 0 0 auto;
-    width: 0.9rem;
-    height: 0.9rem;
-    background: var(--accent-soft);
-    border-radius: 999px;
-    box-shadow:
-      0 0 20px rgba(255, 155, 84, 0.9),
-      -4rem 1rem 3.5rem rgba(255, 106, 42, 0.35);
-    transform: translateY(-50%);
+  .plate-kind {
+    color: var(--accent-soft);
+    font-family: var(--font-display);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .plate-version {
+    color: var(--text-1);
+    font-family: var(--font-mono);
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+
+  .plate-date {
+    color: var(--text-2);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.03em;
   }
 
   .release-body {
@@ -292,7 +272,6 @@
   }
 
   .feature-card,
-  .install-card,
   .thanks-panel {
     background: rgba(9, 13, 18, 0.52);
     border: 1px solid var(--border-1);
@@ -323,17 +302,6 @@
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0.85rem;
-  }
-
-  .install-card {
-    display: grid;
-    gap: 0.65rem;
-    align-content: start;
-    padding: 1rem;
-  }
-
-  .source-card {
-    grid-column: 1 / -1;
   }
 
   .notes-section ul {
@@ -379,19 +347,22 @@
     color: #fffaf4;
   }
 
-  :global(:root[data-theme="light"]) .release-core {
+  :global(:root[data-theme="light"]) .release-plate {
     background:
-      radial-gradient(circle at 35% 28%, rgba(184, 63, 17, 0.22), transparent 45%),
+      radial-gradient(circle at 50% 0%, rgba(184, 63, 17, 0.1), transparent 70%),
       rgba(255, 250, 244, 0.92);
     border-color: rgba(184, 63, 17, 0.5);
     box-shadow:
-      0 0 32px rgba(184, 63, 17, 0.18),
+      0 0 30px rgba(184, 63, 17, 0.12),
       inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  }
+
+  :global(:root[data-theme="light"]) .release-plate::before {
+    border-color: rgba(184, 63, 17, 0.16);
   }
 
   :global(:root[data-theme="light"]) .release-body,
   :global(:root[data-theme="light"]) .feature-card,
-  :global(:root[data-theme="light"]) .install-card,
   :global(:root[data-theme="light"]) .thanks-panel {
     background: rgba(255, 255, 255, 0.46);
     border-color: rgba(38, 27, 20, 0.13);
@@ -403,33 +374,15 @@
       rgba(255, 255, 255, 0.46);
   }
 
-  @keyframes orbit-spin {
-    to {
-      transform: rotate(360deg);
-    }
-  }
-
-  @keyframes core-pulse {
-    50% {
-      transform: scale(1.06);
-    }
-  }
-
-  @keyframes comet-loop {
-    to {
-      transform: rotate(360deg);
-    }
-  }
-
   @media (max-width: 800px) {
     .release-hero {
       grid-template-columns: 1fr;
       min-height: auto;
     }
 
-    .orbit-badge {
+    .release-plate {
       order: -1;
-      width: min(15rem, 72vw);
+      width: min(13rem, 70vw);
     }
 
     .install-grid {
@@ -452,8 +405,8 @@
       font-size: 1.08rem;
     }
 
-    .orbit-badge {
-      width: min(12rem, 66vw);
+    .release-plate {
+      width: min(11rem, 60vw);
     }
 
     .feature-grid {
@@ -461,21 +414,10 @@
     }
 
     .feature-card,
-    .install-card,
     .thanks-panel {
       padding: 0.9rem;
       border-radius: var(--radius-md);
     }
 
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .ring-one,
-    .ring-two,
-    .release-core,
-    .comet-orbit,
-    .release-comet {
-      animation: none;
-    }
   }
 </style>

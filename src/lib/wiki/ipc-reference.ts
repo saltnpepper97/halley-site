@@ -47,6 +47,14 @@ export const ipcGroups: IpcGroup[] = [
     ]
   },
   {
+    title: "Portal",
+    summary: "Inspect Halley's native desktop portal backend.",
+    commands: [
+      { command: "halleyctl portal status", description: "Check portal backend discovery, compositor IPC, advertised sources, cursor modes, and version details.", addedIn: "0.5.0" },
+      { command: "halleyctl portal version", description: "Print the native portal backend version reported through Halley IPC.", addedIn: "0.5.0" }
+    ]
+  },
+  {
     title: "Nodes",
     summary: "Inspect, focus, move, and close windows represented as Halley nodes.",
     commands: [

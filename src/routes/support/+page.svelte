@@ -68,7 +68,7 @@
         <span class="coord" aria-hidden="true">04 · Share</span>
         <h2>Share it</h2>
         <p>If the project resonates, point other Wayland and desktop-environment people at it.</p>
-        <a class="link-comet" href={withBase("/news/fourth-orbit")}>Fourth Orbit release</a>
+        <a class="link-comet" href={withBase("/news/glass-and-gravity")}>Latest release</a>
       </article>
     </section>
   </main>

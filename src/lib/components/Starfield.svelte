@@ -10,7 +10,14 @@
 </div>
 
 <style>
+  /*
+    Dark theme uses the live WebGL "space" shader (SpaceBackground.svelte), which
+    draws its own stars — so hide this CSS starfield there to avoid doubling. It
+    remains the fallback for the light theme (and if the shader can't run, the
+    body gradients still carry the page).
+  */
   .starfield {
+    display: none;
     position: fixed;
     inset: 0;
     z-index: 0;
@@ -18,6 +25,10 @@
     pointer-events: none;
     mask-image: linear-gradient(to bottom, black 0%, black 58%, transparent 94%);
     -webkit-mask-image: linear-gradient(to bottom, black 0%, black 58%, transparent 94%);
+  }
+
+  :global(:root[data-theme='light']) .starfield {
+    display: block;
   }
 
   .star-layer {

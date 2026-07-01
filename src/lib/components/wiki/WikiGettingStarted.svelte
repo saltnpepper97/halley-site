@@ -30,7 +30,7 @@
     { label: "Install on Arch", href: "/wiki/install#install-arch" },
     { label: "Build from source", href: "/wiki/install#install-source" },
     { label: "Launch from a display manager", href: "/wiki/install#install-session" },
-    { label: "Set up screenshot portals", href: "/wiki/install#install-portal" },
+    { label: "Set up desktop portals", href: "/wiki/install#install-portal" },
     { label: "Browse config sections", href: "/wiki/config" },
     { label: "Find halleyctl commands", href: "/wiki/ipc#ipc-cli" },
     { label: "Check IPC JSON fields", href: "/wiki/ipc#ipc-json" }

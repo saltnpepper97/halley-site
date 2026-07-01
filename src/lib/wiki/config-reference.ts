@@ -4,6 +4,7 @@ export type ConfigOption = {
   defaultValue: string;
   notes: string;
   addedIn?: string;
+  removedIn?: string;
 };
 
 export type ConfigSection = {
@@ -13,6 +14,7 @@ export type ConfigSection = {
   summary: string;
   options: ConfigOption[];
   addedIn?: string;
+  removedIn?: string;
 };
 
 export type ConfigPage = {
@@ -67,7 +69,11 @@ export const configSections: ConfigSection[] = [
       { option: "repeat-delay", type: "i32", defaultValue: "500", notes: "Delay before keyboard repeat starts, in milliseconds." },
       { option: "focus-mode", type: "string", defaultValue: "click", notes: "Accepted values: click, hover. hover focuses windows under the pointer and, when the pointer is on an otherwise empty monitor, default new windows spawn on that monitor." },
       { option: "raise-on-click", type: "bool", defaultValue: "true", notes: "Raises clicked windows independently from focus mode. Hover focus does not imply raise.", addedIn: "0.3.0" },
-      { option: "keyboard", type: "nested block", defaultValue: "see input.keyboard", notes: "Keyboard layout, variant, and option strings.", addedIn: "0.2.0" }
+      { option: "keyboard", type: "nested block", defaultValue: "see input.keyboard", notes: "Keyboard layout, model, variant, and option strings.", addedIn: "0.2.0" },
+      { option: "gestures", type: "nested block", defaultValue: "see input.gestures", notes: "Touchpad gesture, touchscreen passthrough, pinch, swipe, and hold behavior.", addedIn: "0.5.0" },
+      { option: "touchpad", type: "nested block", defaultValue: "see input.touchpad", notes: "Class-wide libinput touchpad settings. Omitted keys keep libinput defaults.", addedIn: "0.5.0" },
+      { option: "mouse", type: "nested block", defaultValue: "see input.mouse", notes: "Class-wide libinput mouse/generic pointer settings. Omitted keys keep libinput defaults.", addedIn: "0.5.0" },
+      { option: "devices", type: "nested block", defaultValue: "none", notes: "Per-device libinput overrides matched against libinput device names.", addedIn: "0.5.0" }
     ]
   },
   {
@@ -78,8 +84,81 @@ export const configSections: ConfigSection[] = [
     addedIn: "0.2.0",
     options: [
       { option: "layout", type: "string", defaultValue: "us", notes: "XKB keyboard layout." },
+      { option: "model", type: "string", defaultValue: "", notes: "XKB keyboard model.", addedIn: "0.5.0" },
       { option: "variant", type: "string", defaultValue: "", notes: "XKB keyboard variant." },
       { option: "options", type: "string", defaultValue: "", notes: "XKB keyboard options such as compose:ralt." }
+    ]
+  },
+  {
+    slug: "input-gestures",
+    name: "gestures",
+    title: "Input Gestures",
+    summary: "Touchpad gesture, touch passthrough, pinch, swipe, and hold behavior.",
+    addedIn: "0.5.0",
+    options: [
+      { option: "enabled", type: "bool", defaultValue: "true", notes: "Enables compositor gesture handling." },
+      { option: "client-passthrough", type: "bool", defaultValue: "true", notes: "Forwards touchpad gestures to clients through pointer gesture protocols when no compositor binding consumes them." },
+      { option: "touch-passthrough", type: "bool", defaultValue: "true", notes: "Forwards touchscreen contacts to clients through wl_touch when appropriate." },
+      { option: "pinch-to-zoom", type: "bool", defaultValue: "true", notes: "Maps compositor pinch gestures to field zoom." },
+      { option: "pinch-scope", type: "string", defaultValue: "empty-field", notes: "Where compositor pinch zoom applies. Example value: empty-field." },
+      { option: "compositor-scope", type: "string", defaultValue: "global", notes: "Where compositor gesture bindings are eligible. Example values include global and empty-field." },
+      { option: "modifier", type: "modifier token", defaultValue: "$mod", notes: "Modifier token used by modifier-scoped gestures." },
+      { option: "scroll-pan", type: "string", defaultValue: "empty-field", notes: "Where two-finger scroll pans the field." },
+      { option: "swipe-threshold-px", type: "f32", defaultValue: "120", notes: "Swipe distance threshold before discrete swipe bindings commit." },
+      { option: "pan-fingers", type: "u32", defaultValue: "3", notes: "Finger count used for continuous field panning." },
+      { option: "pan-momentum", type: "bool", defaultValue: "true", notes: "Keeps gesture panning moving briefly after a flick." },
+      { option: "pan-decay-rate", type: "f32", defaultValue: "6", notes: "Momentum decay rate for gesture panning." },
+      { option: "flick-min-px-per-s", type: "f32", defaultValue: "200", notes: "Minimum velocity treated as a flick." },
+      { option: "swipe-<dir>-<fingers>", type: "action string", defaultValue: "unset", notes: "Binds a swipe direction and finger count to a compositor action, such as swipe-up-4 \"apogee-open\"." },
+      { option: "apogee-swipe-<dir>-<fingers>", type: "action string", defaultValue: "unset", notes: "Binds an Apogee-aware swipe, such as apogee-swipe-down-4 \"apogee-close\"." },
+      { option: "hold-<fingers>", type: "action string", defaultValue: "unset", notes: "Binds a libinput hold gesture to an existing compositor gesture action.", addedIn: "0.5.0" }
+    ]
+  },
+  {
+    slug: "input-touchpad",
+    name: "touchpad",
+    title: "Touchpad",
+    summary: "Class-wide libinput touchpad settings applied on device hotplug and config reload.",
+    addedIn: "0.5.0",
+    options: [
+      { option: "tap", type: "bool", defaultValue: "libinput", notes: "Tap-to-click setting. Omit to keep libinput's own default." },
+      { option: "natural-scroll", type: "bool", defaultValue: "libinput", notes: "Natural scrolling setting." },
+      { option: "dwt", type: "bool", defaultValue: "libinput", notes: "Disable-while-typing setting." },
+      { option: "accel-speed", type: "f32", defaultValue: "libinput", notes: "Pointer acceleration speed from -1.0 through 1.0." },
+      { option: "accel-profile", type: "string", defaultValue: "libinput", notes: "Accepted values: adaptive, flat." },
+      { option: "scroll-method", type: "string", defaultValue: "libinput", notes: "Accepted values: two-finger, edge, on-button-down, no-scroll." },
+      { option: "click-method", type: "string", defaultValue: "libinput", notes: "Accepted values: clickfinger, button-areas." },
+      { option: "tap-button-map", type: "string", defaultValue: "libinput", notes: "Tap button mapping, such as left-right-middle." },
+      { option: "middle-emulation", type: "bool", defaultValue: "libinput", notes: "Middle-button emulation setting." },
+      { option: "left-handed", type: "bool", defaultValue: "libinput", notes: "Left-handed button mapping setting." },
+      { option: "disabled-on-external-mouse", type: "bool", defaultValue: "libinput", notes: "Disables the touchpad when an external mouse is present." },
+      { option: "enabled", type: "bool", defaultValue: "libinput", notes: "Send-events on/off switch for the device class." }
+    ]
+  },
+  {
+    slug: "input-mouse",
+    name: "mouse",
+    title: "Mouse",
+    summary: "Class-wide libinput mouse and generic pointer settings.",
+    addedIn: "0.5.0",
+    options: [
+      { option: "natural-scroll", type: "bool", defaultValue: "libinput", notes: "Natural scrolling setting." },
+      { option: "accel-speed", type: "f32", defaultValue: "libinput", notes: "Pointer acceleration speed from -1.0 through 1.0." },
+      { option: "accel-profile", type: "string", defaultValue: "libinput", notes: "Accepted values: adaptive, flat." },
+      { option: "middle-emulation", type: "bool", defaultValue: "libinput", notes: "Middle-button emulation setting." },
+      { option: "left-handed", type: "bool", defaultValue: "libinput", notes: "Left-handed button mapping setting." },
+      { option: "enabled", type: "bool", defaultValue: "libinput", notes: "Send-events on/off switch for the device class." }
+    ]
+  },
+  {
+    slug: "input-devices",
+    name: "devices.<name>",
+    title: "Input Device Overrides",
+    summary: "Per-device libinput overrides layered on top of touchpad or mouse defaults.",
+    addedIn: "0.5.0",
+    options: [
+      { option: "<device name>", type: "nested block", defaultValue: "none", notes: "Matches the name from libinput list-devices by exact, case-insensitive, or substring match." },
+      { option: "<libinput option>", type: "same as touchpad/mouse", defaultValue: "inherited", notes: "Any supported touchpad or mouse option can be overridden field by field." }
     ]
   },
   {
@@ -166,6 +245,23 @@ export const configSections: ConfigSection[] = [
       { option: "primary-ry", type: "f32", defaultValue: "420.0", notes: "Global focus-ring vertical radius. Aliases like ry and radius-y are also accepted." },
       { option: "offset-x", type: "f32", defaultValue: "0.0", notes: "Global focus-ring x offset." },
       { option: "offset-y", type: "f32", defaultValue: "0.0", notes: "Global focus-ring y offset." }
+    ]
+  },
+  {
+    slug: "background",
+    name: "background",
+    title: "Background / Gesso",
+    summary: "Compositor background renderer: solid fill, classic image, or spatial field shader.",
+    addedIn: "0.5.0",
+    options: [
+      { option: "mode", type: "string", defaultValue: "field-shader", notes: "Background renderer. Accepted values: none, classic, field-shader. Alias section name: gesso." },
+      { option: "shader", type: "string", defaultValue: "space", notes: "Field-shader source. space uses the builtin animated space shader; a path can load a custom fragment shader." },
+      { option: "path", type: "string", defaultValue: "", notes: "Classic image path for mode classic. Empty means no image path is loaded." },
+      { option: "fit", type: "string", defaultValue: "cover", notes: "Classic image fit mode. Accepted values: cover, contain, stretch." },
+      { option: "colour", type: "hex color", defaultValue: "#181a26", notes: "Base color for builtin shaders. Alias: color." },
+      { option: "accent-colour", type: "hex color", defaultValue: "#8fa8d8", notes: "Accent color for builtin shaders. Aliases: accent-color, accent_color." },
+      { option: "intensity", type: "f32", defaultValue: "1.0", notes: "Overall brightness/intensity multiplier for shader and image backgrounds." },
+      { option: "animated", type: "bool", defaultValue: "true", notes: "Keeps animated field shaders repainting for subtle twinkle and pulse motion." }
     ]
   },
   {
@@ -272,6 +368,7 @@ export const configSections: ConfigSection[] = [
       { option: "node-shape", type: "string", defaultValue: "square", notes: "Base node shape. Accepted values: square, squircle." },
       { option: "node-label-shape", type: "string", defaultValue: "square", notes: "Node label badge shape. Accepted values: square, squircle." },
       { option: "icon-size", type: "f32", defaultValue: "0.72", notes: "Icon size as a fraction of node diameter." },
+      { option: "opacity", type: "f32", defaultValue: "1.0", notes: "Node/core marker fill opacity from 0.0 through 1.0. The border ring and app icon stay fully opaque.", addedIn: "0.5.0" },
       { option: "background-colour", type: "string", defaultValue: "auto", notes: "Node fill source. Accepted values: auto, theme, light, dark, or a hex color." },
       { option: "border-colour-hover", type: "string", defaultValue: "use-window-active", notes: "Accepted values: use-window-active, use-window-inactive, use-window-secondary-active, use-window-secondary-inactive." },
       { option: "border-colour-inactive", type: "string", defaultValue: "use-window-inactive", notes: "Same accepted values as border-colour-hover." },
@@ -309,7 +406,25 @@ export const configSections: ConfigSection[] = [
       { option: "show-distance", type: "bool", defaultValue: "true", notes: "Shows distance text for bearings." },
       { option: "show-icons", type: "bool", defaultValue: "true", notes: "Shows icons in bearings." },
       { option: "show-pinned", type: "bool", defaultValue: "true", notes: "Shows pinned windows, nodes, and cores in Bearings.", addedIn: "0.3.0" },
+      { option: "blur", type: "bool", defaultValue: "true", notes: "Allows bearing chips to draw frosted-glass backdrop blur when effects.blur permits overlays.", addedIn: "0.5.0" },
       { option: "fade-distance", type: "f32", defaultValue: "1200.0", notes: "Distance over which bearings fade." }
+    ]
+  },
+  {
+    slug: "aperture-peek",
+    name: "aperture-peek",
+    title: "Aperture Peek",
+    summary: "Standalone Aperture clock panel styling used by the compositor reserve/peek integration.",
+    addedIn: "0.3.0",
+    options: [
+      { option: "corner", type: "string", defaultValue: "top-right", notes: "Corner used for the floating clock panel." },
+      { option: "background", type: "hex rgba", defaultValue: "#101014cc", notes: "Panel background color, including alpha." },
+      { option: "radius-px", type: "u32", defaultValue: "24", notes: "Panel corner radius in pixels." },
+      { option: "blur", type: "bool", defaultValue: "true", notes: "Allows the Aperture panel to draw frosted-glass backdrop blur when effects.blur permits layer-shell blur.", addedIn: "0.5.0" },
+      { option: "clock", type: "nested block", defaultValue: "see aperture config", notes: "Clock font and colour settings." },
+      { option: "clock-large", type: "nested block", defaultValue: "see aperture config", notes: "Normal floating clock size state." },
+      { option: "clock-medium", type: "nested block", defaultValue: "see aperture config", notes: "Collapsed floating clock size state." },
+      { option: "clock-small", type: "nested block", defaultValue: "see aperture config", notes: "Minimal reserved top-tab size state." }
     ]
   },
   {
@@ -413,6 +528,7 @@ export const configSections: ConfigSection[] = [
       { option: "window-close", type: "nested block", defaultValue: "see animations.window-close", notes: "Window close animation settings." },
       { option: "tile", type: "nested block", defaultValue: "see animations.tile", notes: "Tile animation settings." },
       { option: "stack", type: "nested block", defaultValue: "see animations.stack", notes: "Stack animation settings." },
+      { option: "cluster", type: "nested block", defaultValue: "see animations.cluster", notes: "Cluster workspace open and close animations for tiling and stacking layouts.", addedIn: "0.5.0" },
       { option: "raise", type: "nested block", defaultValue: "see animations.raise", notes: "Click/selection raise pulse settings.", addedIn: "0.3.0" }
     ]
   },
@@ -498,8 +614,118 @@ export const configSections: ConfigSection[] = [
     options: [
       { option: "enabled", type: "bool", defaultValue: "true", notes: "Enables the raise pulse animation." },
       { option: "duration-ms", type: "u64", defaultValue: "140", notes: "Raise pulse duration." },
+      { option: "trigger", type: "string", defaultValue: "overlap", notes: "Controls when raise animation triggers. Accepted values: overlap, always.", addedIn: "0.5.0" },
       { option: "scale", type: "f32", defaultValue: "1.025", notes: "Peak scale multiplier for the raised window." },
       { option: "shadow-boost", type: "f32", defaultValue: "0.18", notes: "Temporary shadow boost during the raise pulse." }
+    ]
+  },
+  {
+    slug: "animations-cluster",
+    name: "cluster",
+    title: "Cluster Animation",
+    summary: "Cluster workspace open and close animations for tiling and stacking layouts.",
+    addedIn: "0.5.0",
+    options: [
+      { option: "enabled", type: "bool", defaultValue: "true", notes: "Enables cluster workspace open and close animations." },
+      { option: "tiling", type: "nested block", defaultValue: "see animations.cluster.tiling", notes: "Tiling layout open cascade and close suck-into-core timing." },
+      { option: "stacking", type: "nested block", defaultValue: "see animations.cluster.stacking", notes: "Stacking layout card grow-in and close suck-into-core timing." }
+    ]
+  },
+  {
+    slug: "animations-cluster-tiling",
+    name: "cluster.tiling",
+    title: "Cluster Tiling Animation",
+    summary: "Tiling cluster workspace open cascade, per-member stagger, and close timing.",
+    addedIn: "0.5.0",
+    options: [
+      { option: "open-duration-ms", type: "u64", defaultValue: "300", notes: "Open animation duration. Members cascade in from the left." },
+      { option: "stagger-ms", type: "u64", defaultValue: "55", notes: "Per-member open delay, slaves first and master last. 0 opens members together." },
+      { option: "close-duration-ms", type: "u64", defaultValue: "420", notes: "Close animation duration. Members shrink and fade into the core node." }
+    ]
+  },
+  {
+    slug: "animations-cluster-stacking",
+    name: "cluster.stacking",
+    title: "Cluster Stacking Animation",
+    summary: "Stacking cluster workspace card grow-in and close timing.",
+    addedIn: "0.5.0",
+    options: [
+      { option: "open-duration-ms", type: "u64", defaultValue: "240", notes: "Open card grow-in animation duration." },
+      { option: "close-duration-ms", type: "u64", defaultValue: "360", notes: "Close animation duration. Cards shrink and fade into the core node." }
+    ]
+  },
+  {
+    slug: "effects",
+    name: "effects",
+    title: "Effects",
+    summary: "Renderer-level visual effects such as backdrop blur and compositor shadows.",
+    addedIn: "0.5.0",
+    options: [
+      { option: "blur", type: "nested block", defaultValue: "see effects.blur", notes: "Backdrop blur policy for overlays, windows, and layer-shell surfaces." },
+      { option: "shadows", type: "nested block", defaultValue: "see effects.shadows", notes: "Window, node, and overlay shadows. This replaces decorations.shadows." }
+    ]
+  },
+  {
+    slug: "effects-blur",
+    name: "blur",
+    title: "Backdrop Blur",
+    summary: "Global and per-surface-class backdrop blur policy.",
+    addedIn: "0.5.0",
+    options: [
+      { option: "enabled", type: "bool", defaultValue: "false", notes: "Master switch. When false, no backdrop blur is computed anywhere." },
+      { option: "overlays", type: "bool", defaultValue: "true", notes: "Allows compositor-owned overlays to use blur when they opt in." },
+      { option: "windows", type: "string", defaultValue: "auto", notes: "Client window blur policy. Accepted values: off, auto, always. Rule-level blur true can opt a window in; rule-level blur false always wins." },
+      { option: "layer-shell", type: "string", defaultValue: "off", notes: "Layer-shell blur policy for bars, launchers, notifications, and their popups. Accepted values: off, auto, always." },
+      { option: "method", type: "string", defaultValue: "dual-kawase", notes: "Blur algorithm. dual-kawase is the shipped fast downsampled blur path." },
+      { option: "radius", type: "u32", defaultValue: "24", notes: "Blur radius." },
+      { option: "passes", type: "u32", defaultValue: "3", notes: "Number of blur passes." },
+      { option: "saturation", type: "f32", defaultValue: "1.10", notes: "Backdrop saturation multiplier for frosted-glass surfaces." },
+      { option: "noise", type: "f32", defaultValue: "0.012", notes: "Subtle noise amount for frosted-glass surfaces." }
+    ]
+  },
+  {
+    slug: "effects-shadows-window",
+    name: "shadows.window",
+    title: "Window Shadow",
+    summary: "Shadow layer used by windows.",
+    addedIn: "0.5.0",
+    options: [
+      { option: "enabled", type: "bool", defaultValue: "true", notes: "Enables window shadows." },
+      { option: "blur-radius", type: "f32", defaultValue: "8", notes: "Shadow blur radius." },
+      { option: "spread", type: "f32", defaultValue: "0", notes: "Shadow spread." },
+      { option: "offset-x", type: "f32", defaultValue: "0", notes: "Horizontal shadow offset." },
+      { option: "offset-y", type: "f32", defaultValue: "5", notes: "Vertical shadow offset." },
+      { option: "colour", type: "hex rgba", defaultValue: "#05030530", notes: "Shadow color, including alpha." }
+    ]
+  },
+  {
+    slug: "effects-shadows-node",
+    name: "shadows.node",
+    title: "Node Shadow",
+    summary: "Shadow layer used by collapsed nodes and cores.",
+    addedIn: "0.5.0",
+    options: [
+      { option: "enabled", type: "bool", defaultValue: "true", notes: "Enables node shadows." },
+      { option: "blur-radius", type: "f32", defaultValue: "14", notes: "Shadow blur radius." },
+      { option: "spread", type: "f32", defaultValue: "0", notes: "Shadow spread." },
+      { option: "offset-x", type: "f32", defaultValue: "0", notes: "Horizontal shadow offset." },
+      { option: "offset-y", type: "f32", defaultValue: "3", notes: "Vertical shadow offset." },
+      { option: "colour", type: "hex rgba", defaultValue: "#05030524", notes: "Shadow color, including alpha." }
+    ]
+  },
+  {
+    slug: "effects-shadows-overlay",
+    name: "shadows.overlay",
+    title: "Overlay Shadow",
+    summary: "Shadow layer used by overlay containers.",
+    addedIn: "0.5.0",
+    options: [
+      { option: "enabled", type: "bool", defaultValue: "true", notes: "Enables overlay shadows." },
+      { option: "blur-radius", type: "f32", defaultValue: "24", notes: "Shadow blur radius." },
+      { option: "spread", type: "f32", defaultValue: "1", notes: "Shadow spread." },
+      { option: "offset-x", type: "f32", defaultValue: "0", notes: "Horizontal shadow offset." },
+      { option: "offset-y", type: "f32", defaultValue: "7", notes: "Vertical shadow offset." },
+      { option: "colour", type: "hex rgba", defaultValue: "#05030538", notes: "Shadow color, including alpha." }
     ]
   },
   {
@@ -510,7 +736,7 @@ export const configSections: ConfigSection[] = [
     options: [
       { option: "border", type: "nested block", defaultValue: "see decorations.border", notes: "Primary compositor-managed border." },
       { option: "secondary-border", type: "nested block", defaultValue: "see decorations.secondary-border", notes: "Optional secondary border." },
-      { option: "shadows", type: "nested block", defaultValue: "see decorations.shadows", notes: "Window, node, and overlay shadow layers.", addedIn: "0.2.0" },
+      { option: "shadows", type: "nested block", defaultValue: "see decorations.shadows", notes: "Window, node, and overlay shadow layers. Moved to effects.shadows in v0.5.0.", addedIn: "0.2.0", removedIn: "0.5.0" },
       { option: "resize-using-border", type: "bool", defaultValue: "true", notes: "Lets border hit areas drive resize interactions." }
     ]
   },
@@ -520,6 +746,7 @@ export const configSections: ConfigSection[] = [
     title: "Window Shadow",
     summary: "Shadow layer used by windows.",
     addedIn: "0.2.0",
+    removedIn: "0.5.0",
     options: [
       { option: "enabled", type: "bool", defaultValue: "true", notes: "Enables window shadows." },
       { option: "blur-radius", type: "f32", defaultValue: "10", notes: "Shadow blur radius." },
@@ -535,6 +762,7 @@ export const configSections: ConfigSection[] = [
     title: "Node Shadow",
     summary: "Shadow layer used by collapsed nodes.",
     addedIn: "0.2.0",
+    removedIn: "0.5.0",
     options: [
       { option: "enabled", type: "bool", defaultValue: "true", notes: "Enables node shadows." },
       { option: "blur-radius", type: "f32", defaultValue: "10", notes: "Shadow blur radius." },
@@ -550,6 +778,7 @@ export const configSections: ConfigSection[] = [
     title: "Overlay Shadow",
     summary: "Shadow layer used by overlay containers.",
     addedIn: "0.2.0",
+    removedIn: "0.5.0",
     options: [
       { option: "enabled", type: "bool", defaultValue: "true", notes: "Enables overlay shadows." },
       { option: "blur-radius", type: "f32", defaultValue: "16", notes: "Shadow blur radius." },
@@ -594,6 +823,7 @@ export const configSections: ConfigSection[] = [
       { option: "text-colour", type: "string", defaultValue: "auto", notes: "Overlay text color. Accepted values: auto, light, dark, or a hex color." },
       { option: "error-colour", type: "string", defaultValue: "#fb4934", notes: "Accent color used by startup and config reload error overlays.", addedIn: "0.3.0" },
       { option: "shape", type: "string", defaultValue: "square", notes: "Overlay shape style. Accepted values: square, rounded." },
+      { option: "blur", type: "bool", defaultValue: "true", notes: "Allows compositor overlays that support blur to opt into effects.blur.overlays.", addedIn: "0.5.0" },
       { option: "borders", type: "bool", defaultValue: "true", notes: "Enables overlay borders." },
       { option: "border-source", type: "string", defaultValue: "primary", notes: "Border palette source. Accepted values: primary, secondary." }
     ]
@@ -664,6 +894,7 @@ export const configSections: ConfigSection[] = [
       { option: "app-id", type: "quoted string, regex, or array", defaultValue: "required if title omitted", notes: "Matches window app IDs. Arrays can mix literals and regex literals like r\"Firefox.*\"." },
       { option: "title", type: "quoted string, regex, or array", defaultValue: "required if app-id omitted", notes: "Matches window titles." },
       { option: "opacity", type: "f32", defaultValue: "1.0", notes: "Matched opacity from 0.0 through 1.0. Translucent windows block direct scanout.", addedIn: "0.4.0" },
+      { option: "blur", type: "bool", defaultValue: "unset", notes: "Per-rule backdrop blur override. false always disables blur; true opts a window in even when effects.blur.windows is off or auto.", addedIn: "0.5.0" },
       { option: "width", type: "u32", defaultValue: "unset", notes: "Optional fixed initial width for matching windows.", addedIn: "0.4.0" },
       { option: "height", type: "u32", defaultValue: "unset", notes: "Optional fixed initial height for matching windows.", addedIn: "0.4.0" },
       { option: "overlap-policy", type: "string", defaultValue: "deprecated", notes: "Deprecated no-op in v0.3.0. Expanded windows can overlap normally; use spawn-placement for initial position and cluster-participation \"float\" for floating dialogs." },
@@ -682,6 +913,16 @@ end`,
   once "waybar"
   on-reload "makoctl reload"
 end`,
+  background: `background:
+  mode "field-shader"
+  shader "space"
+  path ""
+  fit "cover"
+  colour "#181a26"
+  accent-colour "#8fa8d8"
+  intensity 1.0
+  animated true
+end`,
   cursor: `cursor:
   theme "Adwaita"
   size 24
@@ -697,6 +938,56 @@ end`,
     layout "us"
     variant ""
     options ""
+    model ""
+  end
+
+  gestures:
+    enabled true
+    client-passthrough true
+    touch-passthrough true
+    pinch-to-zoom true
+    pinch-scope "empty-field"
+    compositor-scope "global"
+    modifier "$mod"
+    scroll-pan "empty-field"
+    swipe-threshold-px 120
+    pan-fingers 3
+    pan-momentum true
+    pan-decay-rate 6
+    flick-min-px-per-s 200
+    swipe-up-4 "apogee-open"
+    apogee-swipe-down-4 "apogee-close"
+  end
+
+  touchpad:
+    tap true
+    natural-scroll true
+    dwt true
+    accel-speed 0.3
+    accel-profile "adaptive"
+    scroll-method "two-finger"
+    click-method "clickfinger"
+    tap-button-map "left-right-middle"
+    middle-emulation false
+    left-handed false
+    disabled-on-external-mouse false
+    enabled true
+  end
+
+  mouse:
+    natural-scroll false
+    accel-speed 0.0
+    accel-profile "flat"
+    middle-emulation false
+    left-handed false
+    enabled true
+  end
+
+  devices:
+    "Logitech MX Master 3":
+      accel-speed 0.6
+      natural-scroll true
+    end
   end
 end`,
   font: `font:
@@ -790,6 +1081,7 @@ end`,
   node-shape "square"
   node-label-shape "square"
   icon-size 0.72
+  opacity 1.0
   background-colour "auto"
   border-colour-hover "use-window-active"
   border-colour-inactive "use-window-inactive"
@@ -809,6 +1101,7 @@ bearings: `bearings:
   show-distance true
   show-icons true
   show-pinned true
+  blur true
   fade-distance 1200
 end`,
   clusters: `clusters:
@@ -832,6 +1125,30 @@ end`,
   enabled true
   damping 0.45
 end`,
+  "aperture-peek": `aperture-peek:
+  corner "top-right"
+  background "#101014cc"
+  radius-px 24
+  blur true
+
+  clock:
+    font "CommitMono Nerd Font Bold"
+    colour "#e8a1a7"
+  end
+
+  clock-large:
+    size-px 80
+  end
+
+  clock-medium:
+    size-px 44
+  end
+
+  clock-small:
+    size-px 26
+    height-px 32
+  end
+end`,
   gamescope: `gamescope:
   enabled true
   monitor "focused"
@@ -850,6 +1167,301 @@ end`,
     name "Example Game"
     app-id "steam_app_123456"
     enabled true
+  end
+end`,
+  animations: `animations:
+  enabled true
+
+  smooth-resize:
+    enabled true
+    duration-ms 90
+  end
+
+  maximize:
+    enabled true
+    duration-ms 240
+  end
+
+  fullscreen:
+    enabled true
+    duration-ms 240
+  end
+
+  window-open:
+    enabled true
+    duration-ms 620
+  end
+
+  window-close:
+    enabled true
+    duration-ms 270
+    style "shrink"
+  end
+
+  tile:
+    enabled true
+    duration-ms 240
+  end
+
+  stack:
+    enabled true
+    duration-ms 220
+  end
+
+  cluster:
+    enabled true
+
+    tiling:
+      open-duration-ms 300
+      stagger-ms 55
+      close-duration-ms 420
+    end
+
+    stacking:
+      open-duration-ms 240
+      close-duration-ms 360
+    end
+  end
+
+  raise:
+    enabled true
+    duration-ms 140
+    trigger "overlap"
+    scale 1.025
+    shadow-boost 0.18
+  end
+end`,
+  effects: `effects:
+  blur:
+    enabled false
+    overlays true
+    windows "auto"
+    layer-shell "off"
+    method "dual-kawase"
+    radius 24
+    passes 3
+    saturation 1.10
+    noise 0.012
+  end
+
+  shadows:
+    window:
+      enabled true
+      blur-radius 8
+      spread 0
+      offset-x 0
+      offset-y 5
+      colour "#05030530"
+    end
+
+    node:
+      enabled true
+      blur-radius 14
+      spread 0
+      offset-x 0
+      offset-y 3
+      colour "#05030524"
+    end
+
+    overlay:
+      enabled true
+      blur-radius 24
+      spread 1
+      offset-x 0
+      offset-y 7
+      colour "#05030538"
+    end
+  end
+end`,
+  decorations: `decorations:
+  border:
+    size 3
+    radius 0
+    colour-focused "#d65d26"
+    colour-unfocused "#333333"
+  end
+
+  secondary-border:
+    enabled false
+    size 1
+    gap 2
+    colour-focused "#fabd2f"
+    colour-unfocused "#1f1f1f"
+  end
+
+  resize-using-border true
+end`,
+overlays: `overlays:
+  background-colour "auto"
+  text-colour "auto"
+  error-colour "#fb4934"
+  shape "square"
+  blur true
+  borders true
+  border-source "primary"
+end`,
+  keybinds: `keybinds:
+  mod "super"
+
+  # Basic compositor controls.
+  "$var.mod+shift+r" "reload"
+  "$var.mod+n" "toggle-state"
+  "$var.mod+m" "maximize-focused"
+  "$var.mod+f" "toggle-fullscreen"
+  "$var.mod+p" "toggle-focused-pin"
+  "$var.mod+q" "close-focused"
+
+  # Zoom controls for the field camera.
+  "$var.mod+mousewheelup" "zoom-in"
+  "$var.mod+mousewheeldown" "zoom-out"
+  "$var.mod+middlemouse" "zoom-reset"
+
+  "$var.mod+shift+e" "quit"
+
+  # Move the selected/latest node in the field.
+  "$var.mod+left" "node-move left"
+  "$var.mod+right" "node-move right"
+  "$var.mod+up" "node-move up"
+  "$var.mod+down" "node-move down"
+
+  # Switch active monitor focus.
+  "$var.mod+shift+left" "monitor-focus left"
+  "$var.mod+shift+right" "monitor-focus right"
+  "$var.mod+shift+up" "monitor-focus up"
+  "$var.mod+shift+down" "monitor-focus down"
+
+  # Cluster controls.
+  "$var.mod+shift+c" "cluster-mode"
+  "$var.mod+l" "cluster-layout cycle"
+  "$var.mod+1" "cluster slot 1"
+  "$var.mod+2" "cluster slot 2"
+  "$var.mod+3" "cluster slot 3"
+  "$var.mod+4" "cluster slot 4"
+  "$var.mod+5" "cluster slot 5"
+  "$var.mod+6" "cluster slot 6"
+  "$var.mod+7" "cluster slot 7"
+  "$var.mod+8" "cluster slot 8"
+  "$var.mod+9" "cluster slot 9"
+  "$var.mod+0" "cluster slot 10"
+
+  # Bearings controls.
+  "$var.mod+z" "bearings-show"
+  "$var.mod+shift+z" "bearings-toggle"
+
+  # Trail navigation.
+  "$var.mod+," "trail-prev"
+  "$var.mod+." "trail-next"
+
+  # Focus cycling.
+  "alt+tab" "cycle-focus"
+  "alt+shift+tab" "cycle-focus-backward"
+
+  # Applications.
+  "$var.mod+return" "open-terminal"
+  "$var.mod+d" "fuzzel"
+
+  # Mouse actions.
+  "$var.mod+leftmouse" "move-window"
+  "$var.mod+rightmouse" "resize-window"
+  "$var.mod+shift+leftmouse" "pan-field"
+
+  # Tile layout controls.
+  "$var.mod+left" "tile-focus left"
+  "$var.mod+right" "tile-focus right"
+  "$var.mod+up" "tile-focus up"
+  "$var.mod+down" "tile-focus down"
+
+  "$var.mod+ctrl+left" "tile-swap left"
+  "$var.mod+ctrl+right" "tile-swap right"
+  "$var.mod+ctrl+up" "tile-swap up"
+  "$var.mod+ctrl+down" "tile-swap down"
+
+  # Stacking layout controls.
+  "$var.mod+left" "stack-cycle forward"
+  "$var.mod+right" "stack-cycle backward"
+
+  # Screenshot UI.
+  "$var.mod+shift+s" "halleyctl capture menu"
+
+  # Media keys.
+  "XF86AudioRaiseVolume" "wpctl set-volume -l 1 @default_audio_sink@ 5%+"
+  "XF86AudioLowerVolume" "wpctl set-volume @default_audio_sink@ 5%-"
+  "XF86AudioMute" "wpctl set-mute @default_audio_sink@ toggle"
+end`,
+  rules: `rules:
+  rule:
+    app-id "firefox"
+    title [r"File Upload.*", r"Open File.*"]
+    opacity 0.96
+    blur true
+    width 720
+    height 520
+    spawn-placement "center"
+    cluster-participation "float"
+  end
+end`,
+  "rules-rule": `rules:
+  rule:
+    app-id "firefox"
+    opacity 1.0
+    blur false
+    spawn-placement "center"
+    cluster-participation "layout"
+  end
+end`
+};
+
+const configExamplesV04: Partial<Record<string, string>> = {
+  input: `input:
+  repeat-rate 30
+  repeat-delay 500
+  focus-mode "click"
+  raise-on-click true
+  keyboard:
+    layout "us"
+    variant ""
+    options ""
+  end
+end`,
+  node: `node:
+  show-labels "hover"
+  show-app-icons "always"
+  node-shape "square"
+  node-label-shape "square"
+  icon-size 0.72
+  background-colour "auto"
+  border-colour-hover "use-window-active"
+  border-colour-inactive "use-window-inactive"
+  click-collapsed-outside-focus "activate"
+  click-collapsed-pan "if-offscreen"
+end`,
+  bearings: `bearings:
+  show-distance true
+  show-icons true
+  show-pinned true
+  fade-distance 1200
+end`,
+  "aperture-peek": `aperture-peek:
+  corner "top-right"
+  background "#101014cc"
+  radius-px 24
+
+  clock:
+    font "CommitMono Nerd Font Bold"
+    colour "#e8a1a7"
+  end
+
+  clock-large:
+    size-px 80
+  end
+
+  clock-medium:
+    size-px 44
+  end
+
+  clock-small:
+    size-px 26
+    height-px 32
   end
 end`,
   animations: `animations:
@@ -945,101 +1557,13 @@ end`,
 
   resize-using-border true
 end`,
-overlays: `overlays:
+  overlays: `overlays:
   background-colour "auto"
   text-colour "auto"
   error-colour "#fb4934"
   shape "square"
   borders true
   border-source "primary"
-end`,
-  keybinds: `keybinds:
-  mod "super"
-
-  # Basic compositor controls.
-  "$var.mod+shift+r" "reload"
-  "$var.mod+n" "toggle-state"
-  "$var.mod+m" "maximize-focused"
-  "$var.mod+f" "toggle-fullscreen"
-  "$var.mod+p" "toggle-focused-pin"
-  "$var.mod+q" "close-focused"
-
-  # Zoom controls for the field camera.
-  "$var.mod+mousewheelup" "zoom-in"
-  "$var.mod+mousewheeldown" "zoom-out"
-  "$var.mod+middlemouse" "zoom-reset"
-
-  "$var.mod+shift+e" "quit"
-
-  # Move the selected/latest node in the field.
-  "$var.mod+left" "node-move left"
-  "$var.mod+right" "node-move right"
-  "$var.mod+up" "node-move up"
-  "$var.mod+down" "node-move down"
-
-  # Switch active monitor focus.
-  "$var.mod+shift+left" "monitor-focus left"
-  "$var.mod+shift+right" "monitor-focus right"
-  "$var.mod+shift+up" "monitor-focus up"
-  "$var.mod+shift+down" "monitor-focus down"
-
-  # Cluster controls.
-  "$var.mod+shift+c" "cluster-mode"
-  "$var.mod+l" "cluster-layout cycle"
-  "$var.mod+1" "cluster slot 1"
-  "$var.mod+2" "cluster slot 2"
-  "$var.mod+3" "cluster slot 3"
-  "$var.mod+4" "cluster slot 4"
-  "$var.mod+5" "cluster slot 5"
-  "$var.mod+6" "cluster slot 6"
-  "$var.mod+7" "cluster slot 7"
-  "$var.mod+8" "cluster slot 8"
-  "$var.mod+9" "cluster slot 9"
-  "$var.mod+0" "cluster slot 10"
-
-  # Bearings controls.
-  "$var.mod+z" "bearings-show"
-  "$var.mod+shift+z" "bearings-toggle"
-
-  # Trail navigation.
-  "$var.mod+," "trail-prev"
-  "$var.mod+." "trail-next"
-
-  # Focus cycling.
-  "alt+tab" "cycle-focus"
-  "alt+shift+tab" "cycle-focus-backward"
-
-  # Applications.
-  "$var.mod+return" "open-terminal"
-  "$var.mod+d" "fuzzel"
-
-  # Mouse actions.
-  "$var.mod+leftmouse" "move-window"
-  "$var.mod+rightmouse" "resize-window"
-  "$var.mod+shift+leftmouse" "pan-field"
-
-  # Tile layout controls.
-  "$var.mod+left" "tile-focus left"
-  "$var.mod+right" "tile-focus right"
-  "$var.mod+up" "tile-focus up"
-  "$var.mod+down" "tile-focus down"
-
-  "$var.mod+ctrl+left" "tile-swap left"
-  "$var.mod+ctrl+right" "tile-swap right"
-  "$var.mod+ctrl+up" "tile-swap up"
-  "$var.mod+ctrl+down" "tile-swap down"
-
-  # Stacking layout controls.
-  "$var.mod+left" "stack-cycle forward"
-  "$var.mod+right" "stack-cycle backward"
-
-  # Screenshot UI.
-  "$var.mod+shift+s" "halleyctl capture menu"
-
-  # Media keys.
-  "XF86AudioRaiseVolume" "wpctl set-volume -l 1 @default_audio_sink@ 5%+"
-  "XF86AudioLowerVolume" "wpctl set-volume @default_audio_sink@ 5%-"
-  "XF86AudioMute" "wpctl set-mute @default_audio_sink@ toggle"
 end`,
   rules: `rules:
   rule:
@@ -1246,8 +1770,8 @@ const groupedPageDefinitions = [
   {
     slug: "input",
     title: "Input",
-    summary: "Keyboard repeat behavior, focus policy, and keyboard layout settings.",
-    sectionSlugs: ["input", "input-keyboard"]
+    summary: "Keyboard repeat behavior, focus policy, keyboard layout, gestures, and libinput device settings.",
+    sectionSlugs: ["input", "input-keyboard", "input-gestures", "input-touchpad", "input-mouse", "input-devices"]
   },
   {
     slug: "viewport",
@@ -1268,13 +1792,22 @@ const groupedPageDefinitions = [
       "animations-window-close",
       "animations-tile",
       "animations-stack",
+      "animations-cluster",
+      "animations-cluster-tiling",
+      "animations-cluster-stacking",
       "animations-raise"
     ]
   },
   {
+    slug: "effects",
+    title: "Effects",
+    summary: "Backdrop blur policy and renderer-level shadow settings.",
+    sectionSlugs: ["effects", "effects-blur", "effects-shadows-window", "effects-shadows-node", "effects-shadows-overlay"]
+  },
+  {
     slug: "decorations",
     title: "Decorations",
-    summary: "Primary and secondary borders, compositor-drawn shadows, and border-driven resize behavior.",
+    summary: "Primary and secondary borders plus border-driven resize behavior.",
     sectionSlugs: [
       "decorations",
       "decorations-border",
@@ -1348,8 +1881,8 @@ export const configPages: ConfigPage[] = configSections
 
 export const getConfigPage = (slug: string) => configPages.find((page) => page.slug === slug);
 
-const availableInVersion = (item: { addedIn?: string }, version: string) =>
-  !item.addedIn || version >= item.addedIn;
+const availableInVersion = (item: { addedIn?: string; removedIn?: string }, version: string) =>
+  (!item.addedIn || version >= item.addedIn) && (!item.removedIn || version < item.removedIn);
 
 export const configPageForVersion = (page: ConfigPage, version: string): ConfigPage => {
   const sections = page.sections
@@ -1369,18 +1902,23 @@ export const configPageForVersion = (page: ConfigPage, version: string): ConfigP
 };
 
 export const configExampleForVersion = (slug: string, version: string) => {
-  if (version >= "0.4.0") {
+  if (version >= "0.5.0") {
     return configExamples[slug] ?? `${slug}:
 end`;
   }
 
+  if (version >= "0.4.0") {
+    return configExamplesV04[slug] ?? configExamples[slug] ?? `${slug}:
+end`;
+  }
+
   if (version >= "0.3.0") {
-    return configExamplesV03[slug] ?? configExamples[slug] ?? `${slug}:
+    return configExamplesV03[slug] ?? configExamplesV04[slug] ?? configExamples[slug] ?? `${slug}:
 end`;
   }
 
   if (version >= "0.2.0") {
-    return configExamplesV02[slug] ?? configExamples[slug] ?? `${slug}:
+    return configExamplesV02[slug] ?? configExamplesV04[slug] ?? configExamples[slug] ?? `${slug}:
 end`;
   }
 

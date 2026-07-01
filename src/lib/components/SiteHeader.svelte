@@ -37,6 +37,7 @@
   const links = [
     { href: withBase("/"), label: "Home" },
     { href: withBase("/wiki"), label: "Wiki" },
+    { href: withBase("/ecosystem"), label: "Ecosystem" },
     { href: withBase("/news"), label: "News" },
     { href: withBase("/backstory"), label: "Backstory" }
   ];

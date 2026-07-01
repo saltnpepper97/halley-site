@@ -7,6 +7,8 @@ export type NewsPost = {
   slug: string;
   title: string;
   version: string;
+  // ISO date (YYYY-MM-DD) the release shipped or the post was published.
+  date: string;
   eyebrow: string;
   // "release" is a shipped version; "preview" is a forward-looking teaser
   // that hides release-only chrome (version badge, install commands).
@@ -26,9 +28,132 @@ export type NewsPost = {
 
 export const newsPosts: NewsPost[] = [
   {
+    slug: "glass-and-gravity",
+    title: "Glass and Gravity",
+    version: "v0.5.0",
+    date: "2026-06-30",
+    eyebrow: "Release News",
+    summary: "Halley v0.5.0 is a wide release: a brand-new native portal backend, frosted-glass effects, animated field backgrounds, the initial Halley Lift and Apogee releases, deeper input tuning, animation polish, and a steadier nested/session story.",
+    intro: [
+      "Halley's fifth release is where the field gets both clearer and heavier: clearer because windows, overlays, bearings, Aperture, and the field background itself can now be drawn by the compositor; heavier because more of the desktop stack is owned by Halley itself.",
+      "v0.5.0 is also one of the broadest updates so far. It ships Halley Lift and Apogee for the first time, adds Halley's own xdg-desktop-portal backend for screenshots and screencasts, exposes real libinput and gesture controls, sharpens the session/nested split, and lands a long run of animation, fullscreen, resize, and game-path fixes."
+    ],
+    features: [
+      {
+        title: "Frosted-glass effects",
+        description: "A new effects block controls backdrop blur for overlays, windows, and layer-shell clients, with shadows moved out of decorations and into renderer-level effects."
+      },
+      {
+        title: "Animated field backgrounds",
+        description: "The new background/gesso block can render a solid background, a classic image, or a spatial field shader. The builtin space shader pans and zooms with each monitor's Field camera and animates without stealing the desktop's redraw cadence."
+      },
+      {
+        title: "Brand-new Halley portal",
+        description: "v0.5.0 introduces xdg-desktop-portal-halley, a native portal backend for ScreenCast and Screenshot requests instead of relying on the wlr capture backend."
+      },
+      {
+        title: "Portal diagnostics",
+        description: "halleyctl portal status and halleyctl portal version report backend discovery, compositor IPC, advertised sources, cursor modes, and version details."
+      },
+      {
+        title: "Halley Lift arrives",
+        description: "The initial Halley Lift release adds a compositor-integrated command palette for apps, nodes, clusters, actions, config search, and cluster drafts."
+      },
+      {
+        title: "Lift terminal mode",
+        description: "term, /term, and /t searches run the typed command line inside the configured terminal through the user's interactive shell, so aliases, pipes, and quoting work."
+      },
+      {
+        title: "Lift polish and speed",
+        description: "Background icon decoding, persistent icon indexing, caret settings, outline borders, search glyphs, apps-mode glyphs, and fallback row icons make Lift feel faster and more finished."
+      },
+      {
+        title: "Input and gestures",
+        description: "Touchpad, mouse, per-device libinput overrides, touch passthrough, pinch zoom, swipe bindings, and multi-finger holds are now configurable from Halley config."
+      },
+      {
+        title: "Apogee arrives",
+        description: "v0.5.0 introduces Apogee as Halley's overview surface for seeing windows and cluster cores spatially instead of losing them behind the current focus."
+      },
+      {
+        title: "Alt+Tab in motion",
+        description: "The focus-cycle switcher now opens with quick fade/scale motion and animates between candidates with smoother carousel-style card movement."
+      },
+      {
+        title: "Apogee across monitors",
+        description: "The new overview can open on every active monitor at once, improves preview capture scheduling, tightens hovered-window feedback, and avoids mutating the desktop until close animation finishes."
+      },
+      {
+        title: "Apogee cluster preview",
+        description: "Apogee now always shows the field overview even with a cluster workspace open. Hovering or keyboard-focusing a cluster core dissolves its icon and expands in place into a live cluster viewport — master, stack, and overflow — so you can peek into a cluster without leaving the overview."
+      },
+      {
+        title: "Keyboard-navigable Apogee",
+        description: "Apogee gains full keyboard navigation anchored on the last-focused window, so arrow-key selection stays oriented around where you came from instead of snapping back to the grid."
+      },
+      {
+        title: "Cluster workspace animations",
+        description: "Opening a cluster cascades tiled members in from the left with a per-member stagger and tunes the stacking card grow-in; closing sucks each member into its core. A new animations.cluster block controls open and close timing per layout."
+      },
+      {
+        title: "Inertial field zoom",
+        description: "Camera zoom now behaves like a powered lens, injecting velocity into log view-size space so repeated inputs accelerate and then coast with configurable friction."
+      },
+      {
+        title: "Fullscreen and resize fixes",
+        description: "Fullscreen exits animate back to restored geometry, genuine exits restore the previous camera, and border resize handling gets clearer edge grabs, hover handles, and persistent raise behavior."
+      },
+      {
+        title: "Maximize and fullscreen, exclusive",
+        description: "Maximize and fullscreen are now mutually exclusive per monitor: entering one exits the other, and a client unmaximize can no longer dismiss a user-initiated fullscreen. Both now ease the camera on the same fixed curve as the window grow and shrink, removing the asymptotic settle that made the zoom feel stuck near the end."
+      },
+      {
+        title: "Nested on purpose",
+        description: "halley --nested explicitly launches the winit backend in a visible host window without replacing the session IPC socket or running full-session autostart."
+      },
+      {
+        title: "Portal chooser overlay",
+        description: "Portal capture gets a Halley-native source chooser with monitor picking, window picking, direct single-source selection, and screenshot-style hovered-window highlighting."
+      },
+      {
+        title: "Rendering stability",
+        description: "Blur rendering now captures the framebuffer at the right z-order, masks transparent layer-shell surfaces correctly, survives per-frame blur failures, and handles overlay-only frames."
+      },
+      {
+        title: "GPU-accelerated clients and persistent shells",
+        description: "Halley now binds its EGL display to Wayland so GPU-accelerated clients (Quickshell, Qt/EGL, GL apps) get a server-side wl_drm and stop crashing with EGL_BAD_DISPLAY or EGL_BAD_SURFACE. Persistent layer-shell panels such as bars and launchers also no longer swallow hover-focus or clicks meant for the desktop behind them."
+      },
+      {
+        title: "Game and Xwayland paths",
+        description: "SDL apps can fall back to X11/Xwayland again, RandR primary output state is more reliable, and fullscreen/popup behavior gets another round of Steam and game-focused fixes."
+      },
+      {
+        title: "Games go fullscreen on launch",
+        description: "Game-like windows (steam_app_*, gamescope) now auto-fullscreen on top of whatever layout they joined once their app id arrives, mirroring what most games request via set_fullscreen anyway."
+      }
+    ],
+    install: {
+      aur: ["yay -S halley", "paru -S halley", "yay -S halley-full", "paru -S halley-full", "yay -S halley-lift", "paru -S halley-lift"],
+      aurDev: ["yay -S halley-git", "paru -S halley-git"],
+      source: "git clone https://github.com/saltnpepper97/halley\ncd halley\ngit checkout v0.5.0\ncargo build --release"
+    },
+    notes: [
+      "The wiki now defaults to v0.5.0 while v0.4.0 and earlier releases remain available from the version picker.",
+      "AUR packaging adds halley-git for the latest source build, halley-lift for the standalone command palette, and halley-full as the ecosystem bundle. For v0.5.0, halley-full installs Halley with Lift and selected first-party ecosystem pieces; future ecosystem apps such as Aperture will join halley-full while remaining individually installable.",
+      "Existing decorations.shadows config is migrated into effects.shadows by the updater, but the legacy key is no longer parsed after that move. New installs also get the background/gesso defaults for the animated builtin space shader.",
+      "Packaged portal configuration now prefers the new xdg-desktop-portal-halley backend for capture while GTK remains the fallback for other portal interfaces."
+    ],
+    thanks: [
+      "Thanks to everyone testing portals, OBS and Discord capture paths, Lift workflows, Apogee overview behavior, blur-heavy configs, nested compositor sessions, and touchpad gestures during the v0.5 cycle.",
+      "The reports around capture black frames, popup blur, icon stalls, Apogee previews, fullscreen restoration, and device behavior shaped this release directly."
+    ],
+    closing: "Glass makes the field readable; gravity keeps it grounded."
+  },
+  {
     slug: "the-ecosystem-begins",
     title: "The Ecosystem Begins",
     version: "v0.5.0",
+    date: "2026-06-14",
     eyebrow: "On the Horizon",
     kind: "preview",
     summary: "A look ahead: Halley's first ecosystem app — a compositor-integrated app launcher — is on approach in the next release, alongside a new halley-full package for everything the ecosystem will carry.",
@@ -62,9 +187,10 @@ export const newsPosts: NewsPost[] = [
     closing: "More to come as it gets closer."
   },
   {
-    slug: "fourth-orbit",
-    title: "Fourth Orbit",
+    slug: "big-picture",
+    title: "Big Picture",
     version: "v0.4.0",
+    date: "2026-06-12",
     eyebrow: "Release News",
     summary: "Halley v0.4.0 brings compositor fullscreen controls, Gamescope launch support, fixed-size and translucent window rules, and deeper game/session stability.",
     intro: [
@@ -119,12 +245,13 @@ export const newsPosts: NewsPost[] = [
       "Thanks to everyone testing fullscreen games, Steam workflows, cluster layouts, config reloads, and native sessions through the fourth release cycle.",
       "The detailed reports around pointer locks, stacked clusters, tiled transitions, popup placement, and fullscreen restore behavior shaped this release directly."
     ],
-    closing: "Fourth orbit clears the path for the next one."
+    closing: "v0.4.0 clears the path for the next one."
   },
   {
     slug: "v0-3-2-small-fixes",
     title: "0.3.2 Small Fixes",
     version: "v0.3.2",
+    date: "2026-05-31",
     eyebrow: "Release News",
     summary: "Halley v0.3.2 is a focused patch for stale rendered textures in tiled cluster members.",
     intro: [
@@ -159,16 +286,17 @@ export const newsPosts: NewsPost[] = [
       "Thanks to the users who caught the tiled cluster stale-texture behavior quickly after v0.3.1.",
       "The focused reproduction kept this patch small."
     ],
-    closing: "0.3.2 keeps the third orbit steady."
+    closing: "0.3.2 keeps the 0.3 line steady."
   },
   {
     slug: "v0-3-1-hotfix",
     title: "0.3.1 Hotfix",
     version: "v0.3.1",
+    date: "2026-05-31",
     eyebrow: "Release News",
     summary: "Halley v0.3.1 is a focused hotfix for landmark/window overlap transfer and fullscreen game reveal regressions in v0.3.0.",
     intro: [
-      "Halley v0.3.1 is a small emergency release for two regressions found after the third orbit release.",
+      "Halley v0.3.1 is a small emergency release for two regressions found after the v0.3.0 release.",
       "This update keeps the v0.3.0 presentation and overlap model intact while restoring the missing handoff paths that made landmark collisions and fullscreen game launches unreliable."
     ],
     features: [
@@ -199,12 +327,13 @@ export const newsPosts: NewsPost[] = [
       "Thanks to the users who reproduced the landmark collision and fullscreen game launch regressions quickly after v0.3.0.",
       "The focused reports made it possible to isolate both fixes without rolling back the rest of the release."
     ],
-    closing: "0.3.1 steadies the third orbit."
+    closing: "0.3.1 steadies the 0.3 line."
   },
   {
-    slug: "third-orbit",
-    title: "Third Orbit",
+    slug: "steady-field",
+    title: "Steady Field",
     version: "v0.3.0",
+    date: "2026-05-30",
     eyebrow: "Release News",
     summary: "Halley v0.3.0 is preparing to launch with normal overlapping windows, presentation-only maximize and fullscreen, stricter config diagnostics, and smoother native tty performance.",
     intro: [
@@ -259,12 +388,13 @@ export const newsPosts: NewsPost[] = [
       "Thanks to everyone testing overlap, fullscreen games, native tty behavior, config reloads, and multi-monitor workflows during the 0.3.0 cycle.",
       "The detailed bug reports around maximize, fullscreen, cursor pacing, and collapsed-node motion directly shaped this release."
     ],
-    closing: "Third orbit makes the field feel steadier."
+    closing: "v0.3.0 makes the field feel steadier."
   },
   {
-    slug: "second-orbit",
-    title: "Second Orbit",
+    slug: "daily-driver",
+    title: "Daily Driver",
     version: "v0.2.0",
+    date: "2026-04-28",
     eyebrow: "Release News",
     summary: "Halley v0.2.0 is out with focus cycling, maximize sessions, cluster slots, session launch support, and native rendering fixes.",
     intro: [
@@ -323,12 +453,13 @@ export const newsPosts: NewsPost[] = [
       "Thanks to everyone who tested fullscreen games, native tty sessions, config reloads, and multi-monitor workflows after the first release.",
       "The feedback from those rough edges directly shaped this release."
     ],
-    closing: "Second orbit is about daily-driver stability."
+    closing: "v0.2.0 is about daily-driver stability."
   },
   {
-    slug: "first-orbit",
-    title: "First Orbit",
+    slug: "first-light",
+    title: "First Light",
     version: "v0.1.0",
+    date: "2026-04-17",
     eyebrow: "Release News",
     summary: "Halley's first public release is here.",
     intro: [
@@ -395,6 +526,43 @@ export const newsPosts: NewsPost[] = [
       "Thanks to everyone following the project this early.",
       "There is a long way to go, and that is part of the point."
     ],
-    closing: "First orbit starts here."
+    closing: "This is where it starts."
   }
 ];
+
+const MONTHS = [
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+];
+
+// Format an ISO date string (YYYY-MM-DD) without going through Date(), so the
+// rendered day never shifts across timezones during prerender or hydration.
+export function formatNewsDate(iso: string): string {
+  const [year, month, day] = iso.split("-").map(Number);
+  return `${MONTHS[month - 1]} ${day}, ${year}`;
+}
+
+// Short label used on feed timeline markers, e.g. "Jun 30 2026".
+export function formatNewsDateShort(iso: string): string {
+  const [year, month, day] = iso.split("-").map(Number);
+  return `${MONTHS[month - 1].slice(0, 3)} ${day} ${year}`;
+}
+
+// Classifies a post for the small status chip shown on cards and articles.
+export function newsKindLabel(post: NewsPost): string {
+  if (post.kind === "preview") return "Preview";
+  if (/^v\d+\.\d+\.[1-9]/.test(post.version)) return "Patch";
+  return "Release";
+}
+
+// Posts sorted newest-first by date, with array order as a stable tiebreaker.
+export const sortedNewsPosts: NewsPost[] = newsPosts
+  .map((post, index) => ({ post, index }))
+  .sort((a, b) =>
+    a.post.date === b.post.date
+      ? a.index - b.index
+      : a.post.date < b.post.date
+        ? 1
+        : -1
+  )
+  .map((entry) => entry.post);

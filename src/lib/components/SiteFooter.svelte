@@ -5,10 +5,9 @@
   const year = new Date().getFullYear();
   const withBase = (href: string) => `${base}${href}`;
 
-  // Derive the orbit label from the latest shipped release (skip preview teasers)
-  // so this never goes stale.
+  // Show the latest shipped release (skip preview teasers) so this never goes stale.
   const latestRelease = newsPosts.find((post) => post.kind !== "preview");
-  const latestOrbit = latestRelease?.title.split(" ")[0] ?? "First";
+  const latestVersion = latestRelease?.version ?? "v0.1.0";
 
   const columns = [
     {
@@ -52,7 +51,7 @@
 
     <div class="footer-bottom">
       <p>© {year} Halley. Built for deliberate desktops.</p>
-      <p class="orbit-note">{latestOrbit} orbit in progress.</p>
+      <p class="orbit-note">Latest release {latestVersion}.</p>
     </div>
   </div>
 </footer>

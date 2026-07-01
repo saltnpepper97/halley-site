@@ -19,6 +19,7 @@ export const wikiNavigationForVersion = (version: string): WikiNavItem[] => [
       { label: "Arch", href: "/wiki/install#install-arch" },
       { label: "Source", href: "/wiki/install#install-source" },
       { label: "Startup Options", href: "/wiki/install#install-config" },
+      { label: "Nested", href: "/wiki/install#install-nested" },
       { label: "Display Manager", href: "/wiki/install#install-session" },
       { label: "Desktop Portal", href: "/wiki/install#install-portal" }
     ]
@@ -51,4 +52,4 @@ export const wikiNavigationForVersion = (version: string): WikiNavItem[] => [
   }
 ];
 
-export const wikiNavigation = wikiNavigationForVersion("0.4.0");
+export const wikiNavigation = wikiNavigationForVersion("0.5.0");

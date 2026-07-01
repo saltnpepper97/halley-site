@@ -1,14 +1,14 @@
 <script lang="ts">
   import NewsFeed from "$lib/components/news/NewsFeed.svelte";
   import SiteHeader from "$lib/components/SiteHeader.svelte";
-  import { newsPosts } from "$lib/news/releases";
+  import { sortedNewsPosts } from "$lib/news/releases";
 </script>
 
 <svelte:head>
   <title>News | Halley</title>
   <meta
     name="description"
-    content="Halley news and release announcements, including the latest v0.4.0 Fourth Orbit release."
+    content="Halley news and release announcements, including the latest v0.5.0 Glass and Gravity release."
   />
 </svelte:head>
 
@@ -16,7 +16,7 @@
   <SiteHeader />
 
   <main class="news-shell">
-    <NewsFeed posts={newsPosts} />
+    <NewsFeed posts={sortedNewsPosts} />
   </main>
 </div>
 

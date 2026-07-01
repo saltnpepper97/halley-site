@@ -1,24 +1,37 @@
 <script lang="ts">
   import { browser } from "$app/environment";
+  import { base } from "$app/paths";
   import { page } from "$app/state";
   import CodeBlock from "$lib/components/CodeBlock.svelte";
   import { defaultWikiVersion, wikiVersionFromSearch } from "$lib/wiki/versions";
+
+  const withBase = (href: string) => `${base}${href}`;
 
   const activeVersion = () => browser ? wikiVersionFromSearch(page.url.searchParams) : defaultWikiVersion;
   const sourceInstall = () => `git clone https://github.com/saltnpepper97/halley
 cd halley
 git checkout v${activeVersion().label}
 cargo build --release`;
+  const aurStable = `yay -S halley
+paru -S halley`;
+  const aurGit = `yay -S halley-git
+paru -S halley-git`;
+  const aurLift = `yay -S halley-lift
+paru -S halley-lift`;
+  const aurFull = `yay -S halley-full
+paru -S halley-full`;
   const helpCommand = "halley --help";
   const configCommand = "halley --config ~/.config/halley/halley.rune";
-  const portalPackages = `xdg-desktop-portal-wlr
+  const portalPackages = `xdg-desktop-portal-halley
 xdg-desktop-portal-gtk`;
   const portalEnvironment = `XDG_CURRENT_DESKTOP=Halley
 XDG_SESSION_TYPE=wayland`;
   const portalRestart = `systemctl --user restart xdg-desktop-portal.service
-systemctl --user start xdg-desktop-portal-wlr.service`;
+systemctl --user start xdg-desktop-portal-halley.service`;
   const sessionCommand = "halley-session";
   const sessionWrapperCommand = "halley --session";
+  const nestedCommand = "halley --nested";
+  const portalStatusCommand = "halleyctl portal status";
 </script>
 
 <section id="install" class="install-guide surface hud-corners">
@@ -49,8 +62,12 @@ systemctl --user start xdg-desktop-portal-wlr.service`;
     <ul>
       <li><code>xwayland-satellite</code> for X11 app support</li>
       <li><code>gamescope</code> for wrapping game launches through <code>halleyctl gamescope</code></li>
-      <li><code>xdg-desktop-portal-wlr</code> plus <code>xdg-desktop-portal-gtk</code> for portal screenshot and screencast flows</li>
-      <li><code>fuzzel</code> and a Wayland terminal if using the default launch bindings</li>
+      <li><code>xdg-desktop-portal-halley</code> plus <code>xdg-desktop-portal-gtk</code> for portal screenshot, screencast, and common dialog flows</li>
+      <li>A Wayland terminal if using the default launch bindings</li>
+      <li>
+        An app launcher such as <code>fuzzel</code> or <a class="req-link" href={withBase("/ecosystem/lift")}>Halley Lift</a>.
+        Both launch apps; Lift is Halley-native and also searches nodes, clusters, actions, and config over IPC
+      </li>
     </ul>
   </article>
 
@@ -58,16 +75,32 @@ systemctl --user start xdg-desktop-portal-wlr.service`;
     <div>
       <p class="card-kicker">Arch Linux</p>
       <h2>AUR packages</h2>
-      <p>Install the stable package with your preferred AUR helper.</p>
+      <p>Install the stable compositor package with your preferred AUR helper.</p>
     </div>
 
-    <CodeBlock code="yay -S halley" label="yay" />
-    <CodeBlock code="paru -S halley" label="paru" />
+    <CodeBlock code={aurStable} label="stable compositor" />
 
-    <p>For the latest commit, install the development package.</p>
+    <p>For the latest source package, use <code>halley-git</code>.</p>
 
-    <CodeBlock code="yay -S halley-dev" label="yay dev" />
-    <CodeBlock code="paru -S halley-dev" label="paru dev" />
+    <CodeBlock code={aurGit} label="git package" />
+
+    <p>
+      Halley Lift ships separately for users who only want the command palette. The ecosystem bundle,
+      <code>halley-full</code>, installs Halley with Lift and selected first-party ecosystem pieces now; future
+      ecosystem apps such as Aperture will be added there while remaining individually installable.
+    </p>
+
+    <div class="portal-grid">
+      <div class="portal-panel">
+        <span>Command palette</span>
+        <CodeBlock code={aurLift} label="lift package" />
+      </div>
+
+      <div class="portal-panel">
+        <span>Ecosystem bundle</span>
+        <CodeBlock code={aurFull} label="full package" />
+      </div>
+    </div>
   </article>
 
   <article id="install-source" class="install-card">
@@ -87,7 +120,7 @@ systemctl --user start xdg-desktop-portal-wlr.service`;
       <p class="card-kicker">Startup Options</p>
       <h2>Help and config selection</h2>
       <p>
-        v0.4.0 documents startup flags through <code>halley --help</code>. Use
+        Current Halley releases document startup flags through <code>halley --help</code>. Use
         <code>halley --config</code> to launch with an explicit config file; that path takes precedence over
         <code>HALLEY_WL_CONFIG</code>, the user config, the system config, and generated defaults.
       </p>
@@ -95,6 +128,20 @@ systemctl --user start xdg-desktop-portal-wlr.service`;
 
     <CodeBlock code={helpCommand} label="help" />
     <CodeBlock code={configCommand} label="explicit config" />
+  </article>
+
+  <article id="install-nested" class="install-card">
+    <div>
+      <p class="card-kicker">Nested</p>
+      <h2>Run Halley inside another compositor</h2>
+      <p>
+        v0.5.0 adds <code>halley --nested</code> as the explicit nested launcher. It forces the winit backend,
+        opens a visible host window, creates a nested Wayland socket for test clients, and skips full-session
+        startup behavior such as session autostart.
+      </p>
+    </div>
+
+    <CodeBlock code={nestedCommand} label="nested compositor" />
   </article>
 
   <article id="install-session" class="install-card">
@@ -123,9 +170,9 @@ systemctl --user start xdg-desktop-portal-wlr.service`;
       <p class="card-kicker">Desktop Portal</p>
       <h2>Screenshot and screencast portal setup</h2>
       <p>
-        Halley exposes the wlr screencopy protocol used by <code>xdg-desktop-portal-wlr</code>.
-        Install the portal backend plus a general portal implementation so apps can request screen
-        capture through the standard desktop portal APIs.
+        v0.5.0 ships Halley's native <code>xdg-desktop-portal-halley</code> backend for ScreenCast and Screenshot
+        requests. Install it with a general portal implementation so apps can request capture and still get
+        file/dialog portal support from GTK.
       </p>
     </div>
 
@@ -142,12 +189,13 @@ systemctl --user start xdg-desktop-portal-wlr.service`;
     </div>
 
     <p>
-      When Halley starts its native tty session, it exports the Wayland and desktop environment to
-      D-Bus/systemd and queues a restart of <code>xdg-desktop-portal.service</code> plus a start of
-      <code>xdg-desktop-portal-wlr.service</code>. If portal capture does not appear after login, restart those user services manually.
+      Packaged installs should prefer Halley's portal backend for capture and GTK for other interfaces. If portal
+      capture does not appear after login, restart the user services manually and check the backend with
+      <code>halleyctl portal status</code>.
     </p>
 
     <CodeBlock code={portalRestart} label="portal services" />
+    <CodeBlock code={portalStatusCommand} label="portal diagnostics" />
   </article>
 </section>
 
@@ -215,6 +263,16 @@ systemctl --user start xdg-desktop-portal-wlr.service`;
   .optional-title {
     color: var(--text-1);
     font-weight: 750;
+  }
+
+  .req-link {
+    color: var(--accent-soft);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .req-link:hover {
+    text-decoration: underline;
   }
 
   .card-kicker {

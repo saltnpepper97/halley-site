@@ -24,7 +24,7 @@
         <p class="eyebrow">Wayland compositor</p>
         <h1 id="home-title">Periodic. Precise. Returning.</h1>
         <p class="lede">Windows as nodes, displays as fields, clusters as deliberate workspaces.</p>
-        <a class="release-link" href={withBase("/news/fourth-orbit")}>Halley v0.4.0: Fourth Orbit</a>
+        <a class="release-link" href={withBase("/news/glass-and-gravity")}>Halley v0.5.0: Glass and Gravity</a>
         <a class="horizon-link" href={withBase("/news/the-ecosystem-begins")}>On the horizon — Halley's first ecosystem app</a>
 
         <div class="hero-actions" aria-label="Primary actions">
