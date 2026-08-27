@@ -197,8 +197,6 @@
 
 <style>
   .page-container {
-    position: relative;
-    z-index: 1;
     min-height: 100vh;
   }
 
@@ -1078,7 +1076,7 @@
   @media (max-width: 880px) {
     .home-shell {
       width: min(100% - 1rem, var(--page-max-width));
-      padding-top: 1.5rem;
+      padding-top: 4.5rem;
     }
 
     .hero-section,
@@ -1112,6 +1110,11 @@
 
     .feature-copy {
       max-width: 100%;
+    }
+
+    /* Keep each visual clear of its numbered card marker on mobile. */
+    .feature-art {
+      margin-top: 4.5rem;
     }
 
     .feature-intro-copy {

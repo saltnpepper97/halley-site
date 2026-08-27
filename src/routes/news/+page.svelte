@@ -33,10 +33,10 @@
     padding: 1.25rem 0 6rem;
   }
 
-  @media (max-width: 560px) {
+  @media (max-width: 880px) {
     .news-shell {
       width: min(100% - 1rem, var(--page-max-width));
-      padding: 0.75rem 0 4rem;
+      padding: 4.5rem 0 4rem;
     }
   }
 </style>

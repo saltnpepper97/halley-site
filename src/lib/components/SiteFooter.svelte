@@ -59,7 +59,7 @@
 <style>
   .site-footer {
     position: relative;
-    z-index: 2;
+    z-index: 0;
     padding: clamp(1.25rem, 4vw, 3rem) 1rem clamp(1.25rem, 3vw, 2rem);
   }
 

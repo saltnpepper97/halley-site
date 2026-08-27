@@ -413,9 +413,10 @@
     }
   }
 
-  @media (max-width: 780px) {
+  @media (max-width: 880px) {
     .backstory-shell {
       width: min(100% - 1rem, var(--page-max-width));
+      padding-top: 4.5rem;
       padding-bottom: 4rem;
     }
 
