@@ -8,10 +8,11 @@
   const withBase = (href: string) => `${base}${href}`;
 
   const activeVersion = () => browser ? wikiVersionFromSearch(page.url.searchParams) : defaultWikiVersion;
+  const isV06 = () => activeVersion().value >= "0.6.0";
   const sourceInstall = () => `git clone https://github.com/saltnpepper97/halley
 cd halley
 git checkout v${activeVersion().label}
-cargo build --release`;
+cargo build --release${isV06() ? " --workspace" : ""}`;
   const aurStable = `yay -S halley
 paru -S halley`;
   const aurGit = `yay -S halley-git
@@ -30,7 +31,7 @@ XDG_SESSION_TYPE=wayland`;
 systemctl --user start xdg-desktop-portal-halley.service`;
   const sessionCommand = "halley-session";
   const sessionWrapperCommand = "halley --session";
-  const nestedCommand = "halley --nested";
+  const nestedCommand = () => isV06() ? "halley --winit" : "halley --nested";
   const portalStatusCommand = "halleyctl portal status";
 </script>
 
@@ -52,7 +53,7 @@ systemctl --user start xdg-desktop-portal-halley.service`;
     </div>
 
     <ul>
-      <li>DRM/KMS-capable graphics stack with GBM, EGL, and OpenGL support</li>
+      <li>DRM/KMS-capable graphics stack with GBM, EGL, and {isV06() ? "OpenGL ES" : "OpenGL"} support</li>
       <li>A seat/session backend through <code>libseat</code>, such as <code>seatd</code> or logind</li>
       <li><code>libinput</code> and <code>udev</code> access on a real TTY for the native backend</li>
       <li>Rust and Cargo if building from source</li>
@@ -60,8 +61,14 @@ systemctl --user start xdg-desktop-portal-halley.service`;
 
     <p class="optional-title">Optional, but commonly useful:</p>
     <ul>
-      <li><code>xwayland-satellite</code> for X11 app support</li>
-      <li><code>gamescope</code> for wrapping game launches through <code>halleyctl gamescope</code></li>
+      {#if isV06()}
+        <li>An <code>Xwayland</code> server executable for X11 app support; Halley starts and manages it natively</li>
+      {:else}
+        <li><code>xwayland-satellite</code> for X11 app support</li>
+      {/if}
+      {#if !isV06()}
+        <li><code>gamescope</code> for wrapping game launches through <code>halleyctl gamescope</code></li>
+      {/if}
       <li><code>xdg-desktop-portal-halley</code> plus <code>xdg-desktop-portal-gtk</code> for portal screenshot, screencast, and common dialog flows</li>
       <li>A Wayland terminal if using the default launch bindings</li>
       <li>
@@ -86,8 +93,7 @@ systemctl --user start xdg-desktop-portal-halley.service`;
 
     <p>
       Halley Lift ships separately for users who only want the command palette. The ecosystem bundle,
-      <code>halley-full</code>, installs Halley with Lift and selected first-party ecosystem pieces now; future
-      ecosystem apps such as Aperture will be added there while remaining individually installable.
+      <code>halley-full</code>, installs Halley with its available first-party ecosystem pieces.
     </p>
 
     <div class="portal-grid">
@@ -112,18 +118,34 @@ systemctl --user start xdg-desktop-portal-halley.service`;
 
     <CodeBlock code={sourceInstall()} label="source build" />
 
-    <p>The compositor binary will be available at <code>target/release/halley</code>.</p>
+    {#if isV06()}
+      <p>
+        The workspace build produces <code>halley</code>, <code>halleyctl</code>, <code>halley-lift</code>, and
+        <code>xdg-desktop-portal-halley</code> in <code>target/release</code>.
+      </p>
+    {:else}
+      <p>The compositor binary will be available at <code>target/release/halley</code>.</p>
+    {/if}
   </article>
 
   <article id="install-config" class="install-card">
     <div>
       <p class="card-kicker">Startup Options</p>
       <h2>Help and config selection</h2>
-      <p>
-        Current Halley releases document startup flags through <code>halley --help</code>. Use
-        <code>halley --config</code> to launch with an explicit config file; that path takes precedence over
-        <code>HALLEY_WL_CONFIG</code>, the user config, the system config, and generated defaults.
-      </p>
+      {#if isV06()}
+        <p>
+          Halley documents startup flags through <code>halley --help</code>. Use <code>-c</code> or
+          <code>--config</code> for an explicit file. Otherwise Halley reads
+          <code>$XDG_CONFIG_HOME/halley/halley.rune</code>, or <code>~/.config/halley/halley.rune</code> when
+          <code>XDG_CONFIG_HOME</code> is unset, and creates a default file when needed.
+        </p>
+      {:else}
+        <p>
+          Current Halley releases document startup flags through <code>halley --help</code>. Use
+          <code>halley --config</code> to launch with an explicit config file; that path takes precedence over
+          <code>HALLEY_WL_CONFIG</code>, the user config, the system config, and generated defaults.
+        </p>
+      {/if}
     </div>
 
     <CodeBlock code={helpCommand} label="help" />
@@ -134,14 +156,21 @@ systemctl --user start xdg-desktop-portal-halley.service`;
     <div>
       <p class="card-kicker">Nested</p>
       <h2>Run Halley inside another compositor</h2>
-      <p>
-        v0.5.0 adds <code>halley --nested</code> as the explicit nested launcher. It forces the winit backend,
-        opens a visible host window, creates a nested Wayland socket for test clients, and skips full-session
-        startup behavior such as session autostart.
-      </p>
+      {#if isV06()}
+        <p>
+          Use <code>halley --winit</code> to run the rewritten compositor in a visible host window. The nested
+          backend creates its own Wayland socket and skips native-session device ownership and autostart.
+        </p>
+      {:else}
+        <p>
+          v0.5.0 adds <code>halley --nested</code> as the explicit nested launcher. It forces the winit backend,
+          opens a visible host window, creates a nested Wayland socket for test clients, and skips full-session
+          startup behavior such as session autostart.
+        </p>
+      {/if}
     </div>
 
-    <CodeBlock code={nestedCommand} label="nested compositor" />
+    <CodeBlock code={nestedCommand()} label="nested compositor" />
   </article>
 
   <article id="install-session" class="install-card">
@@ -170,9 +199,9 @@ systemctl --user start xdg-desktop-portal-halley.service`;
       <p class="card-kicker">Desktop Portal</p>
       <h2>Screenshot and screencast portal setup</h2>
       <p>
-        v0.5.0 ships Halley's native <code>xdg-desktop-portal-halley</code> backend for ScreenCast and Screenshot
-        requests. Install it with a general portal implementation so apps can request capture and still get
-        file/dialog portal support from GTK.
+        {isV06() ? "Halley includes a rewritten" : "v0.5.0 ships Halley's native"}
+        <code>xdg-desktop-portal-halley</code> backend for ScreenCast and Screenshot requests. Install it with a
+        general portal implementation so apps can request capture and still get file/dialog portal support from GTK.
       </p>
     </div>
 

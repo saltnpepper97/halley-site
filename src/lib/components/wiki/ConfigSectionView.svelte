@@ -21,7 +21,7 @@
 
   <div class="note-card">
     <strong>Defaults</strong>
-    <p>Defaults shown here are the effective builtin defaults from <code>RuntimeTuning::builtin_defaults()</code>.</p>
+    <p>Defaults shown here are the effective built-in defaults for the selected wiki version.</p>
   </div>
 
   <section class="example-section" aria-labelledby="default-config-heading">
@@ -94,12 +94,6 @@
   .note-card strong {
     color: var(--accent-soft);
     font-family: var(--font-display);
-  }
-
-  .note-card code {
-    color: var(--ion);
-    font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
-    font-size: 0.9em;
   }
 
   .example-section {

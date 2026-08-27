@@ -188,7 +188,7 @@
     justify-content: center;
     width: 2rem;
     height: 2rem;
-    color: #170b06;
+    color: var(--on-accent);
     background: linear-gradient(135deg, var(--accent), var(--accent-soft));
     border-radius: 999px;
     font-family: var(--font-display);

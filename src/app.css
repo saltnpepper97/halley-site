@@ -15,6 +15,18 @@
   --accent-muted: #c95624;
   --ion: #7ddcff;
   --orbit: #5fb8e6;
+  --on-accent: #170b06;
+  /* Readable on --accent-deep, which is dark in both themes. */
+  --on-accent-deep: #f6efe7;
+
+  /*
+    Channel triples for the brand colours, so anything building an rgba() from
+    them (badges, chips, plates) flips with the theme instead of hardcoding the
+    dark palette and going cold on the cream page.
+  */
+  --accent-rgb: 255, 106, 42;
+  --accent-soft-rgb: 255, 155, 84;
+  --ion-rgb: 125, 220, 255;
 
   /* Spatial HUD */
   --hud-line: var(--ion);
@@ -24,9 +36,12 @@
   --coord: #8fcfe6;
 
   /* Backgrounds */
-  --bg-1: #060910;
-  --bg-2: #0d141f;
-  --bg-3: #161f2d;
+  --bg-1: #04070d;
+  --bg-2: #0a111c;
+  --bg-3: #131e2d;
+  /* Hover surface: always a step toward the page's foreground, per theme. */
+  --surface-hover: #131e2d;
+  --chip-base: rgba(9, 13, 18, 0.48);
 
   /* Text */
   --text-1: #f6efe7;
@@ -34,17 +49,35 @@
   --text-3: #7f8a96;
 
   /* Borders / effects */
-  --border-1: rgba(246, 239, 231, 0.1);
-  --border-2: rgba(255, 106, 42, 0.28);
-  --shadow-1: 0 20px 60px rgba(0, 0, 0, 0.45);
+  --border-1: rgba(210, 229, 240, 0.12);
+  --border-2: rgba(255, 106, 42, 0.34);
+  --shadow-1: 0 24px 70px rgba(0, 0, 0, 0.5);
   --glow-1: 0 0 40px rgba(255, 106, 42, 0.28);
   --glow-ion: 0 0 44px rgba(125, 220, 255, 0.16);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 
   /* Layout */
-  --radius-sm: 2px;
-  --radius-md: 3px;
-  --radius-lg: 4px;
-  --radius-xl: 6px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 18px;
+
+  /*
+    Panel glass — one recipe every card on the site composes from, so panels
+    read as one material instead of each stacking its own gradients over the
+    live field. Override --panel-tint alone to make a single panel more or
+    less transparent.
+  */
+  --panel-tint: rgba(9, 15, 25, 0.84);
+  --panel-sheen: linear-gradient(158deg, rgba(125, 220, 255, 0.05), transparent 46%);
+  --panel-blur: blur(14px) saturate(118%);
+  --panel-hairline: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 106, 42, 0.55),
+    rgba(125, 220, 255, 0.18),
+    transparent
+  );
 
   --page-max-width: 1180px;
   --header-height: 4.25rem;
@@ -63,6 +96,12 @@
   --accent-muted: #8d3b1c;
   --ion: #285f73;
   --orbit: #2f7088;
+  --on-accent: #fffaf4;
+  --on-accent-deep: #fffaf4;
+
+  --accent-rgb: 184, 63, 17;
+  --accent-soft-rgb: 143, 47, 12;
+  --ion-rgb: 40, 95, 115;
 
   --hud-line: var(--ion);
   --hud-line-soft: rgba(40, 95, 115, 0.28);
@@ -73,6 +112,8 @@
   --bg-1: #f3eee7;
   --bg-2: #fffaf4;
   --bg-3: #e7ddd2;
+  --surface-hover: #faf1ea;
+  --chip-base: rgba(255, 255, 255, 0.52);
 
   --text-1: #17110d;
   --text-2: #443830;
@@ -83,6 +124,16 @@
   --shadow-1: 0 20px 52px rgba(54, 37, 26, 0.16);
   --glow-1: 0 0 32px rgba(184, 63, 17, 0.16);
   --glow-ion: 0 0 32px rgba(40, 95, 115, 0.12);
+
+  --panel-tint: rgba(253, 249, 243, 0.9);
+  --panel-sheen: linear-gradient(158deg, rgba(40, 95, 115, 0.05), transparent 44%);
+  --panel-hairline: linear-gradient(
+    90deg,
+    transparent,
+    rgba(184, 63, 17, 0.45),
+    rgba(40, 95, 115, 0.2),
+    transparent
+  );
 
   background: var(--bg-1);
   color: var(--text-1);
@@ -100,14 +151,11 @@ html {
 
 body {
   position: relative;
-  isolation: isolate;
   min-height: 100vh;
   padding: 0;
   margin: 0;
-  background:
-    radial-gradient(circle at 14% -8%, rgba(255, 106, 42, 0.32), transparent 27rem),
-    linear-gradient(135deg, rgba(255, 106, 42, 0.06), transparent 28rem),
-    var(--bg-1);
+  /* Every background layer lives in SiteBackground.svelte. Keep this flat. */
+  background: transparent;
   color: var(--text-1);
   font-family: var(--font-body);
   font-size: 16px;
@@ -117,33 +165,20 @@ body {
   overflow-x: hidden;
 }
 
-:root[data-theme="light"] body {
-  background:
-    radial-gradient(circle at 14% -8%, rgba(184, 63, 17, 0.09), transparent 27rem),
-    linear-gradient(135deg, rgba(86, 59, 40, 0.035), transparent 28rem),
-    var(--bg-1);
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
 }
 
-body::before {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  content: "";
-  background:
-    linear-gradient(rgba(246, 239, 231, 0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(246, 239, 231, 0.02) 1px, transparent 1px);
-  background-size: 4rem 4rem;
-  mask-image: radial-gradient(circle at top, black, transparent 72%);
+::view-transition-old(root) {
+  z-index: 1;
 }
 
-:root[data-theme="light"] body::before {
-  background:
-    linear-gradient(rgba(45, 30, 20, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(45, 30, 20, 0.035) 1px, transparent 1px);
+::view-transition-new(root) {
+  z-index: 2;
+  clip-path: circle(0 at var(--theme-wipe-x, 100%) var(--theme-wipe-y, 0%));
 }
-
-/* Starfield lives in src/lib/components/Starfield.svelte (layered + parallax). */
 
 body.no-scroll {
   overflow: hidden;
@@ -290,17 +325,16 @@ canvas {
 .surface {
   position: relative;
   min-width: 0;
-  background:
-    linear-gradient(180deg, rgba(125, 220, 255, 0.04), transparent 30%),
-    rgba(11, 17, 27, 0.92);
+  background: var(--panel-sheen), var(--panel-tint);
   border: 1px solid var(--border-1);
   border-top-color: var(--hud-line-faint);
   border-radius: var(--radius-lg);
   box-shadow:
     var(--shadow-1),
-    inset 0 1px 0 var(--hud-line-soft);
-  backdrop-filter: blur(6px) saturate(120%);
-  -webkit-backdrop-filter: blur(6px) saturate(120%);
+    inset 0 1px 0 var(--hud-line-soft),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.25);
+  backdrop-filter: var(--panel-blur);
+  -webkit-backdrop-filter: var(--panel-blur);
 }
 
 /* Instrument header bar — a single accent line across the top of each card. */
@@ -308,31 +342,10 @@ canvas {
   content: "";
   position: absolute;
   inset: 0 0 auto;
-  height: 1px;
+  height: 2px;
   pointer-events: none;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 106, 42, 0.6),
-    rgba(125, 220, 255, 0.2),
-    transparent
-  );
-}
-
-:root[data-theme="light"] .surface {
-  background:
-    linear-gradient(180deg, rgba(40, 95, 115, 0.05), transparent 30%),
-    rgba(252, 247, 240, 0.94);
-}
-
-:root[data-theme="light"] .surface::after {
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(184, 63, 17, 0.5),
-    rgba(40, 95, 115, 0.22),
-    transparent
-  );
+  background: var(--panel-hairline);
+  opacity: 0.82;
 }
 
 :root[data-theme="light"] .topnav,
@@ -341,7 +354,6 @@ canvas {
 :root[data-theme="light"] .sidebar-scroll,
 :root[data-theme="light"] .footer-card,
 :root[data-theme="light"] .hero-section,
-:root[data-theme="light"] .feature-intro,
 :root[data-theme="light"] .feature-row,
 :root[data-theme="light"] .news-feed,
 :root[data-theme="light"] .release-hero,
@@ -352,25 +364,15 @@ canvas {
 :root[data-theme="light"] .config-section,
 :root[data-theme="light"] .install-guide,
 :root[data-theme="light"] .ipc-reference {
-  background:
-    linear-gradient(135deg, rgba(184, 63, 17, 0.045), transparent 34%),
-    rgba(255, 250, 244, 0.88);
+  background: var(--panel-sheen), var(--panel-tint);
   border-color: var(--border-1);
 }
-
-:root[data-theme="light"] .space-backdrop {
-  background:
-    radial-gradient(circle at 12% 6%, rgba(184, 63, 17, 0.1), transparent 28rem),
-    radial-gradient(circle at 88% 18%, rgba(40, 95, 115, 0.06), transparent 26rem),
-    linear-gradient(180deg, rgba(255, 250, 244, 0.12), rgba(243, 238, 231, 0.76));
-}
-
 
 :root[data-theme="light"] .primary-action,
 :root[data-theme="light"] .support,
 :root[data-theme="light"] .sponsor-action,
 :root[data-theme="light"] .button-primary {
-  color: #fffaf4;
+  color: var(--on-accent);
   background: linear-gradient(135deg, #8f2f0c, #b83f11);
 }
 
@@ -378,14 +380,13 @@ canvas {
 :root[data-theme="light"] .support:hover,
 :root[data-theme="light"] .sponsor-action:hover,
 :root[data-theme="light"] .button-primary:hover {
-  color: #fffaf4;
+  color: var(--on-accent);
 }
 
 :root[data-theme="light"] .secondary-action,
 :root[data-theme="light"] .feature-copy a,
 :root[data-theme="light"] .theme-toggle,
 :root[data-theme="light"] .github,
-:root[data-theme="light"] .back-link,
 :root[data-theme="light"] .mobile-home-link,
 :root[data-theme="light"] .new-user-card,
 :root[data-theme="light"] .section-card,
@@ -460,7 +461,7 @@ canvas {
   color: var(--accent);
   font-family: var(--font-mono);
   font-size: 0.74rem;
-  font-weight: 600;
+  font-weight: 750;
   line-height: 1.2;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -468,10 +469,10 @@ canvas {
 
 .eyebrow::before {
   content: "";
-  width: 0.7rem;
-  height: 1px;
-  background: var(--accent);
-  box-shadow: 0 0 8px var(--accent);
+  width: 1.35rem;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+  box-shadow: 0 0 10px rgba(255, 106, 42, 0.55);
 }
 
 /* Buttons */
@@ -485,25 +486,25 @@ canvas {
   border: 1px solid transparent;
   border-radius: var(--radius-md);
   background: linear-gradient(135deg, var(--accent), var(--accent-soft));
-  color: #170b06;
+  color: var(--on-accent);
   font-weight: 700;
   line-height: 1;
   transition:
-    transform 160ms ease,
+    transform 240ms var(--ease-out),
     background 160ms ease,
     box-shadow 160ms ease;
 }
 
 .button-primary:hover {
   background: linear-gradient(135deg, var(--accent-soft), var(--accent));
-  color: #170b06;
+  color: var(--on-accent);
   box-shadow: var(--glow-1);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
 }
 
 .button-primary:active {
   background: var(--accent-deep);
-  color: var(--text-1);
+  color: var(--on-accent-deep);
   transform: translateY(0);
 }
 
@@ -528,7 +529,7 @@ canvas {
 .button-secondary:hover {
   border-color: var(--accent-muted);
   color: var(--accent);
-  background: var(--bg-3);
+  background: var(--surface-hover);
 }
 
 /* Spatial HUD motif */
@@ -568,27 +569,19 @@ canvas {
 /* Sharp HUD instrument panel (flat + brackets + spatial hover). */
 .panel-hud {
   position: relative;
-  background:
-    linear-gradient(180deg, rgba(125, 220, 255, 0.045), transparent 32%),
-    rgba(11, 17, 27, 0.92);
+  background: var(--panel-sheen), var(--panel-tint);
   border: 1px solid var(--border-1);
   border-top-color: var(--hud-line-faint);
   border-radius: var(--radius-lg);
   box-shadow:
     var(--shadow-1),
     inset 0 1px 0 var(--hud-line-soft);
-  backdrop-filter: blur(6px) saturate(120%);
-  -webkit-backdrop-filter: blur(6px) saturate(120%);
+  backdrop-filter: var(--panel-blur);
+  -webkit-backdrop-filter: var(--panel-blur);
   transition:
-    border-color 180ms ease,
-    box-shadow 180ms ease,
-    transform 180ms ease;
-}
-
-:root[data-theme="light"] .panel-hud {
-  background:
-    linear-gradient(180deg, rgba(40, 95, 115, 0.06), transparent 32%),
-    rgba(252, 247, 240, 0.94);
+    border-color 220ms ease,
+    box-shadow 220ms ease,
+    transform 260ms var(--ease-out);
 }
 
 .panel-hud:hover {

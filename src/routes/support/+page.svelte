@@ -68,7 +68,7 @@
         <span class="coord" aria-hidden="true">04 · Share</span>
         <h2>Share it</h2>
         <p>If the project resonates, point other Wayland and desktop-environment people at it.</p>
-        <a class="link-comet" href={withBase("/news/glass-and-gravity")}>Latest release</a>
+        <a class="link-comet" href={withBase("/news/halley-rewritten")}>Latest release</a>
       </article>
     </section>
   </main>
@@ -131,7 +131,7 @@
   }
 
   .primary-action {
-    color: #170b06;
+    color: var(--on-accent);
     background: linear-gradient(135deg, var(--accent), var(--accent-soft));
   }
 
@@ -158,7 +158,7 @@
   }
 
   .primary-action:hover {
-    color: #170b06;
+    color: var(--on-accent);
     box-shadow: var(--glow-1);
   }
 

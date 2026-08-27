@@ -3,6 +3,13 @@ export type NewsFeature = {
   description: string;
 };
 
+export type NewsFeatureSection = {
+  eyebrow: string;
+  title: string;
+  intro?: string;
+  features: NewsFeature[];
+};
+
 export type NewsPost = {
   slug: string;
   title: string;
@@ -15,7 +22,8 @@ export type NewsPost = {
   kind?: "release" | "preview";
   summary: string;
   intro: string[];
-  features: NewsFeature[];
+  features?: NewsFeature[];
+  featureSections?: NewsFeatureSection[];
   install?: {
     aur: string[];
     aurDev: string[];
@@ -28,6 +36,134 @@ export type NewsPost = {
 
 export const newsPosts: NewsPost[] = [
   {
+    slug: "halley-rewritten",
+    title: "Halley, Rewritten",
+    version: "v0.6.0",
+    date: "2026-08-26",
+    eyebrow: "Release News",
+    summary: "Halley v0.6.0 is a ground-up rewrite: the spatial desktop returns on a smaller, typed, damage-aware compositor core, with new titlebars, floating cluster members, native XWayland, stronger output protocols, and a stable client API.",
+    intro: [
+      "Halley 0.6 is not an incremental port. The compositor was rebuilt around Smithay's current renderer and protocol foundations, then the parts that make Halley Halley were brought back deliberately: per-monitor Fields, decay, nodes, clusters, Bearings, Trail, Apogee, Lift, capture, and the local control surface.",
+      "That distinction matters. Some of 0.6 is genuinely new, some is restored parity on better foundations, and some old policy was intentionally left behind. This release note separates those threads so the rewrite is clear about what changed and why."
+    ],
+    featureSections: [
+      {
+        eyebrow: "New foundations",
+        title: "A compositor rebuilt from the frame up",
+        intro: "The rewrite replaces the old runtime beneath Halley's model instead of changing the model into a conventional desktop.",
+        features: [
+          {
+            title: "Damage-aware GLES rendering",
+            description: "A Smithay GLES renderer now tracks output damage, buffer age, presentation, scanout eligibility, and animation-driven redraws instead of repainting the whole scene by habit."
+          },
+          {
+            title: "Native embedded XWayland",
+            description: "Halley now starts and manages XWayland itself, including X11 window management and RandR state. The external xwayland-satellite process is no longer part of the session."
+          },
+          {
+            title: "A typed client foundation",
+            description: "halley-api is redesigned around persistent connections, capability negotiation, sequenced subscriptions, and typed IPC shared by halleyctl, Lift, and the portal."
+          },
+          {
+            title: "Atomic, dependency-aware config reloads",
+            description: "Rune configs keep the same format-version marker, but validation and migration are stricter. Nested gather dependencies are watched as one graph and invalid saves leave the last good config active."
+          }
+        ]
+      },
+      {
+        eyebrow: "New in 0.6",
+        title: "Capabilities the old compositor did not have",
+        features: [
+          {
+            title: "Floating cluster members",
+            description: "A cluster member can leave its tiling or stacking slot for retained floating geometry, then return without losing its place in the layout."
+          },
+          {
+            title: "Server-side titlebars",
+            description: "Halley can draw titlebars for server-decorated windows, with configurable controls, title and icon placement, colors, height, radius, and pin placement."
+          },
+          {
+            title: "Context-scoped controls",
+            description: "The same chord can perform different actions in the Field, a cluster, a tile layout, or a stack. Field keyboard resizing and cluster tile swapping can therefore share Mod+Ctrl+Arrow cleanly."
+          },
+          {
+            title: "Stronger output protocols",
+            description: "Clients gain writable wlr output-management, gamma control, richer output state, and exact connector targeting alongside Halley's per-output view policy."
+          },
+          {
+            title: "Explicit node lifecycle control",
+            description: "halleyctl can collapse, restore, or toggle a selected node directly, in addition to inspecting, focusing, moving, and closing it."
+          }
+        ]
+      },
+      {
+        eyebrow: "Restored systems",
+        title: "Halley's spatial memory returns",
+        intro: "These are important parts of the release, but they are restored Halley systems rather than rewrite inventions.",
+        features: [
+          {
+            title: "Field, decay, nodes, and clusters",
+            description: "Per-monitor spatial Fields, the focus ring, automatic decay, collapsed landmarks, intentional clusters, tiling, stacking, bloom, and pinning all return on the new core."
+          },
+          {
+            title: "Trail, Bearings, and Apogee",
+            description: "Per-output focus history, offscreen navigation cues, and the multi-monitor overview are restored with keyboard, gesture, and remote-control paths."
+          },
+          {
+            title: "Lift, portal, and capture",
+            description: "The Halley-native launcher, screenshot and screencast portal, native capture menu, and source selection flows are rebuilt against the typed API."
+          },
+          {
+            title: "Input and gestures",
+            description: "Libinput tuning, remappable pointer grabs, swipes and holds, exact modifier sides, and smooth resize are present again."
+          },
+          {
+            title: "The complete control surface",
+            description: "halleyctl again reaches outputs, nodes, clusters, Trail, Bearings, capture, monitor focus, layouts, portal diagnostics, config migration, and reload."
+          }
+        ]
+      },
+      {
+        eyebrow: "Intentional changes",
+        title: "What did not come forward unchanged",
+        features: [
+          {
+            title: "View replaces viewport",
+            description: "The 0.6 config groups repeated output blocks under view. Hardware mode fields must be supplied as a complete width-and-height group, while ring-only entries remain portable."
+          },
+          {
+            title: "No compositor gaming layer",
+            description: "The old game classifier, gaming config section, and halleyctl Gamescope wrapper are gone. Games use normal fullscreen and pointer paths, and launchers can invoke Gamescope directly when wanted."
+          },
+          {
+            title: "Wallpaper replaces background",
+            description: "The compositor image and field-shader section is now named wallpaper. Existing background and gesso spellings remain accepted as compatibility aliases."
+          },
+          {
+            title: "A simpler spatial contract",
+            description: "Active windows may overlap freely, zoom stops at native scale, cross-output dragging is direct, and the old maximum-active-window policy and Field Jump behavior are not part of 0.6."
+          }
+        ]
+      }
+    ],
+    install: {
+      aur: ["yay -S halley", "paru -S halley", "yay -S halley-full", "paru -S halley-full", "yay -S halley-lift", "paru -S halley-lift"],
+      aurDev: ["yay -S halley-git", "paru -S halley-git"],
+      source: "git clone https://github.com/saltnpepper97/halley\ncd halley\ngit checkout v0.6.0\ncargo build --release --workspace"
+    },
+    notes: [
+      "The wiki now defaults to v0.6.0. v0.5.0 and earlier documentation remains available from the version picker for existing installs.",
+      "The main workspace packages are versioned 0.6.0 for release; the redesigned halley-api is 0.3.0, while the rewritten Halley Lift and portal packages are 0.2.0.",
+      "The config format marker is now halley-config-version: 2. Use halleyctl config migrate for an explicit compatibility migration, especially when a config is split across gathered files.",
+      "Native sessions expect an Xwayland executable when X11 support is enabled. Nested development sessions now use halley --winit."
+    ],
+    thanks: [
+      "Thanks to everyone who kept testing the spatial model while nearly every implementation detail underneath it changed.",
+      "The reports around multi-monitor focus, Steam and X11 teardown, fullscreen restoration, pointer routing, capture, resize, and unnecessary redraws are what turned the rewrite back into Halley."
+    ],
+    closing: "The same field, with a new foundation under it."
+  },
+  {
     slug: "glass-and-gravity",
     title: "Glass and Gravity",
     version: "v0.5.0",
@@ -35,7 +171,7 @@ export const newsPosts: NewsPost[] = [
     eyebrow: "Release News",
     summary: "Halley v0.5.0 is a wide release: a brand-new native portal backend, frosted-glass effects, animated field backgrounds, the initial Halley Lift and Apogee releases, deeper input tuning, animation polish, and a steadier nested/session story.",
     intro: [
-      "Halley's fifth release is where the field gets both clearer and heavier: clearer because windows, overlays, bearings, Aperture, and the field background itself can now be drawn by the compositor; heavier because more of the desktop stack is owned by Halley itself.",
+      "Halley's fifth release is where the field gets both clearer and heavier: clearer because windows, overlays, bearings, and the field background itself can now be drawn by the compositor; heavier because more of the desktop stack is owned by Halley itself.",
       "v0.5.0 is also one of the broadest updates so far. It ships Halley Lift and Apogee for the first time, adds Halley's own xdg-desktop-portal backend for screenshots and screencasts, exposes real libinput and gesture controls, sharpens the session/nested split, and lands a long run of animation, fullscreen, resize, and game-path fixes."
     ],
     features: [
@@ -139,7 +275,7 @@ export const newsPosts: NewsPost[] = [
     },
     notes: [
       "The wiki now defaults to v0.5.0 while v0.4.0 and earlier releases remain available from the version picker.",
-      "AUR packaging adds halley-git for the latest source build, halley-lift for the standalone command palette, and halley-full as the ecosystem bundle. For v0.5.0, halley-full installs Halley with Lift and selected first-party ecosystem pieces; future ecosystem apps such as Aperture will join halley-full while remaining individually installable.",
+      "AUR packaging adds halley-git for the latest source build, halley-lift for the standalone command palette, and halley-full as the ecosystem bundle. For v0.5.0, halley-full installs Halley with Lift and selected first-party ecosystem pieces.",
       "Existing decorations.shadows config is migrated into effects.shadows by the updater, but the legacy key is no longer parsed after that move. New installs also get the background/gesso defaults for the animated builtin space shader.",
       "Packaged portal configuration now prefers the new xdg-desktop-portal-halley backend for capture while GTK remains the fallback for other portal interfaces."
     ],

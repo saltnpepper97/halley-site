@@ -502,7 +502,7 @@
     }
 
     :global(:root[data-theme="light"]) .wiki-mobile-toggle:hover {
-      color: #fffaf4;
+      color: var(--on-accent);
       background: linear-gradient(135deg, rgba(184, 63, 17, 0.92), rgba(143, 47, 12, 0.88));
       border-color: rgba(94, 31, 9, 0.32);
       box-shadow:

@@ -2,6 +2,21 @@ const lockCountKey = "scrollLockCount";
 const scrollYKey = "scrollLockY";
 const previousStyleKey = "scrollLockPreviousStyle";
 
+/*
+  The page's scroll offset, valid while the body is scroll-locked too. Under a
+  lock the body is `position: fixed` and window.scrollY reads 0, so anything
+  tracking scroll (SiteBackground's parallax) must read the stashed offset
+  instead or it jumps to the top of the page when a menu opens.
+*/
+export const currentScrollY = () => {
+  if (typeof window === "undefined") {
+    return 0;
+  }
+
+  const locked = document.body.dataset[scrollYKey];
+  return locked === undefined ? window.scrollY : Number(locked);
+};
+
 export const lockBodyScroll = () => {
   if (typeof window === "undefined") {
     return () => {};

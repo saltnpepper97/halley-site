@@ -43,8 +43,13 @@
             {@const kind = newsKindLabel(post)}
             <a class="feed-card" href={withBase(`/news/${post.slug}`)}>
               <div class="card-top">
-                <span class="kind kind-{kind.toLowerCase()}">{kind}</span>
-                <span class="version">{post.kind === "preview" ? "Upcoming" : post.version}</span>
+                <span class="kind kind-{kind.toLowerCase()}">
+                  <span class="badge-signal" aria-hidden="true"></span>
+                  {kind}
+                </span>
+                <span class="version version-{kind.toLowerCase()}">
+                  {post.kind === "preview" ? "Upcoming" : post.version}
+                </span>
               </div>
 
               <h2>{post.title}</h2>
@@ -166,43 +171,66 @@
 
   .card-top {
     display: flex;
-    align-items: center;
-    gap: 0.6rem;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.65rem 1rem;
   }
 
-  .kind {
-    padding: 0.22rem 0.55rem;
+  /*
+    Metadata chips. One object with one type ramp and one box; the kind carries
+    a tinted fill, the version an outline, and --chip-rgb is the only thing that
+    varies between them. Previously these were a round pill and a sharp
+    rectangle stacked with four decorations each, which read as two unrelated
+    widgets sharing a row.
+  */
+  .kind,
+  .version {
+    --chip-rgb: var(--accent-rgb);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    height: 1.75rem;
+    padding: 0 0.6rem;
+    border: 1px solid rgba(var(--chip-rgb), 0.34);
     border-radius: var(--radius-sm);
     font-family: var(--font-mono);
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     font-weight: 800;
-    letter-spacing: 0.08em;
+    line-height: 1;
     text-transform: uppercase;
   }
 
-  .kind-release {
-    color: #170b06;
-    background: linear-gradient(135deg, var(--accent), var(--accent-soft));
-  }
-
-  .kind-patch {
-    color: var(--coord);
-    background: rgba(125, 220, 255, 0.12);
-    border: 1px solid rgba(125, 220, 255, 0.32);
-  }
-
-  .kind-preview {
-    color: var(--text-2);
-    background: transparent;
-    border: 1px dashed var(--border-2);
+  .kind {
+    color: rgb(var(--chip-rgb));
+    background: rgba(var(--chip-rgb), 0.08);
+    letter-spacing: 0.11em;
   }
 
   .version {
-    color: var(--text-2);
-    font-family: var(--font-mono);
-    font-size: 0.82rem;
-    font-weight: 700;
-    letter-spacing: 0.02em;
+    margin-left: auto;
+    color: var(--text-1);
+    background: transparent;
+    letter-spacing: 0.04em;
+  }
+
+  .badge-signal {
+    width: 0.4rem;
+    height: 0.4rem;
+    background: currentColor;
+    border-radius: 999px;
+    box-shadow: 0 0 8px rgba(var(--chip-rgb), 0.65);
+  }
+
+  .kind-patch,
+  .version-patch {
+    --chip-rgb: var(--ion-rgb);
+  }
+
+  /* Nothing has shipped yet, so the box stays provisional. */
+  .kind-preview,
+  .version-preview {
+    border-style: dashed;
   }
 
   h2 {
@@ -266,10 +294,6 @@
     border-left-color: rgba(38, 27, 20, 0.15);
   }
 
-  :global(:root[data-theme="light"]) .kind-release {
-    color: #fffaf4;
-  }
-
   /* Responsive ----------------------------------------------------------- */
 
   @media (max-width: 720px) {
@@ -305,6 +329,10 @@
 
     .feed-card {
       padding: 0.95rem;
+    }
+
+    .version-label {
+      display: none;
     }
 
     h2 {

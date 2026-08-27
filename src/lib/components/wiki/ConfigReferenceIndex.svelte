@@ -37,6 +37,16 @@
     </p>
   </div>
 
+  {#if activeVersion().value >= "0.6.0"}
+    <div class="dependency-note">
+      <strong>Split configs reload together.</strong>
+      <span>
+        The 0.6 watcher follows nested Rune <code>gather</code> dependencies and rebuilds the
+        watched file set after every accepted reload.
+      </span>
+    </div>
+  {/if}
+
   <div class="section-grid">
     {#each displayPages() as page}
       <a class="section-card" href={versionedHref(`/wiki/config/${page.slug}`)}>
@@ -78,6 +88,20 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
     gap: 0.85rem;
+  }
+
+  .dependency-note {
+    display: grid;
+    gap: 0.3rem;
+    padding: 0.9rem 1rem;
+    background: rgba(125, 220, 255, 0.07);
+    border: 1px solid rgba(125, 220, 255, 0.17);
+    border-radius: var(--radius-md);
+  }
+
+  .dependency-note strong {
+    color: var(--ion);
+    font-family: var(--font-display);
   }
 
   .section-card {

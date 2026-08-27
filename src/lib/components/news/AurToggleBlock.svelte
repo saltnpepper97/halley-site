@@ -182,7 +182,7 @@
   }
 
   :global(:root[data-theme="light"]) .copy-btn:hover {
-    color: #fffaf4;
+    color: var(--on-accent);
     background: var(--accent-deep);
     border-color: rgba(94, 31, 9, 0.36);
   }

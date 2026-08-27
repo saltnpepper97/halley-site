@@ -8,7 +8,7 @@
   <title>News | Halley</title>
   <meta
     name="description"
-    content="Halley news and release announcements, including the latest v0.5.0 Glass and Gravity release."
+    content="Halley news and release announcements, including the current v0.6.0 ground-up rewrite."
   />
 </svelte:head>
 

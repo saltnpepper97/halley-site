@@ -13,7 +13,7 @@ paru -S halley-full`;
   <title>Ecosystem | Halley</title>
   <meta
     name="description"
-    content="First-party apps built around the Halley compositor: Halley Lift, Aperture, and the halley-full bundle."
+    content="First-party apps built around the Halley compositor: Halley Lift and the halley-full bundle."
   />
 </svelte:head>
 
@@ -51,15 +51,6 @@ paru -S halley-full`;
         </span>
       </a>
 
-      <article class="app-card surface hud-corners horizon">
-        <span class="status status-soon">On approach</span>
-        <h2>More on the horizon</h2>
-        <p>
-          The first ecosystem app is just the start. More first-party apps are in the works and will
-          land here — and in <code>halley-full</code> — as they ship.
-        </p>
-        <span class="app-link muted">Stay tuned</span>
-      </article>
     </section>
 
     <section class="bundle-card surface hud-corners">
@@ -169,15 +160,9 @@ paru -S halley-full`;
   }
 
   .status-available {
-    color: #1a0a04;
+    color: var(--on-accent);
     background: linear-gradient(135deg, var(--accent-soft), var(--accent));
     box-shadow: 0 0 18px rgba(255, 106, 42, 0.35);
-  }
-
-  .status-soon {
-    color: var(--text-2);
-    background: rgba(246, 239, 231, 0.06);
-    border: 1px solid var(--border-1);
   }
 
   .app-card h2 {
@@ -197,10 +182,6 @@ paru -S halley-full`;
     color: var(--accent-soft);
     font-family: var(--font-display);
     font-weight: 800;
-  }
-
-  .app-link.muted {
-    color: var(--text-3);
   }
 
   .bundle-card {
@@ -249,6 +230,33 @@ paru -S halley-full`;
     color: var(--accent-soft);
     background: rgba(255, 106, 42, 0.1);
     border-radius: var(--radius-sm);
+  }
+
+  :global(:root[data-theme="light"]) .ecosystem-hero {
+    background:
+      radial-gradient(circle at 82% 18%, rgba(40, 95, 115, 0.1), transparent 18rem),
+      linear-gradient(135deg, rgba(184, 63, 17, 0.045), transparent 35%),
+      rgba(255, 250, 244, 0.9);
+  }
+
+  :global(:root[data-theme="light"]) .app-card {
+    background:
+      radial-gradient(circle at 0 0, rgba(184, 63, 17, 0.07), transparent 15rem),
+      rgba(255, 255, 255, 0.48);
+    border-color: rgba(38, 27, 20, 0.14);
+  }
+
+  :global(:root[data-theme="light"]) .bundle-card {
+    background:
+      radial-gradient(circle at 100% 0%, rgba(184, 63, 17, 0.08), transparent 14rem),
+      rgba(255, 255, 255, 0.44);
+    border-color: rgba(38, 27, 20, 0.14);
+  }
+
+  :global(:root[data-theme="light"]) .app-icon {
+    color: var(--accent);
+    background: rgba(184, 63, 17, 0.08);
+    border-color: rgba(184, 63, 17, 0.2);
   }
 
   @media (max-width: 760px) {

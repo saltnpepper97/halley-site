@@ -7,14 +7,15 @@
     fieldsForVersion,
     ipcGroups,
     responseShapes,
+    responseShapeAvailableInVersion,
     selectors
   } from "$lib/wiki/ipc-reference";
   import { defaultWikiVersion, wikiVersionFromSearch } from "$lib/wiki/versions";
 
   const activeVersion = () => browser ? wikiVersionFromSearch(page.url.searchParams) : defaultWikiVersion;
-  const ipcExamples = `XDG_RUNTIME_DIR=/run/user/1000 halleyctl outputs --json
+  const ipcExamples = `XDG_RUNTIME_DIR=/run/user/1000 halleyctl outputs
 halleyctl node list --json
-halleyctl cluster inspect current --json`;
+halleyctl cluster info current --json`;
 
   const visibleCommands = (commands: typeof ipcGroups[number]["commands"]) =>
     commands.filter((command) => commandAvailableInVersion(command, activeVersion().value));
@@ -114,7 +115,7 @@ halleyctl cluster inspect current --json`;
     </div>
 
     <div class="shape-list">
-      {#each responseShapes as shape}
+      {#each responseShapes.filter((shape) => responseShapeAvailableInVersion(shape, activeVersion().value)) as shape}
         <section class="shape-card">
           <h3>{shape.name}</h3>
           <div class="field-list">

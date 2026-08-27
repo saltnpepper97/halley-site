@@ -1,5 +1,6 @@
 <script lang="ts">
   import { base } from "$app/paths";
+  import BackLink from "$lib/components/BackLink.svelte";
   import ReleaseArticle from "$lib/components/news/ReleaseArticle.svelte";
   import SiteHeader from "$lib/components/SiteHeader.svelte";
   import type { PageData } from "./$types";
@@ -17,7 +18,7 @@
   <SiteHeader />
 
   <main class="news-shell">
-    <a class="back-link" href={withBase("/news")}>Back to news</a>
+    <BackLink href={withBase("/news")} label="News" />
     <ReleaseArticle post={data.post} />
   </main>
 </div>
@@ -35,26 +36,6 @@
     width: min(100% - 2rem, var(--page-max-width));
     margin-inline: auto;
     padding: 1.25rem 0 6rem;
-  }
-
-  .back-link {
-    justify-self: start;
-    padding: 0.45rem 0.75rem;
-    color: var(--text-2);
-    background: rgba(16, 23, 34, 0.7);
-    border: 1px solid var(--border-1);
-    border-radius: var(--radius-sm);
-    font-weight: 700;
-    transition:
-      color 160ms ease,
-      border-color 160ms ease,
-      background 160ms ease;
-  }
-
-  .back-link:hover {
-    color: var(--text-1);
-    background: rgba(255, 106, 42, 0.1);
-    border-color: var(--border-2);
   }
 
   @media (max-width: 560px) {

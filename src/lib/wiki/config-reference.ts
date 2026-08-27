@@ -1,3 +1,5 @@
+import { configPageV06Override } from "$lib/wiki/config-reference-v06";
+
 export type ConfigOption = {
   option: string;
   type: string;
@@ -101,17 +103,19 @@ export const configSections: ConfigSection[] = [
       { option: "touch-passthrough", type: "bool", defaultValue: "true", notes: "Forwards touchscreen contacts to clients through wl_touch when appropriate." },
       { option: "pinch-to-zoom", type: "bool", defaultValue: "true", notes: "Maps compositor pinch gestures to field zoom." },
       { option: "pinch-scope", type: "string", defaultValue: "empty-field", notes: "Where compositor pinch zoom applies. Example value: empty-field." },
-      { option: "compositor-scope", type: "string", defaultValue: "global", notes: "Where compositor gesture bindings are eligible. Example values include global and empty-field." },
-      { option: "modifier", type: "modifier token", defaultValue: "$mod", notes: "Modifier token used by modifier-scoped gestures." },
+      { option: "compositor-scope", type: "string", defaultValue: "global", notes: "Where compositor gesture bindings are eligible. Example values include global and empty-field.", removedIn: "0.6.0" },
+      { option: "compositor-scope", type: "string", defaultValue: "empty-field", notes: "Where compositor pan and ordinary action gestures are eligible: empty-field or global.", addedIn: "0.6.0" },
+      { option: "modifier", type: "modifier token", defaultValue: "$mod", notes: "Modifier token used by modifier-scoped gestures.", removedIn: "0.6.0" },
+      { option: "modifier", type: "modifier token", defaultValue: "mod", notes: "Modifier used to force eligible gestures to the compositor. Accepts mod, off, unsided modifiers, and exact left/right modifier names.", addedIn: "0.6.0" },
       { option: "scroll-pan", type: "string", defaultValue: "empty-field", notes: "Where two-finger scroll pans the field." },
       { option: "swipe-threshold-px", type: "f32", defaultValue: "120", notes: "Swipe distance threshold before discrete swipe bindings commit." },
       { option: "pan-fingers", type: "u32", defaultValue: "3", notes: "Finger count used for continuous field panning." },
       { option: "pan-momentum", type: "bool", defaultValue: "true", notes: "Keeps gesture panning moving briefly after a flick." },
       { option: "pan-decay-rate", type: "f32", defaultValue: "6", notes: "Momentum decay rate for gesture panning." },
       { option: "flick-min-px-per-s", type: "f32", defaultValue: "200", notes: "Minimum velocity treated as a flick." },
-      { option: "swipe-<dir>-<fingers>", type: "action string", defaultValue: "unset", notes: "Binds a swipe direction and finger count to a compositor action, such as swipe-up-4 \"apogee-open\"." },
-      { option: "apogee-swipe-<dir>-<fingers>", type: "action string", defaultValue: "unset", notes: "Binds an Apogee-aware swipe, such as apogee-swipe-down-4 \"apogee-close\"." },
-      { option: "hold-<fingers>", type: "action string", defaultValue: "unset", notes: "Binds a libinput hold gesture to an existing compositor gesture action.", addedIn: "0.5.0" }
+      { option: "swipe-<dir>-<fingers>", type: "action string", defaultValue: "unset", notes: "Binds any direction and 1–32 finger count to a built-in compositor action, such as swipe-left-5 \"trail-prev\". Shell commands and pointer-grab actions are rejected." },
+      { option: "apogee-swipe-<dir>-<fingers>", type: "action string", defaultValue: "unset", notes: "Defines the independent action map used while Apogee is open, such as apogee-swipe-down-4 \"apogee-close\"." },
+      { option: "hold-<fingers>", type: "action string", defaultValue: "unset", notes: "Binds a 1–32 finger libinput hold to a built-in compositor action. Active client grabs and pointer constraints retain ownership.", addedIn: "0.5.0" }
     ]
   },
   {
@@ -265,6 +269,23 @@ export const configSections: ConfigSection[] = [
     ]
   },
   {
+    slug: "wallpaper",
+    name: "wallpaper",
+    title: "Wallpaper",
+    summary: "Compositor wallpaper renderer: disabled, classic image, or spatial field shader.",
+    addedIn: "0.6.0",
+    options: [
+      { option: "mode", type: "none | classic | field-shader", defaultValue: "none", notes: "Selects no compositor wallpaper, an image, or a spatial shader. The old background and gesso section names remain accepted as aliases." },
+      { option: "shader", type: "string", defaultValue: "space", notes: "Field-shader source. space uses the bundled old-Halley shader; a path can load a compatible custom fragment shader." },
+      { option: "path", type: "string", defaultValue: "", notes: "Classic image path. Relative paths resolve beside the selected config file." },
+      { option: "fit", type: "cover | contain | stretch", defaultValue: "cover", notes: "Classic image fit mode." },
+      { option: "colour", type: "hex color", defaultValue: "#181a26", notes: "Base color for the bundled shader. Alias: color." },
+      { option: "accent-colour", type: "hex color", defaultValue: "#8fa8d8", notes: "Accent color for the bundled shader. Aliases include accent-color and accent_color." },
+      { option: "intensity", type: "f32", defaultValue: "1.0", notes: "Non-negative brightness or image-opacity multiplier." },
+      { option: "animated", type: "bool", defaultValue: "false", notes: "Keeps the field shader repainting for animation." }
+    ]
+  },
+  {
     slug: "field",
     name: "field",
     title: "Field",
@@ -393,7 +414,8 @@ export const configSections: ConfigSection[] = [
     title: "Trail",
     summary: "Recent-focus history behavior.",
     options: [
-      { option: "history-length", type: "usize", defaultValue: "25", notes: "Number of trail entries kept." },
+      { option: "history-length", type: "usize", defaultValue: "25", notes: "Number of trail entries kept.", removedIn: "0.6.0" },
+      { option: "history-length", type: "usize", defaultValue: "32", notes: "Maximum focus-history entries retained independently on each output.", addedIn: "0.6.0" },
       { option: "wrap", type: "bool", defaultValue: "true", notes: "Allows trail navigation to wrap around." }
     ]
   },
@@ -411,23 +433,6 @@ export const configSections: ConfigSection[] = [
     ]
   },
   {
-    slug: "aperture-peek",
-    name: "aperture-peek",
-    title: "Aperture Peek",
-    summary: "Standalone Aperture clock panel styling used by the compositor reserve/peek integration.",
-    addedIn: "0.3.0",
-    options: [
-      { option: "corner", type: "string", defaultValue: "top-right", notes: "Corner used for the floating clock panel." },
-      { option: "background", type: "hex rgba", defaultValue: "#101014cc", notes: "Panel background color, including alpha." },
-      { option: "radius-px", type: "u32", defaultValue: "24", notes: "Panel corner radius in pixels." },
-      { option: "blur", type: "bool", defaultValue: "true", notes: "Allows the Aperture panel to draw frosted-glass backdrop blur when effects.blur permits layer-shell blur.", addedIn: "0.5.0" },
-      { option: "clock", type: "nested block", defaultValue: "see aperture config", notes: "Clock font and colour settings." },
-      { option: "clock-large", type: "nested block", defaultValue: "see aperture config", notes: "Normal floating clock size state." },
-      { option: "clock-medium", type: "nested block", defaultValue: "see aperture config", notes: "Collapsed floating clock size state." },
-      { option: "clock-small", type: "nested block", defaultValue: "see aperture config", notes: "Minimal reserved top-tab size state." }
-    ]
-  },
-  {
     slug: "clusters",
     name: "clusters",
     title: "Clusters",
@@ -438,6 +443,22 @@ export const configSections: ConfigSection[] = [
       { option: "bloom-direction", type: "string", defaultValue: "clockwise", notes: "Cluster bloom direction. Accepted values: clockwise, counterclockwise." },
       { option: "show-icons", type: "bool", defaultValue: "true", notes: "Shows icons in cluster UI." },
       { option: "default-layout", type: "string", defaultValue: "stacking", notes: "Default cluster workspace layout. Accepted values: stacking, tiling." }
+    ]
+  },
+  {
+    slug: "apogee",
+    name: "apogee",
+    title: "Apogee",
+    summary: "Multi-monitor overview layout, preview, transition, and dimming policy.",
+    addedIn: "0.6.0",
+    options: [
+      { option: "enabled", type: "bool", defaultValue: "true", notes: "Enables the compositor-owned overview." },
+      { option: "live-previews", type: "bool", defaultValue: "true", notes: "Updates GPU-local window previews while Apogee is open." },
+      { option: "preview-max-fps", type: "u32", defaultValue: "30", notes: "Coalescing ceiling for live preview updates." },
+      { option: "transition-ms", type: "u64", defaultValue: "320", notes: "Overview open and close transition duration." },
+      { option: "gap", type: "f32", defaultValue: "24.0", notes: "Gap between overview tiles." },
+      { option: "max-rows", type: "u32", defaultValue: "3", notes: "Maximum tile rows, clamped to the old-Halley range 1 through 5." },
+      { option: "background-dim", type: "f32", defaultValue: "0.85", notes: "Wallpaper dim amount while the overview is open." }
     ]
   },
   {
@@ -488,9 +509,9 @@ export const configSections: ConfigSection[] = [
       { option: "refresh", type: "u32 or auto", defaultValue: "auto", notes: "Refresh rate passed to gamescope when known." },
       { option: "fullscreen", type: "bool", defaultValue: "true", notes: "Launches gamescope fullscreen. Fullscreen wins if both fullscreen and borderless are true." },
       { option: "borderless", type: "bool", defaultValue: "false", notes: "Launches gamescope borderless when fullscreen is false." },
-      { option: "suppress-overlays", type: "bool", defaultValue: "true", notes: "Suppresses Halley overlay reveals while a managed game holds pointer lock or confinement." },
-      { option: "passthrough-pointer-lock", type: "bool", defaultValue: "true", notes: "Preserves game pointer lock behavior for wrapped launches." },
-      { option: "bypass-spatial-camera", type: "bool", defaultValue: "true", notes: "Routes pointer input to gamescope-managed surfaces without spatial-camera remapping." },
+      { option: "suppress-overlays", type: "bool", defaultValue: "true", notes: "Suppresses Halley overlay reveals while a managed game holds pointer lock or confinement.", removedIn: "0.6.0" },
+      { option: "passthrough-pointer-lock", type: "bool", defaultValue: "true", notes: "Preserves game pointer lock behavior for wrapped launches.", removedIn: "0.6.0" },
+      { option: "bypass-spatial-camera", type: "bool", defaultValue: "true", notes: "Routes pointer input to gamescope-managed surfaces without spatial-camera remapping.", removedIn: "0.6.0" },
       { option: "game", type: "nested block", defaultValue: "none", notes: "Repeated per-game profile block. Profiles match by app-id and inherit global defaults." }
     ]
   },
@@ -834,8 +855,11 @@ export const configSections: ConfigSection[] = [
     title: "Keybinds",
     summary: "Modifier token and chord-to-action mappings. The 0.4.0 example mirrors the shipped fresh-config defaults.",
     options: [
-      { option: "mod", type: "modifier token", defaultValue: "super", notes: "Base modifier token used by $var.mod and $mod." },
-      { option: "<chord>", type: "action string", defaultValue: "fresh-config bindings", notes: "Any additional entry maps a chord such as $var.mod+return, alt+tab, or $var.mod+1 to an action string. v0.2.0 adds defaults for maximize-focused, cycle-focus, cycle-focus-backward, and cluster slot 1 through 10; v0.3.0 adds toggle-focused-pin; v0.4.0 adds toggle-fullscreen." }
+      { option: "mod", type: "modifier token", defaultValue: "super", notes: "Base modifier token used by $var.mod and $mod.", removedIn: "0.6.0" },
+      { option: "mod", type: "modifier token", defaultValue: "super", notes: "Base modifier used by $var.mod. Accepts super, alt, ctrl, shift, or an exact side such as left-super, right-alt, left-ctrl, and right-shift.", addedIn: "0.6.0" },
+      { option: "<chord>", type: "action string", defaultValue: "fresh-config bindings", notes: "Any additional entry maps a chord such as $var.mod+return, alt+tab, or $var.mod+1 to an action string. v0.2.0 adds defaults for maximize-focused, cycle-focus, cycle-focus-backward, and cluster slot 1 through 10; v0.3.0 adds toggle-focused-pin; v0.4.0 adds toggle-fullscreen.", removedIn: "0.6.0" },
+      { option: "<chord>", type: "action string", defaultValue: "fresh-config bindings", notes: "Maps an exactly matched keyboard, pointer-button, or physical-wheel chord to a built-in action or command. Duplicate chords may coexist when their scopes do not overlap.", addedIn: "0.6.0" },
+      { option: "with scope", type: "global|field|cluster|tile|stack", defaultValue: "action default", notes: "Restricts one binding to a presentation context, for example \"$var.mod+ctrl+left\" \"resize-window-left\" with scope \"field\".", addedIn: "0.6.0" }
     ]
   },
   {
@@ -856,7 +880,9 @@ export const configSections: ConfigSection[] = [
       { option: "zoom-in", type: "global action", defaultValue: "builtin", notes: "Zooms the field camera in. Alias: zoom_in." },
       { option: "zoom-out", type: "global action", defaultValue: "builtin", notes: "Zooms the field camera out. Alias: zoom_out." },
       { option: "zoom-reset", type: "global action", defaultValue: "builtin", notes: "Resets field zoom. Alias: zoom_reset." },
+      { option: "focus-<dir>", type: "contextual action", defaultValue: "builtin", notes: "Moves focus directionally. The active Field, tiling cluster, or stacking cluster decides how the direction is resolved.", addedIn: "0.6.0" },
       { option: "node-move <dir>", type: "field action", defaultValue: "builtin", notes: "Moves the selected/latest field node. Directions: left, right, up, down. Legacy aliases: move-left, move-right, move-up, move-down." },
+      { option: "resize-window-<dir>", type: "field action", defaultValue: "builtin", notes: "Resizes the focused Field window one placement step. Left/up shrink and right/down grow. The shipped Mod+Ctrl+Arrow chords overlap tile swapping through context scopes.", addedIn: "0.6.0" },
       { option: "monitor-focus <dir|output>", type: "global action", defaultValue: "builtin", notes: "Focuses a monitor by direction or output name. Directions: left, right, up, down. Alias: monitor_focus." },
       { option: "cluster-mode", type: "global action", defaultValue: "builtin", notes: "Enters cluster mode. Alias: cluster_mode." },
       { option: "cluster-layout cycle", type: "cluster action", defaultValue: "builtin", notes: "Cycles cluster layout. Accepted forms include cluster layout cycle and cluster_layout cycle." },
@@ -869,10 +895,14 @@ export const configSections: ConfigSection[] = [
       { option: "trail-next", type: "global action", defaultValue: "builtin", notes: "Moves to the next trail entry. Aliases: trail_next, trail next." },
       { option: "tile-focus <dir>", type: "tile action", defaultValue: "builtin", notes: "Focuses a tile in the given direction. Alias forms: tile_focus <dir>, tile focus <dir>." },
       { option: "tile-swap <dir>", type: "tile action", defaultValue: "builtin", notes: "Swaps a tile in the given direction. Alias forms: tile_swap <dir>, tile swap <dir>." },
-      { option: "stack-cycle <dir>", type: "stack action", defaultValue: "builtin", notes: "Cycles a stack. Directions: forward, next, backward, back, prev, previous. Alias: stack_cycle." },
-      { option: "move-window", type: "pointer action", defaultValue: "builtin", notes: "Moves a window when used with a pointer button chord. Alias: move_window." },
-      { option: "resize-window", type: "pointer action", defaultValue: "builtin", notes: "Resizes a window when used with a pointer button chord. Alias: resize_window." },
-      { option: "pan-field", type: "pointer action", defaultValue: "builtin", notes: "Pans the field when used with a pointer button chord. Aliases: pan_field, drag-pan, drag_pan, field-jump, field_jump." },
+      { option: "stack-cycle <dir>", type: "stack action", defaultValue: "builtin", notes: "Cycles a stack. Directions: forward, next, backward, back, prev, previous. Alias: stack_cycle.", removedIn: "0.6.0" },
+      { option: "center-last-focused", type: "field action", defaultValue: "builtin", notes: "Focuses the most recent Field window and pans it to the center without changing its geometry.", addedIn: "0.6.0" },
+      { option: "cluster-toggle-float", type: "cluster action", defaultValue: "builtin", notes: "Toggles the focused cluster member between its layout slot and retained floating geometry.", addedIn: "0.6.0" },
+      { option: "apogee", type: "global action", defaultValue: "builtin", notes: "Toggles the Apogee overview. Alias: overview.", addedIn: "0.6.0" },
+      { option: "screenshot", type: "global action", defaultValue: "builtin", notes: "Opens Halley's native screenshot UI.", addedIn: "0.6.0" },
+      { option: "move-window", type: "pointer action", defaultValue: "builtin", notes: "Starts a compositor move from any configured pointer-button chord. Alias: move_window." },
+      { option: "resize-window", type: "pointer action", defaultValue: "builtin", notes: "Starts a compositor resize from any configured pointer-button chord. Alias: resize_window." },
+      { option: "pan-field", type: "pointer action", defaultValue: "builtin", notes: "Starts Field panning from any configured pointer-button chord. Aliases: pan_field, drag-pan, drag_pan, field-jump, field_jump." },
       { option: "<command>", type: "launch command", defaultValue: "fallback", notes: "Any unrecognized action string is treated as a command to launch, so fuzzel, halleyctl capture menu, wpctl commands, and spawn-style shell commands are valid." }
     ]
   },
@@ -922,6 +952,12 @@ end`,
   accent-colour "#8fa8d8"
   intensity 1.0
   animated true
+end`,
+  wallpaper: `wallpaper:
+  mode "none"
+  # mode "field-shader"
+  # shader "space"
+  # animated true
 end`,
   cursor: `cursor:
   theme "Adwaita"
@@ -1111,6 +1147,15 @@ end`,
   show-icons true
   default-layout "stacking"
 end`,
+  apogee: `apogee:
+  enabled true
+  live-previews true
+  preview-max-fps 30
+  transition-ms 320
+  gap 24.0
+  max-rows 3
+  background-dim 0.85
+end`,
   tile: `tile:
   new-on-top false
   gaps-inner 20
@@ -1124,30 +1169,6 @@ end`,
   physics: `physics:
   enabled true
   damping 0.45
-end`,
-  "aperture-peek": `aperture-peek:
-  corner "top-right"
-  background "#101014cc"
-  radius-px 24
-  blur true
-
-  clock:
-    font "CommitMono Nerd Font Bold"
-    colour "#e8a1a7"
-  end
-
-  clock-large:
-    size-px 80
-  end
-
-  clock-medium:
-    size-px 44
-  end
-
-  clock-small:
-    size-px 26
-    height-px 32
-  end
 end`,
   gamescope: `gamescope:
   enabled true
@@ -1411,6 +1432,66 @@ end`,
 end`
 };
 
+const configExamplesV06: Partial<Record<string, string>> = {
+  trail: `trail:
+  history-length 32
+  wrap true
+end`,
+  input: `input:
+  repeat-rate 30
+  repeat-delay 500
+  focus-mode "click"
+  raise-on-click true
+
+  keyboard:
+    layout "us"
+    model ""
+    variant ""
+    options ""
+  end
+
+  gestures:
+    enabled true
+    client-passthrough true
+    touch-passthrough true
+    pinch-to-zoom true
+    pinch-scope "empty-field"
+    compositor-scope "empty-field"
+    modifier "mod"
+    scroll-pan "empty-field"
+    pan-fingers 3
+    pan-momentum true
+    pan-decay-rate 6.0
+    flick-min-px-per-s 200.0
+    swipe-threshold-px 120.0
+    swipe-up-4 "apogee-open"
+    apogee-swipe-down-4 "apogee-close"
+    # swipe-left-5 "trail-prev"
+    # hold-3 "toggle-state"
+  end
+end`,
+  keybinds: `keybinds:
+  mod "super"
+
+  # Trail and immediate config reload.
+  "$var.mod+comma" "trail-prev"
+  "$var.mod+period" "trail-next"
+  "$var.mod+shift+r" "reload"
+
+  # The same chord can have distinct non-overlapping contexts.
+  "$var.mod+ctrl+left" "resize-window-left" with scope "field"
+  "$var.mod+ctrl+left" "cluster-tile-swap-left" with scope "tile"
+
+  # Exact connector and exact modifier-side examples.
+  "left-super+shift+1" "monitor-focus DP-1"
+
+  # Remappable compositor pointer grabs.
+  "$var.mod+click-left" "move-window"
+  "$var.mod+click-right" "resize-window"
+  "click-left" "pan-field"
+end`
+};
+
 const configExamplesV04: Partial<Record<string, string>> = {
   input: `input:
   repeat-rate 30
@@ -1440,29 +1521,6 @@ end`,
   show-icons true
   show-pinned true
   fade-distance 1200
-end`,
-  "aperture-peek": `aperture-peek:
-  corner "top-right"
-  background "#101014cc"
-  radius-px 24
-
-  clock:
-    font "CommitMono Nerd Font Bold"
-    colour "#e8a1a7"
-  end
-
-  clock-large:
-    size-px 80
-  end
-
-  clock-medium:
-    size-px 44
-  end
-
-  clock-small:
-    size-px 26
-    height-px 32
-  end
 end`,
   animations: `animations:
   enabled true
@@ -1885,7 +1943,8 @@ const availableInVersion = (item: { addedIn?: string; removedIn?: string }, vers
   (!item.addedIn || version >= item.addedIn) && (!item.removedIn || version < item.removedIn);
 
 export const configPageForVersion = (page: ConfigPage, version: string): ConfigPage => {
-  const sections = page.sections
+  const versionPage = version >= "0.6.0" ? (configPageV06Override(page.slug) ?? page) : page;
+  const sections = versionPage.sections
     .filter((section) => availableInVersion(section, version))
     .map((section) => ({
       ...section,
@@ -1894,14 +1953,19 @@ export const configPageForVersion = (page: ConfigPage, version: string): ConfigP
     .filter((section) => section.options.length > 0);
 
   return {
-    ...page,
+    ...versionPage,
     sections,
-    links: page.links?.filter((link) => sections.some((section) => link.href.endsWith(`#${section.slug}`))),
-    example: configExampleForVersion(page.slug, version)
+    links: versionPage.links?.filter((link) => sections.some((section) => link.href.endsWith(`#${section.slug}`))),
+    example: version >= "0.6.0" ? versionPage.example : configExampleForVersion(page.slug, version)
   };
 };
 
 export const configExampleForVersion = (slug: string, version: string) => {
+  if (version >= "0.6.0") {
+    return configExamplesV06[slug] ?? configExamples[slug] ?? `${slug}:
+end`;
+  }
+
   if (version >= "0.5.0") {
     return configExamples[slug] ?? `${slug}:
 end`;

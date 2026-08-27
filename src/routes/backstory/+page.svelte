@@ -17,18 +17,23 @@
     <section class="story-hero surface">
       <div class="story-copy">
         <p class="eyebrow">Backstory</p>
-        <h1>Why Halley Exists</h1>
+        <h1>Why Halley <span>Exists</span></h1>
         <p class="lede">A different answer to the old desktop problem: keeping context alive.</p>
       </div>
 
       <div class="field-visual" aria-hidden="true">
-        <div class="focus-ring"></div>
-        <div class="trail trail-one"></div>
-        <div class="trail trail-two"></div>
-        <span class="node node-one"></span>
-        <span class="node node-two"></span>
-        <span class="node node-three"></span>
-        <span class="core-node"></span>
+        <span class="map-readout readout-origin">Context map · 01</span>
+        <span class="map-readout readout-return">Return vector</span>
+        <div class="map-focus"></div>
+        <div class="map-route route-one"></div>
+        <div class="map-route route-two"></div>
+        <div class="map-window window-notes"><span></span><b>Notes</b></div>
+        <div class="map-window window-editor"><span></span><b>Editor</b></div>
+        <div class="map-window window-browser"><span></span><b>Browser</b></div>
+        <span class="map-node node-one"></span>
+        <span class="map-node node-two"></span>
+        <span class="map-node node-three"></span>
+        <span class="map-core">Focus</span>
       </div>
     </section>
 
@@ -92,7 +97,7 @@
     position: relative;
     overflow: hidden;
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(16rem, 0.48fr);
+    grid-template-columns: minmax(0, 0.86fr) minmax(22rem, 1.14fr);
     align-items: center;
     gap: clamp(2rem, 6vw, 4rem);
     min-height: clamp(24rem, 48vh, 35rem);
@@ -126,6 +131,16 @@
     text-wrap: balance;
   }
 
+  h1 span {
+    display: block;
+    width: max-content;
+    max-width: 100%;
+    color: transparent;
+    background: linear-gradient(105deg, var(--accent-soft), var(--accent), #ffd2b5);
+    background-clip: text;
+    -webkit-background-clip: text;
+  }
+
   .lede {
     max-width: 36rem;
     color: var(--text-2);
@@ -136,90 +151,145 @@
   .field-visual {
     position: relative;
     justify-self: center;
-    width: min(24rem, 58vw);
-    aspect-ratio: 1;
+    width: min(33rem, 48vw);
+    aspect-ratio: 1.35;
+    overflow: hidden;
+    background:
+      linear-gradient(rgba(125, 220, 255, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(125, 220, 255, 0.035) 1px, transparent 1px),
+      radial-gradient(circle at 45% 48%, rgba(255, 106, 42, 0.16), transparent 13rem),
+      rgba(3, 7, 12, 0.82);
+    background-size: 2.2rem 2.2rem, 2.2rem 2.2rem, auto, auto;
+    border: 1px solid rgba(125, 220, 255, 0.2);
+    border-radius: var(--radius-xl);
+    box-shadow:
+      0 32px 76px rgba(0, 0, 0, 0.42),
+      0 0 54px rgba(255, 106, 42, 0.1),
+      inset 0 1px 0 rgba(125, 220, 255, 0.18);
+    transform: rotate(1.5deg);
   }
 
-  .focus-ring,
-  .trail,
-  .node,
-  .core-node {
+  .field-visual::after {
     position: absolute;
     inset: 0;
-    margin: auto;
+    pointer-events: none;
+    content: "";
+    background: repeating-linear-gradient(180deg, transparent 0 5px, rgba(255, 255, 255, 0.012) 6px);
   }
 
-  .focus-ring {
-    width: 78%;
-    height: 46%;
-    border: 1px solid rgba(125, 220, 255, 0.38);
-    border-radius: 50%;
-    box-shadow:
-      0 0 42px rgba(125, 220, 255, 0.12),
-      inset 0 0 24px rgba(125, 220, 255, 0.08);
-    transform: rotate(-18deg);
-    animation: ring-breathe 5.8s ease-in-out infinite;
-  }
-
-  .trail {
-    width: 90%;
-    height: 90%;
-    border: 1px solid transparent;
-    border-top-color: rgba(255, 106, 42, 0.5);
-    border-right-color: rgba(255, 106, 42, 0.15);
-    border-radius: 50%;
-    animation: orbit-spin 18s linear infinite;
-  }
-
-  .trail-two {
-    width: 64%;
-    height: 64%;
-    border-top-color: rgba(125, 220, 255, 0.38);
-    border-right-color: rgba(125, 220, 255, 0.14);
-    animation-duration: 13s;
-    animation-direction: reverse;
-  }
-
-  .node,
-  .core-node {
-    width: 2.25rem;
-    height: 2.25rem;
-    background:
-      linear-gradient(135deg, rgba(246, 239, 231, 0.18), rgba(246, 239, 231, 0.05)),
-      rgba(9, 13, 18, 0.88);
-    border: 1px solid rgba(255, 106, 42, 0.55);
+  .map-readout {
+    position: absolute;
+    z-index: 4;
+    padding: 0.22rem 0.45rem;
+    color: var(--ion);
+    background: rgba(125, 220, 255, 0.08);
+    border: 1px solid rgba(125, 220, 255, 0.16);
     border-radius: var(--radius-sm);
-    box-shadow: 0 0 22px rgba(255, 106, 42, 0.24);
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
   }
 
-  .node-one {
-    transform: translate(-7rem, -3.8rem);
-    animation: node-drift-one 7s ease-in-out infinite;
-  }
+  .readout-origin { top: 0.85rem; left: 0.85rem; }
+  .readout-return { right: 0.85rem; bottom: 0.85rem; }
 
-  .node-two {
-    border-color: rgba(125, 220, 255, 0.48);
-    box-shadow: 0 0 22px rgba(125, 220, 255, 0.18);
-    transform: translate(7.6rem, -1.4rem);
-    animation: node-drift-two 6.2s ease-in-out infinite;
-  }
-
-  .node-three {
-    transform: translate(2.4rem, 7.2rem);
-    animation: node-drift-three 8s ease-in-out infinite;
-  }
-
-  .core-node {
-    width: 3.3rem;
-    height: 3.3rem;
-    background:
-      radial-gradient(circle at 35% 30%, rgba(255, 155, 84, 0.35), transparent 48%),
-      rgba(9, 13, 18, 0.92);
-    border-color: var(--accent);
-    border-radius: var(--radius-md);
+  .map-focus {
+    position: absolute;
+    left: 18%;
+    top: 27%;
+    width: 60%;
+    height: 40%;
+    border: 2px solid rgba(255, 155, 84, 0.68);
+    border-radius: 50%;
     box-shadow:
-      0 0 34px rgba(255, 106, 42, 0.42),
-      inset 0 1px 0 rgba(246, 239, 231, 0.14);
+      0 0 42px rgba(255, 106, 42, 0.18),
+      inset 0 0 34px rgba(255, 106, 42, 0.08);
+    transform: rotate(-8deg);
+    animation: map-breathe 6s ease-in-out infinite;
+  }
+
+  .map-route {
+    position: absolute;
+    z-index: 1;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(125, 220, 255, 0.68), transparent);
+    transform-origin: left center;
+  }
+
+  .route-one { left: 22%; top: 55%; width: 58%; transform: rotate(-17deg); }
+  .route-two { left: 42%; top: 38%; width: 42%; background: linear-gradient(90deg, rgba(255, 106, 42, 0.62), transparent); transform: rotate(24deg); }
+
+  .map-window {
+    position: absolute;
+    z-index: 2;
+    display: grid;
+    align-content: end;
+    padding: 0.45rem;
+    color: rgba(246, 239, 231, 0.65);
+    background:
+      linear-gradient(180deg, rgba(125, 220, 255, 0.1) 0 1rem, transparent 1rem),
+      rgba(9, 15, 24, 0.94);
+    border: 1px solid rgba(125, 220, 255, 0.22);
+    border-radius: var(--radius-sm);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.3);
+    font-family: var(--font-mono);
+    font-size: 0.55rem;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+
+  .map-window span {
+    position: absolute;
+    top: 0.38rem;
+    left: 0.45rem;
+    width: 0.25rem;
+    height: 0.25rem;
+    background: var(--accent);
+    border-radius: 999px;
+    box-shadow: 0 0 8px rgba(255, 106, 42, 0.7);
+  }
+
+  .map-window b { font-weight: 700; }
+  .window-notes { left: 17%; top: 34%; width: 26%; height: 22%; animation: map-drift 8s ease-in-out infinite; }
+  .window-editor { left: 45%; top: 49%; width: 27%; height: 23%; animation: map-drift 9s ease-in-out -4s infinite reverse; }
+  .window-browser { right: 8%; top: 18%; width: 21%; height: 18%; opacity: 0.58; }
+
+  .map-node {
+    position: absolute;
+    z-index: 2;
+    width: 1.25rem;
+    height: 1.25rem;
+    background: rgba(125, 220, 255, 0.14);
+    border: 1px solid rgba(125, 220, 255, 0.38);
+    border-radius: var(--radius-sm);
+    box-shadow: 0 0 18px rgba(125, 220, 255, 0.14);
+  }
+
+  .node-one { left: 10%; bottom: 20%; }
+  .node-two { right: 13%; top: 48%; }
+  .node-three { left: 49%; top: 16%; background: rgba(255, 106, 42, 0.15); border-color: rgba(255, 155, 84, 0.42); }
+
+  .map-core {
+    position: absolute;
+    left: 46%;
+    top: 39%;
+    z-index: 3;
+    display: grid;
+    width: 3.25rem;
+    height: 3.25rem;
+    place-items: center;
+    color: var(--on-accent);
+    background: linear-gradient(135deg, var(--accent), var(--accent-soft));
+    border: 1px solid rgba(255, 196, 158, 0.54);
+    border-radius: 999px;
+    box-shadow: 0 0 34px rgba(255, 106, 42, 0.38);
+    font-family: var(--font-mono);
+    font-size: 0.47rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
     animation: core-pulse 4.2s ease-in-out infinite;
   }
 
@@ -261,40 +331,44 @@
     border-color: rgba(38, 27, 20, 0.11);
   }
 
-  :global(:root[data-theme="light"]) .focus-ring {
-    border-color: rgba(40, 95, 115, 0.34);
-    box-shadow:
-      0 0 34px rgba(40, 95, 115, 0.08),
-      inset 0 0 22px rgba(40, 95, 115, 0.06);
+  :global(:root[data-theme="light"]) h1 span {
+    background: linear-gradient(105deg, var(--accent-soft), var(--accent), var(--accent-deep));
+    background-clip: text;
+    -webkit-background-clip: text;
   }
 
-  :global(:root[data-theme="light"]) .trail {
-    border-top-color: rgba(40, 95, 115, 0.28);
-    border-right-color: rgba(40, 95, 115, 0.09);
-  }
-
-  :global(:root[data-theme="light"]) .trail-two {
-    border-top-color: rgba(77, 67, 142, 0.24);
-    border-right-color: rgba(77, 67, 142, 0.08);
-  }
-
-  :global(:root[data-theme="light"]) .node,
-  :global(:root[data-theme="light"]) .core-node {
+  :global(:root[data-theme="light"]) .field-visual {
     background:
-      linear-gradient(135deg, rgba(255, 255, 255, 0.62), rgba(255, 250, 244, 0.24)),
-      rgba(92, 68, 51, 0.16);
-    border-color: rgba(184, 63, 17, 0.45);
-    box-shadow: 0 0 20px rgba(184, 63, 17, 0.12);
+      linear-gradient(rgba(40, 95, 115, 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(40, 95, 115, 0.05) 1px, transparent 1px),
+      radial-gradient(circle at 45% 48%, rgba(184, 63, 17, 0.1), transparent 13rem),
+      rgba(255, 255, 255, 0.54);
+    background-size: 2.2rem 2.2rem, 2.2rem 2.2rem, auto, auto;
+    border-color: rgba(40, 95, 115, 0.24);
+    box-shadow:
+      0 26px 62px rgba(54, 37, 26, 0.14),
+      0 0 42px rgba(184, 63, 17, 0.07),
+      inset 0 1px 0 rgba(255, 255, 255, 0.78);
   }
 
-  :global(:root[data-theme="light"]) .core-node {
+  :global(:root[data-theme="light"]) .map-window {
+    color: rgba(38, 27, 20, 0.72);
     background:
-      radial-gradient(circle at 35% 30%, rgba(40, 95, 115, 0.18), transparent 48%),
-      rgba(255, 250, 244, 0.86);
-    border-color: rgba(40, 95, 115, 0.4);
-    box-shadow:
-      0 0 30px rgba(40, 95, 115, 0.13),
-      inset 0 1px 0 rgba(255, 255, 255, 0.7);
+      linear-gradient(180deg, rgba(40, 95, 115, 0.12) 0 1rem, transparent 1rem),
+      rgba(255, 255, 255, 0.72);
+    border-color: rgba(40, 95, 115, 0.3);
+    box-shadow: 0 12px 26px rgba(54, 37, 26, 0.12);
+  }
+
+  :global(:root[data-theme="light"]) .map-node {
+    background: rgba(40, 95, 115, 0.12);
+    border-color: rgba(40, 95, 115, 0.42);
+    box-shadow: 0 0 16px rgba(40, 95, 115, 0.12);
+  }
+
+  :global(:root[data-theme="light"]) .node-three {
+    background: rgba(184, 63, 17, 0.12);
+    border-color: rgba(184, 63, 17, 0.4);
   }
 
   :global(:root[data-theme="light"]) .story-body {
@@ -309,22 +383,22 @@
     letter-spacing: -0.04em;
   }
 
-  @keyframes orbit-spin {
-    to {
-      transform: rotate(360deg);
-    }
-  }
-
-  @keyframes ring-breathe {
+  @keyframes map-breathe {
     0%,
     100% {
-      opacity: 0.52;
-      transform: rotate(-18deg) scale(0.96);
+      opacity: 0.68;
+      transform: rotate(-8deg) scale(0.97);
     }
 
     50% {
       opacity: 1;
-      transform: rotate(-18deg) scale(1.04);
+      transform: rotate(-8deg) scale(1.03);
+    }
+  }
+
+  @keyframes map-drift {
+    50% {
+      transform: translate(0.22rem, -0.28rem);
     }
   }
 
@@ -336,24 +410,6 @@
 
     50% {
       transform: scale(1.05);
-    }
-  }
-
-  @keyframes node-drift-one {
-    50% {
-      transform: translate(-6.3rem, -4.5rem);
-    }
-  }
-
-  @keyframes node-drift-two {
-    50% {
-      transform: translate(6.9rem, -0.6rem);
-    }
-  }
-
-  @keyframes node-drift-three {
-    50% {
-      transform: translate(3.1rem, 6.5rem);
     }
   }
 
@@ -370,7 +426,7 @@
 
     .field-visual {
       order: -1;
-      width: min(18rem, 76vw);
+      width: min(30rem, 90vw);
     }
   }
 
@@ -386,17 +442,7 @@
     }
 
     .field-visual {
-      width: min(14rem, 70vw);
-    }
-
-    .node {
-      width: 1.85rem;
-      height: 1.85rem;
-    }
-
-    .core-node {
-      width: 2.7rem;
-      height: 2.7rem;
+      width: min(22rem, 90vw);
     }
 
     blockquote {
@@ -405,10 +451,9 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .focus-ring,
-    .trail,
-    .node,
-    .core-node {
+    .map-focus,
+    .map-window,
+    .map-core {
       animation: none;
     }
   }

@@ -1,8 +1,8 @@
 <script lang="ts">
   import { base } from "$app/paths";
+  import BackLink from "$lib/components/BackLink.svelte";
   import SiteHeader from "$lib/components/SiteHeader.svelte";
   import CodeBlock from "$lib/components/CodeBlock.svelte";
-  import { ArrowLeftIcon } from "phosphor-svelte";
 
   const withBase = (href: string) => `${base}${href}`;
 
@@ -34,9 +34,7 @@ paru -S halley-lift`;
   <SiteHeader />
 
   <main class="lift-shell">
-    <a class="back-link" href={withBase("/ecosystem")}>
-      <ArrowLeftIcon color="currentColor" weight="bold" size={16} /> Ecosystem
-    </a>
+    <BackLink href={withBase("/ecosystem")} label="Ecosystem" />
 
     <section class="lift-hero surface">
       <p class="eyebrow">Ecosystem · Command palette</p>
@@ -152,20 +150,6 @@ paru -S halley-lift`;
     padding: 1.25rem 0 6rem;
   }
 
-  .back-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    color: var(--text-2);
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: 0.9rem;
-  }
-
-  .back-link:hover {
-    color: var(--accent-soft);
-  }
-
   .lift-hero {
     display: grid;
     gap: 1rem;
@@ -274,6 +258,23 @@ paru -S halley-lift`;
     color: var(--accent-soft);
     background: rgba(255, 106, 42, 0.1);
     border-radius: var(--radius-sm);
+  }
+
+  :global(:root[data-theme="light"]) .lift-hero {
+    background:
+      radial-gradient(circle at 82% 18%, rgba(40, 95, 115, 0.1), transparent 18rem),
+      linear-gradient(135deg, rgba(184, 63, 17, 0.045), transparent 35%),
+      rgba(255, 250, 244, 0.9);
+  }
+
+  :global(:root[data-theme="light"]) .lift-card {
+    background: rgba(255, 255, 255, 0.44);
+    border-color: rgba(38, 27, 20, 0.14);
+  }
+
+  :global(:root[data-theme="light"]) .mode-row {
+    background: rgba(255, 255, 255, 0.42);
+    border-color: rgba(38, 27, 20, 0.12);
   }
 
   @media (max-width: 760px) {

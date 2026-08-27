@@ -13,18 +13,24 @@
   <section class="release-hero surface">
     <div class="hero-copy">
       <p class="eyebrow">{post.eyebrow}</p>
-      <div class="title-row">
-        <h1>{post.title}</h1>
-        <span>{isPreview ? "Upcoming" : post.version}</span>
-      </div>
+      <h1>{post.title}</h1>
       <p class="summary">{post.summary}</p>
       <p class="hero-date"><time datetime={post.date}>{formattedDate}</time></p>
     </div>
 
-    <aside class="release-plate">
-      <span class="plate-kind">{kindLabel}</span>
-      <span class="plate-version">{isPreview ? "Soon" : post.version}</span>
-      <time class="plate-date" datetime={post.date}>{formattedDate}</time>
+    <aside
+      class="release-plate plate-{kindLabel.toLowerCase()}"
+      aria-label={`${kindLabel}: ${isPreview ? "Upcoming" : post.version}, published ${formattedDate}`}
+    >
+      <div class="plate-readout">
+        <span class="plate-label">{isPreview ? "Release status" : "Version"}</span>
+        <span class="plate-version">{isPreview ? "Upcoming" : post.version}</span>
+      </div>
+
+      <div class="plate-footer">
+        <span>Published</span>
+        <time class="plate-date" datetime={post.date}>{formattedDate}</time>
+      </div>
     </aside>
   </section>
 
@@ -35,21 +41,44 @@
       {/each}
     </div>
 
-    <section class="news-section" aria-labelledby="included-heading">
-      <div class="section-heading">
-        <p class="eyebrow">{isPreview ? "Preview" : "Included"}</p>
-        <h2 id="included-heading">{isPreview ? "On The Horizon" : "In This Release"}</h2>
-      </div>
-
-      <div class="feature-grid">
-        {#each post.features as feature}
-          <div class="feature-card">
-            <h3>{feature.title}</h3>
-            <p>{feature.description}</p>
+    {#if post.featureSections}
+      {#each post.featureSections as featureSection, index}
+        <section class="news-section" aria-labelledby={`feature-section-${index}`}>
+          <div class="section-heading">
+            <p class="eyebrow">{featureSection.eyebrow}</p>
+            <h2 id={`feature-section-${index}`}>{featureSection.title}</h2>
+            {#if featureSection.intro}
+              <p class="section-intro">{featureSection.intro}</p>
+            {/if}
           </div>
-        {/each}
-      </div>
-    </section>
+
+          <div class="feature-grid">
+            {#each featureSection.features as feature}
+              <div class="feature-card">
+                <h3>{feature.title}</h3>
+                <p>{feature.description}</p>
+              </div>
+            {/each}
+          </div>
+        </section>
+      {/each}
+    {:else if post.features}
+      <section class="news-section" aria-labelledby="included-heading">
+        <div class="section-heading">
+          <p class="eyebrow">{isPreview ? "Preview" : "Included"}</p>
+          <h2 id="included-heading">{isPreview ? "On The Horizon" : "In This Release"}</h2>
+        </div>
+
+        <div class="feature-grid">
+          {#each post.features as feature}
+            <div class="feature-card">
+              <h3>{feature.title}</h3>
+              <p>{feature.description}</p>
+            </div>
+          {/each}
+        </div>
+      </section>
+    {/if}
 
     {#if post.install}
       <section class="news-section install-section" aria-labelledby="install-heading">
@@ -131,27 +160,9 @@
     gap: 1rem;
   }
 
-  .title-row {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: end;
-    gap: 0.85rem 1rem;
-  }
-
   h1 {
     font-size: clamp(3rem, 8vw, 7rem);
     letter-spacing: -0.065em;
-  }
-
-  .title-row span {
-    margin-bottom: 0.6rem;
-    padding: 0.35rem 0.7rem;
-    color: #170b06;
-    background: linear-gradient(135deg, var(--accent), var(--accent-soft));
-    border-radius: var(--radius-sm);
-    font-family: var(--font-mono);
-    font-size: clamp(0.9rem, 2vw, 1.05rem);
-    font-weight: 700;
   }
 
   .summary {
@@ -171,57 +182,91 @@
     text-transform: uppercase;
   }
 
+  /*
+    Release plate. The identity is carried by --plate-rgb and the numeral; the
+    box stays quiet. This previously stacked eight decoration layers (grid
+    lines, a radial bloom, an outer border, a second inset border, a glowing
+    underline, and a coloured outer glow) on one 17rem object.
+  */
   .release-plate {
+    --plate-rgb: var(--accent-rgb);
     position: relative;
     z-index: 1;
-    justify-self: center;
+    align-self: start;
+    justify-self: end;
+    overflow: hidden;
     display: grid;
-    gap: 0.4rem;
-    justify-items: center;
-    width: min(15rem, 60vw);
-    padding: clamp(1.4rem, 4vw, 2rem) 1.25rem;
+    width: min(17rem, 100%);
+    background: rgba(var(--plate-rgb), 0.06);
+    border: 1px solid rgba(var(--plate-rgb), 0.34);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-1);
+  }
+
+  .plate-patch {
+    --plate-rgb: var(--ion-rgb);
+  }
+
+  /* Nothing has shipped yet, so the box stays provisional. */
+  .plate-preview {
+    border-style: dashed;
+  }
+
+  .plate-readout {
+    display: grid;
+    gap: 0.34rem;
+    padding: clamp(1.25rem, 4vw, 1.8rem) 1rem 1.25rem;
     text-align: center;
-    background:
-      radial-gradient(circle at 50% 0%, rgba(255, 106, 42, 0.16), transparent 70%),
-      rgba(9, 13, 18, 0.55);
-    border: 1px solid var(--accent);
-    border-radius: var(--radius-xl);
-    box-shadow:
-      0 0 38px rgba(255, 106, 42, 0.18),
-      inset 0 1px 0 rgba(246, 239, 231, 0.12);
   }
 
-  .release-plate::before {
-    position: absolute;
-    inset: 0.45rem;
-    pointer-events: none;
-    content: "";
-    border: 1px solid rgba(255, 106, 42, 0.22);
-    border-radius: calc(var(--radius-xl) - 0.35rem);
-  }
-
-  .plate-kind {
-    color: var(--accent-soft);
-    font-family: var(--font-display);
-    font-size: 0.78rem;
+  .plate-label {
+    color: var(--text-2);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
     font-weight: 800;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.15em;
     text-transform: uppercase;
   }
 
   .plate-version {
     color: var(--text-1);
     font-family: var(--font-mono);
-    font-size: clamp(2rem, 5vw, 2.8rem);
+    font-size: clamp(2.25rem, 5vw, 3.2rem);
+    font-weight: 850;
+    letter-spacing: -0.065em;
+    line-height: 0.95;
+    text-shadow: 0 0 24px rgba(var(--plate-rgb), 0.2);
+  }
+
+  .plate-preview .plate-version {
+    font-size: clamp(1.45rem, 3.6vw, 2rem);
+    letter-spacing: -0.035em;
+  }
+
+  .plate-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.68rem 0.9rem 0.78rem;
+    background: rgba(var(--plate-rgb), 0.05);
+    border-top: 1px solid rgba(var(--plate-rgb), 0.18);
+  }
+
+  .plate-footer > span {
+    color: var(--text-2);
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
     font-weight: 800;
-    letter-spacing: -0.04em;
-    line-height: 1;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
   }
 
   .plate-date {
     color: var(--text-2);
     font-family: var(--font-mono);
-    font-size: 0.8rem;
+    font-size: 0.68rem;
+    font-weight: 700;
     letter-spacing: 0.03em;
   }
 
@@ -253,6 +298,13 @@
   .section-heading {
     display: grid;
     gap: 0.35rem;
+  }
+
+  .section-intro {
+    max-width: 56rem;
+    color: var(--text-2);
+    font-size: 1.02rem;
+    line-height: 1.65;
   }
 
   h2 {
@@ -343,24 +395,6 @@
     border-color: rgba(38, 27, 20, 0.11);
   }
 
-  :global(:root[data-theme="light"]) .title-row span {
-    color: #fffaf4;
-  }
-
-  :global(:root[data-theme="light"]) .release-plate {
-    background:
-      radial-gradient(circle at 50% 0%, rgba(184, 63, 17, 0.1), transparent 70%),
-      rgba(255, 250, 244, 0.92);
-    border-color: rgba(184, 63, 17, 0.5);
-    box-shadow:
-      0 0 30px rgba(184, 63, 17, 0.12),
-      inset 0 1px 0 rgba(255, 255, 255, 0.7);
-  }
-
-  :global(:root[data-theme="light"]) .release-plate::before {
-    border-color: rgba(184, 63, 17, 0.16);
-  }
-
   :global(:root[data-theme="light"]) .release-body,
   :global(:root[data-theme="light"]) .feature-card,
   :global(:root[data-theme="light"]) .thanks-panel {
@@ -382,7 +416,8 @@
 
     .release-plate {
       order: -1;
-      width: min(13rem, 70vw);
+      justify-self: start;
+      width: min(22rem, 100%);
     }
 
     .install-grid {
@@ -406,7 +441,7 @@
     }
 
     .release-plate {
-      width: min(11rem, 60vw);
+      width: 100%;
     }
 
     .feature-grid {
