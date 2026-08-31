@@ -36,6 +36,75 @@ export type NewsPost = {
 
 export const newsPosts: NewsPost[] = [
   {
+    slug: "v0-6-1-live-previews",
+    title: "Previews in Motion",
+    version: "v0.6.1",
+    date: "2026-08-28",
+    eyebrow: "Release News",
+    summary: "Halley v0.6.1 is a focused stability release for live Alt-Tab and Apogee previews, fullscreen restoration, mixed-refresh rendering, modal keyboard input, and rounded overlay clipping.",
+    intro: [
+      "Halley v0.6.1 follows the rewrite with a tighter presentation path. Alt-Tab and Apogee now render mapped windows directly from their live surface trees, keeping previews current without repeatedly capturing full-window textures.",
+      "The patch also closes the first set of fullscreen, input, and damage-tracking regressions found after 0.6.0. The result is steadier motion across mixed-refresh outputs, more reliable restoration after rapid presentation changes, and cleaner overview cards."
+    ],
+    features: [
+      {
+        title: "Live surface-tree previews",
+        description: "Mapped Alt-Tab and Apogee entries render directly from client surface trees. Cached textures remain available for collapsed or temporarily unmapped windows."
+      },
+      {
+        title: "Native output cadence",
+        description: "Every visible live preview follows its home output's presentation cadence, while mirrored Alt-Tab cards invalidate each output where they appear."
+      },
+      {
+        title: "Smooth mixed-refresh overviews",
+        description: "Frame callbacks now reach every visible Alt-Tab entry instead of only the centered selection, removing lag from surrounding cards and mixed-refresh setups."
+      },
+      {
+        title: "Reliable presentation restoration",
+        description: "Windowed and maximized restore endpoints survive client fullscreen, compositor fullscreen, maximize, and rapid repeated transitions."
+      },
+      {
+        title: "Correct fullscreen state edges",
+        description: "Compositor-owned Mod+F stays protocol-windowed, allowing later client fullscreen requests to trigger the state change applications need to reflow nested content."
+      },
+      {
+        title: "Cleaner translucent transitions",
+        description: "Fullscreen entry now blends translucent clients correctly even when they do not advertise opaque regions."
+      },
+      {
+        title: "Fresh preview damage",
+        description: "Replacement preview textures receive new damage identities, preventing stale Apogee hover rectangles and square corruption."
+      },
+      {
+        title: "Modal key releases fixed",
+        description: "Modifiers pressed before Apogee opens are released back to the client while intercepted key releases remain suppressed, preventing stuck modifiers after closing the overview."
+      },
+      {
+        title: "Rounded preview clipping",
+        description: "Live and cached Alt-Tab, Apogee, and hover-preview content is clipped to the overlay card radius in output pixels."
+      },
+      {
+        title: "glibc and musl portability",
+        description: "Ancillary socket-data length handling now compiles across glibc and musl by using platform field types and usize arithmetic."
+      }
+    ],
+    install: {
+      aur: ["yay -S halley", "paru -S halley", "yay -S halley-full", "paru -S halley-full", "yay -S halley-lift", "paru -S halley-lift"],
+      aurDev: ["yay -S halley-git", "paru -S halley-git"],
+      source: "git clone https://github.com/saltnpepper97/halley\\ncd halley\\ngit checkout v0.6.1\\ncargo build --release --workspace"
+    },
+    notes: [
+      "The wiki now defaults to v0.6.1. v0.6.0 and earlier documentation remains available from the version picker.",
+      "This patch does not change the 0.6 configuration format or require a migration.",
+      "Users with mixed-refresh monitors, fullscreen-heavy workflows, or frequent Alt-Tab and Apogee use should update."
+    ],
+    thanks: [
+      "Thanks to everyone who tested the rewrite immediately and reported the first presentation and overview regressions with precise reproduction steps.",
+      "The mixed-refresh, fullscreen restoration, stuck-modifier, and preview-corruption reports kept this follow-up focused."
+    ],
+    closing: "The field stays live, even in overview."
+  },
+  {
     slug: "halley-rewritten",
     title: "Halley, Rewritten",
     version: "v0.6.0",
