@@ -52,4 +52,4 @@ export const wikiNavigationForVersion = (version: string): WikiNavItem[] => [
   }
 ];
 
-export const wikiNavigation = wikiNavigationForVersion("0.6.1");
+export const wikiNavigation = wikiNavigationForVersion("0.7.0");

@@ -1,4 +1,5 @@
 import { configPageV06Override } from "$lib/wiki/config-reference-v06";
+import { configPageV07Override } from "$lib/wiki/config-reference-v07";
 
 export type ConfigOption = {
   option: string;
@@ -1943,7 +1944,11 @@ const availableInVersion = (item: { addedIn?: string; removedIn?: string }, vers
   (!item.addedIn || version >= item.addedIn) && (!item.removedIn || version < item.removedIn);
 
 export const configPageForVersion = (page: ConfigPage, version: string): ConfigPage => {
-  const versionPage = version >= "0.6.0" ? (configPageV06Override(page.slug) ?? page) : page;
+  const versionPage = version >= "0.7.0"
+    ? (configPageV07Override(page.slug) ?? page)
+    : version >= "0.6.0"
+      ? (configPageV06Override(page.slug) ?? page)
+      : page;
   const sections = versionPage.sections
     .filter((section) => availableInVersion(section, version))
     .map((section) => ({
@@ -1961,6 +1966,11 @@ export const configPageForVersion = (page: ConfigPage, version: string): ConfigP
 };
 
 export const configExampleForVersion = (slug: string, version: string) => {
+  if (version >= "0.7.0") {
+    return configPageV07Override(slug)?.example ?? configExamplesV06[slug] ?? configExamples[slug] ?? `${slug}:
+end`;
+  }
+
   if (version >= "0.6.0") {
     return configExamplesV06[slug] ?? configExamples[slug] ?? `${slug}:
 end`;

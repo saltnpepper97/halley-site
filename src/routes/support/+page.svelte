@@ -68,7 +68,7 @@
         <span class="coord" aria-hidden="true">04 · Share</span>
         <h2>Share it</h2>
         <p>If the project resonates, point other Wayland and desktop-environment people at it.</p>
-        <a class="link-comet" href={withBase("/news/halley-rewritten")}>Latest release</a>
+        <a class="link-comet" href={withBase("/news/v0-7-0-cluster-composer")}>Latest release</a>
       </article>
     </section>
   </main>

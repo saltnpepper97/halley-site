@@ -8,7 +8,7 @@
   <title>News | Halley</title>
   <meta
     name="description"
-    content="Halley news and release announcements, including the current v0.6.1 live-preview and stability update."
+    content="Halley news and release announcements, including the current v0.7.0 Cluster Composer and compositor UI styling release."
   />
 </svelte:head>
 

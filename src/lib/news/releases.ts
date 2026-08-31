@@ -36,6 +36,98 @@ export type NewsPost = {
 
 export const newsPosts: NewsPost[] = [
   {
+    slug: "v0-7-0-cluster-composer",
+    title: "Compose the Field",
+    version: "v0.7.0",
+    date: "2026-08-31",
+    eyebrow: "Release News",
+    summary: "Halley v0.7.0 introduces the Cluster Composer, independent compositor UI styling, system-aware colours, safer explicit config migration, and a broad presentation and XWayland reliability pass.",
+    intro: [
+      "Cluster creation is now a deliberate spatial workflow. Halley gathers eligible windows and collapsed nodes into a stable monitor-local mosaic, lets you focus and select without losing context, then animates the chosen members into the exact core that will represent them.",
+      "The release also gives compositor overlays and node chrome their own palette, polishes Lift, and tightens the difficult edges around fullscreen games, rapid presentation reversals, automatic decay, pointer visibility, and disappearing layer surfaces."
+    ],
+    featureSections: [
+      {
+        eyebrow: "Spatial workflow",
+        title: "Build clusters in context",
+        features: [
+          {
+            title: "A real Cluster Composer",
+            description: "Eligible windows and collapsed nodes are arranged in a stable, non-overlapping mosaic with pointer and directional keyboard navigation."
+          },
+          {
+            title: "Selection that stays legible",
+            description: "Keyboard focus is distinct from persistent membership, and selected members move continuously into the preflighted future cluster core."
+          },
+          {
+            title: "Collapsed nodes and core editing",
+            description: "Collapsed nodes can join active clusters across outputs, while an adjacent bloom control renames an existing cluster without rebuilding it."
+          }
+        ]
+      },
+      {
+        eyebrow: "Appearance",
+        title: "Compositor UI gets its own voice",
+        features: [
+          {
+            title: "Independent overlay borders",
+            description: "overlays.border-colour and overlays.border-size separate compositor cards from window decorations, with an optional zoom-indicator override."
+          },
+          {
+            title: "Independent node emphasis",
+            description: "node.border-colour and node.border-colour-highlighted style idle and active collapsed nodes and cluster cores."
+          },
+          {
+            title: "System-aware colour mode",
+            description: "The explicit system value follows the XDG desktop colour-scheme preference, while auto remains Halley's deterministic palette."
+          },
+          {
+            title: "Refreshed decoration defaults",
+            description: "Fresh configs use a neutral focused window border, an orange focused titlebar, and right-side controls."
+          }
+        ]
+      },
+      {
+        eyebrow: "Reliability",
+        title: "Fewer broken handoffs",
+        features: [
+          {
+            title: "Smoother overview activation",
+            description: "Apogee and Alt-Tab share one camera path, center the selected window and pointer, and raise the activated target explicitly."
+          },
+          {
+            title: "Stronger XWayland game focus",
+            description: "Locked-pointer handoff, stale unlock rejection, synchronous globally-active focus, and rejected minimize state are handled more carefully."
+          },
+          {
+            title: "Lighter automatic decay",
+            description: "Node decay reuses current GPU previews, avoids duplicate full-window capture work, and collapses only one overdue node per timer tick."
+          },
+          {
+            title: "Cleaner compositor chrome",
+            description: "Lift icons and selection markers are more reliable, hidden client cursors stay hidden, and unmapped layer surfaces no longer leave blur behind."
+          }
+        ]
+      }
+    ],
+    install: {
+      aur: ["yay -S halley", "paru -S halley", "yay -S halley-full", "paru -S halley-full", "yay -S halley-lift", "paru -S halley-lift"],
+      aurDev: ["yay -S halley-git", "paru -S halley-git"],
+      source: "git clone https://github.com/saltnpepper97/halley\\ncd halley\\ngit checkout v0.7.0\\ncargo build --release --workspace"
+    },
+    notes: [
+      "The wiki now defaults to v0.7.0 and documents every new overlay and node colour control. v0.6.1 and earlier references remain available from the version picker.",
+      "Startup never rewrites an existing config. New settings are optional; halleyctl config migrate is explicit, supports --dry-run, validates before writing, replaces atomically, and retains a backup.",
+      "The Fuzzel Super+D default applies only to fresh configs. Existing bindings remain untouched.",
+      "halley-config and halley-cli are 0.7.0, Halley Lift is 0.2.1, and the semantic API and private IPC protocol are unchanged."
+    ],
+    thanks: [
+      "Thanks to everyone who kept testing clusters, fullscreen games, mixed-output navigation, and automatic decay after the rewrite.",
+      "The focused reports behind the config-safety, XWayland handoff, icon, and overlay fixes made this release much safer to ship."
+    ],
+    closing: "Choose the orbit. Compose the field."
+  },
+  {
     slug: "v0-6-1-live-previews",
     title: "Previews in Motion",
     version: "v0.6.1",
