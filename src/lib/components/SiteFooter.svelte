@@ -134,15 +134,6 @@
     letter-spacing: -0.055em;
   }
 
-  .brand::before {
-    width: 0.72rem;
-    height: 0.72rem;
-    content: "";
-    background: var(--accent);
-    border-radius: 999px;
-    box-shadow: 0 0 22px rgba(255, 106, 42, 0.72);
-  }
-
   .footer-brand p,
   .footer-bottom p {
     color: var(--text-3);

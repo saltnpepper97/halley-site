@@ -27,9 +27,9 @@
         <div class="map-focus"></div>
         <div class="map-route route-one"></div>
         <div class="map-route route-two"></div>
-        <div class="map-window window-notes"><span></span><b>Notes</b></div>
-        <div class="map-window window-editor"><span></span><b>Editor</b></div>
-        <div class="map-window window-browser"><span></span><b>Browser</b></div>
+        <div class="map-window window-notes"><b>Notes</b></div>
+        <div class="map-window window-editor"><b>Editor</b></div>
+        <div class="map-window window-browser"><b>Browser</b></div>
         <span class="map-node node-one"></span>
         <span class="map-node node-two"></span>
         <span class="map-node node-three"></span>
@@ -238,17 +238,6 @@
     font-size: 0.55rem;
     letter-spacing: 0.07em;
     text-transform: uppercase;
-  }
-
-  .map-window span {
-    position: absolute;
-    top: 0.38rem;
-    left: 0.45rem;
-    width: 0.25rem;
-    height: 0.25rem;
-    background: var(--accent);
-    border-radius: 999px;
-    box-shadow: 0 0 8px rgba(255, 106, 42, 0.7);
   }
 
   .map-window b { font-weight: 700; }

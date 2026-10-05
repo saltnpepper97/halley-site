@@ -34,7 +34,6 @@
     {#each groups as group}
       <section class="day" aria-label={formatNewsDate(group.date)}>
         <div class="day-rail">
-          <span class="day-dot" aria-hidden="true"></span>
           <time class="day-date" datetime={group.date}>{formatNewsDateShort(group.date)}</time>
         </div>
 
@@ -44,7 +43,6 @@
             <a class="feed-card" href={withBase(`/news/${post.slug}`)}>
               <div class="card-top">
                 <span class="kind kind-{kind.toLowerCase()}">
-                  <span class="badge-signal" aria-hidden="true"></span>
                   {kind}
                 </span>
                 <span class="version version-{kind.toLowerCase()}">
@@ -116,16 +114,6 @@
     align-items: center;
     gap: 0.6rem;
     padding-top: 0.45rem;
-  }
-
-  .day-dot {
-    position: relative;
-    flex: none;
-    width: 0.6rem;
-    height: 0.6rem;
-    background: var(--accent);
-    border-radius: 999px;
-    box-shadow: 0 0 0 4px rgba(255, 106, 42, 0.16);
   }
 
   .day-date {
@@ -212,14 +200,6 @@
     color: var(--text-1);
     background: transparent;
     letter-spacing: 0.04em;
-  }
-
-  .badge-signal {
-    width: 0.4rem;
-    height: 0.4rem;
-    background: currentColor;
-    border-radius: 999px;
-    box-shadow: 0 0 8px rgba(var(--chip-rgb), 0.65);
   }
 
   .kind-patch,

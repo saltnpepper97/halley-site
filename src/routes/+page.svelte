@@ -61,7 +61,6 @@
         <span class="coord scene-readout readout-tr" aria-hidden="true">Zoom 1.0×</span>
 
         <p class="scene-caption">
-          <span class="scene-live" aria-hidden="true"></span>
           Field model — focus, decay, bearings.
         </p>
       </div>
@@ -167,8 +166,8 @@
         <div class="hud-arrow arrow-n">N 960</div>
         <div class="hud-arrow arrow-e">E 320</div>
         <div class="hud-arrow arrow-s">S 540</div>
-        <div class="hud-dot dot-one"></div>
-        <div class="hud-dot dot-two"></div>
+        <div class="art-window hud-window-one"></div>
+        <div class="art-window hud-window-two"></div>
       </div>
     </section>
 
@@ -519,21 +518,6 @@
     letter-spacing: 0.02em;
   }
 
-  .scene-live {
-    flex: none;
-    width: 0.5rem;
-    height: 0.5rem;
-    background: var(--accent);
-    border-radius: 999px;
-    box-shadow: 0 0 12px rgba(255, 106, 42, 0.8);
-    animation: scene-pulse 2.4s ease-in-out infinite;
-  }
-
-  @keyframes scene-pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.4; transform: scale(0.78); }
-  }
-
   .demo-field {
     position: absolute;
     inset: 0;
@@ -599,18 +583,6 @@
       linear-gradient(180deg, rgba(125, 220, 255, 0.11) 0 1.15rem, transparent 1.15rem),
       rgba(10, 17, 27, 0.94);
     border-color: rgba(125, 220, 255, 0.24);
-  }
-
-  .demo-window::before {
-    position: absolute;
-    top: 0.48rem;
-    left: 0.55rem;
-    width: 0.28rem;
-    height: 0.28rem;
-    content: "";
-    background: var(--accent);
-    border-radius: 999px;
-    box-shadow: 0 0 9px rgba(255, 106, 42, 0.75);
   }
 
   .demo-window::after {
@@ -1024,17 +996,8 @@
   .arrow-e { right: 8%; top: 46%; }
   .arrow-s { left: 42%; bottom: 11%; }
 
-  .hud-dot {
-    position: absolute;
-    width: 0.75rem;
-    height: 0.75rem;
-    background: var(--accent-soft);
-    border-radius: 999px;
-    box-shadow: 0 0 20px rgba(255, 106, 42, 0.55);
-  }
-
-  .dot-one { left: 27%; top: 35%; }
-  .dot-two { right: 28%; bottom: 30%; }
+  .hud-window-one { left: 22%; top: 30%; width: 22%; height: 20%; }
+  .hud-window-two { right: 22%; bottom: 26%; width: 20%; height: 18%; }
 
   .monitor-field {
     top: 24%;
@@ -1348,7 +1311,6 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .scene-live,
     .window-a,
     .window-b {
       animation: none;

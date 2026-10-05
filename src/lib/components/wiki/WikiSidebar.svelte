@@ -310,17 +310,6 @@
     display: none;
   }
 
-  .parent::before {
-    flex: 0 0 auto;
-    width: 0.45rem;
-    height: 0.45rem;
-    margin-right: 0.55rem;
-    content: "";
-    background: var(--accent);
-    border-radius: 999px;
-    box-shadow: 0 0 16px rgba(255, 106, 42, 0.62);
-  }
-
   summary.parent::after {
     flex: 0 0 auto;
     margin-left: auto;

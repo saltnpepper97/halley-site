@@ -611,7 +611,7 @@ canvas {
   text-transform: uppercase;
 }
 
-/* Section divider with a centered reticle tick. */
+/* Section divider with a centered label. */
 .hud-divider {
   display: flex;
   align-items: center;
@@ -642,15 +642,6 @@ canvas {
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-}
-
-.hud-divider > span::before {
-  content: "";
-  width: 7px;
-  height: 7px;
-  border: 1.5px solid var(--hud-line);
-  border-radius: 50%;
-  box-shadow: 0 0 10px var(--hud-line-soft);
 }
 
 /* Comet-trail underline — opt-in accent for content links. */
