@@ -1,6 +1,7 @@
 <script lang="ts">
   import { browser } from "$app/environment";
   import { page } from "$app/state";
+  import { ipcGroupAnchor } from "$lib/wiki/search";
   import CodeBlock from "$lib/components/CodeBlock.svelte";
   import {
     commandAvailableInVersion,
@@ -69,7 +70,7 @@ halleyctl cluster info current --json`;
       {#each ipcGroups as group}
         {@const commands = visibleCommands(group.commands)}
         {#if commands.length}
-          <section class="command-group">
+          <section id={ipcGroupAnchor(group.title)} class="command-group">
             <div class="command-heading">
               <h3>{group.title}</h3>
               <p>{group.summary}</p>

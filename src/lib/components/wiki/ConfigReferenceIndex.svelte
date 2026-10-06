@@ -41,7 +41,7 @@
     <div class="dependency-note">
       <strong>Split configs reload together.</strong>
       <span>
-        The 0.6 watcher follows nested Rune <code>gather</code> dependencies and rebuilds the
+        The watcher follows nested Rune <code>gather</code> dependencies and rebuilds the
         watched file set after every accepted reload.
       </span>
     </div>

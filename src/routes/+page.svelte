@@ -26,9 +26,9 @@
           <span>Returning.</span>
         </h1>
         <p class="lede">Windows as nodes, displays as fields, clusters as deliberate workspaces.</p>
-        <a class="release-link" href={withBase("/news/v0-7-0-cluster-composer")}>
+        <a class="release-link" href={withBase("/news/v0-8-0-field-first")}>
           <span>Current</span>
-          Halley v0.7.0 — compose the field
+          Halley v0.8.0 — the Field comes first
         </a>
 
         <div class="hero-actions" aria-label="Primary actions">
@@ -37,7 +37,7 @@
         </div>
 
         <dl class="hero-telemetry" aria-label="Halley at a glance">
-          <div><dt>Version</dt><dd>0.7.0 current</dd></div>
+          <div><dt>Version</dt><dd>0.8.0 current</dd></div>
           <div><dt>Protocol</dt><dd>Wayland</dd></div>
           <div><dt>Model</dt><dd>Spatial</dd></div>
         </dl>

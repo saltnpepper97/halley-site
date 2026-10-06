@@ -44,13 +44,19 @@ paru -S halley-full`;
         <h2>Halley Lift</h2>
         <p>
           A compositor-integrated command palette. Search apps, nodes, clusters, actions, and config
-          from one launcher — and stage running nodes into cluster drafts in a single flow.
+          from one launcher — and stage running nodes into cluster drafts in a single flow. Independently released and built with Halley UI.
         </p>
         <span class="app-link">
           Learn more <ArrowRightIcon color="currentColor" weight="bold" size={16} />
         </span>
       </a>
 
+      <a class="app-card surface hud-corners available" href="https://github.com/saltnpepper97/halley-ui">
+        <span class="status status-available">Available</span>
+        <h2>Halley UI</h2>
+        <p>Shared Rust components, Taffy layout, text editing, focus, scrolling, accessibility, and direct software rendering for ecosystem apps.</p>
+        <span class="app-link">Toolkit and documentation <ArrowRightIcon color="currentColor" weight="bold" size={16} /></span>
+      </a>
     </section>
 
     <section class="bundle-card surface hud-corners">

@@ -2,6 +2,8 @@
   import { browser } from "$app/environment";
   import { base } from "$app/paths";
   import { page } from "$app/state";
+  import WikiSearch from "$lib/components/wiki/WikiSearch.svelte";
+  import { defaultWikiVersion, wikiVersionFromSearch } from "$lib/wiki/versions";
   import WikiVersionControl from "$lib/components/wiki/WikiVersionControl.svelte";
   import type { WikiNavItem } from "$lib/wiki/navigation";
   import { lockBodyScroll } from "$lib/utils/scroll-lock";
@@ -102,6 +104,8 @@
     <a class="mobile-home-link" href={withBase("/")} onclick={closeMobileNav}>Back to Halley home</a>
 
     <WikiVersionControl />
+
+    <WikiSearch {items} version={(browser ? wikiVersionFromSearch(page.url.searchParams) : defaultWikiVersion).value} hrefFor={versionedHref} onselect={closeMobileNav} />
 
     <div class="new-user-card">
       <span>New here?</span>
@@ -257,6 +261,24 @@
 
   details {
     gap: 0.3rem;
+    interpolate-size: allow-keywords;
+  }
+
+  details::details-content {
+    block-size: 0;
+    opacity: 0;
+    overflow: clip;
+    transition: block-size 220ms ease, opacity 180ms ease, content-visibility 220ms;
+    transition-behavior: allow-discrete;
+  }
+
+  details[open]::details-content {
+    block-size: auto;
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    details::details-content { transition: none; }
   }
 
   .sidebar-nav {

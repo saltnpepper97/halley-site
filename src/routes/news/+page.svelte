@@ -8,7 +8,7 @@
   <title>News | Halley</title>
   <meta
     name="description"
-    content="Halley news and release announcements, including the current v0.7.0 Cluster Composer and compositor UI styling release."
+    content="Halley news and release announcements, including the v0.8.0 Field workflow, ecosystem, and desktop integration release."
   />
 </svelte:head>
 

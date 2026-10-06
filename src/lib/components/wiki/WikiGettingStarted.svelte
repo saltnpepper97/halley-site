@@ -27,6 +27,7 @@
   ];
 
   const commonTasks = [
+    { label: "Learn the 0.8 Field workflow", href: "/wiki/workflow" },
     { label: "Install on Arch", href: "/wiki/install#install-arch" },
     { label: "Build from source", href: "/wiki/install#install-source" },
     { label: "Launch from a display manager", href: "/wiki/install#install-session" },

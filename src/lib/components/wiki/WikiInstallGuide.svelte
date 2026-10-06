@@ -8,6 +8,7 @@
   const withBase = (href: string) => `${base}${href}`;
 
   const activeVersion = () => browser ? wikiVersionFromSearch(page.url.searchParams) : defaultWikiVersion;
+  const isV08 = () => activeVersion().value >= "0.8.0";
   const isV06 = () => activeVersion().value >= "0.6.0";
   const sourceInstall = () => `git clone https://github.com/saltnpepper97/halley
 cd halley
@@ -120,11 +121,14 @@ systemctl --user start xdg-desktop-portal-halley.service`;
 
     {#if isV06()}
       <p>
-        The workspace build produces <code>halley</code>, <code>halleyctl</code>, <code>halley-lift</code>, and
+        The workspace build produces <code>halley</code>, <code>halleyctl</code>, {#if !isV08()}<code>halley-lift</code>, {/if}and
         <code>xdg-desktop-portal-halley</code> in <code>target/release</code>.
       </p>
     {:else}
       <p>The compositor binary will be available at <code>target/release/halley</code>.</p>
+    {/if}
+    {#if isV08()}
+      <p>Lift is now built and versioned in its <a class="req-link" href="https://github.com/saltnpepper97/halley-lift">own repository</a>. Install it separately with <code>cargo install halley-lift --locked</code>, or use the ecosystem package.</p>
     {/if}
   </article>
 

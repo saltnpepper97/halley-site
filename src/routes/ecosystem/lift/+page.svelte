@@ -41,7 +41,7 @@ paru -S halley-lift`;
       <h1>Halley Lift</h1>
       <p class="lede">
         Lift is a standalone command palette for Halley. It talks to the compositor over Halley's
-        existing IPC APIs, so a single launcher can search apps, running nodes, clusters, actions,
+        public client API, so a single launcher can search apps, running nodes, clusters, actions,
         and config — and even assemble clusters — without leaving the field.
       </p>
     </section>
@@ -58,6 +58,9 @@ paru -S halley-lift`;
       </div>
       <CodeBlock code={aurLift} label="lift package" />
       <p>Run it with no arguments, or seed an initial query to open straight into a mode.</p>
+      <p>Lift 0.3 is independently versioned and uses Halley UI for its components, Taffy layout, Unicode text editing, icons, and direct software drawing.</p>
+      <p><a href="https://github.com/saltnpepper97/halley-lift">Source and complete configuration guide</a> · <a href="https://crates.io/crates/halley-lift">Cargo package</a></p>
+      <CodeBlock code="cargo install halley-lift --locked" label="Cargo install" />
       <CodeBlock code={runLift} label="run" />
       <CodeBlock code={seedLift} label="seeded query" />
     </article>
