@@ -9,6 +9,7 @@ export type WikiNavItem = {
 
 export const wikiNavigationForVersion = (version: string): WikiNavItem[] => [
   { label: "Getting Started", href: "/wiki" },
+  ...(version >= "0.8.0" ? [{ label: "The Field workflow", href: "/wiki/workflow" }] : []),
   {
     label: "Install",
     href: "/wiki/install",
@@ -52,4 +53,4 @@ export const wikiNavigationForVersion = (version: string): WikiNavItem[] => [
   }
 ];
 
-export const wikiNavigation = wikiNavigationForVersion("0.7.0");
+export const wikiNavigation = wikiNavigationForVersion("0.8.0");

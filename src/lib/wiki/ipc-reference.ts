@@ -26,6 +26,9 @@ export const ipcGroups: IpcGroup[] = [
     commands: [
       { command: "halleyctl quit", description: "Open Halley's compositor-owned exit confirmation." },
       { command: "halleyctl reload", description: "Reload Halley configuration." },
+      { command: "halleyctl basics", description: "Reopen the non-modal Halley basics card.", addedIn: "0.8.0" },
+      { command: "halleyctl pan left|right|up|down", description: "Pan the Field with a scriptable directional action.", addedIn: "0.8.0" },
+      { command: "halleyctl monitor transfer left|right|up|down", description: "Transfer the focused Field window to a neighboring monitor.", addedIn: "0.8.0" },
       { command: "halleyctl outputs", description: "Print output state.", json: true, removedIn: "0.6.0" },
       { command: "halleyctl outputs", description: "Print connected outputs, modes, positions, VRR support, and current state.", addedIn: "0.6.0" },
       { command: "halleyctl dpms off|on|toggle [-o OUTPUT]", description: "Set or toggle output power state." }
@@ -33,11 +36,11 @@ export const ipcGroups: IpcGroup[] = [
   },
   {
     title: "Configuration",
-    summary: "Edit, verify, migrate, or reload the selected Rune configuration.",
+    summary: "Edit, verify, or reload the selected Rune configuration. Migration is available only in older versions.",
     commands: [
       { command: "halleyctl config edit [-c PATH|--config PATH]", description: "Open the selected config with $VISUAL, $EDITOR, or vi.", addedIn: "0.6.0" },
       { command: "halleyctl config verify [-c PATH|--config PATH]", description: "Strictly parse and validate a complete config without applying it.", addedIn: "0.6.0" },
-      { command: "halleyctl config migrate [--dry-run] [-c PATH|--config PATH]", description: "Apply versioned compatibility entries, validate the result, and retain a timestamped backup. Dry-run prints the proposed result.", addedIn: "0.6.0" }
+      { command: "halleyctl config migrate [--dry-run] [-c PATH|--config PATH]", description: "Apply versioned compatibility entries, validate the result, and retain a timestamped backup. Dry-run prints the proposed result.", addedIn: "0.6.0", removedIn: "0.8.0" }
     ]
   },
   {

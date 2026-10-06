@@ -2,6 +2,9 @@
   import { browser } from "$app/environment";
   import { base } from "$app/paths";
   import { page } from "$app/state";
+  import WikiNavGroup from "$lib/components/wiki/WikiNavGroup.svelte";
+  import WikiSearch from "$lib/components/wiki/WikiSearch.svelte";
+  import { defaultWikiVersion, wikiVersionFromSearch } from "$lib/wiki/versions";
   import WikiVersionControl from "$lib/components/wiki/WikiVersionControl.svelte";
   import type { WikiNavItem } from "$lib/wiki/navigation";
   import { lockBodyScroll } from "$lib/utils/scroll-lock";
@@ -9,6 +12,17 @@
 
   let { items }: { items: WikiNavItem[] } = $props();
   let mobileOpen = $state(false);
+  let openTopLevel = $state<string | null | undefined>(undefined);
+  let nestedOpen = $state<Record<string, boolean>>({});
+
+  // Navigation selects the relevant group; manual toggles apply until navigation.
+  $effect(() => {
+    page.url.pathname;
+    page.url.hash;
+    page.url.search;
+    openTopLevel = undefined;
+    nestedOpen = {};
+  });
 
   const withBase = (href: string) => `${base}${href}`;
 
@@ -44,6 +58,9 @@
 
   const isOpen = (item: WikiNavItem) =>
     isActive(item.href) || hasActiveChild(item) || (item.defaultOpen && !hasActiveTopLevel());
+
+  const topLevelIsOpen = (item: WikiNavItem) => openTopLevel === undefined ? Boolean(isOpen(item)) : openTopLevel === item.href;
+  const nestedIsOpen = (item: WikiNavItem) => nestedOpen[item.href] ?? Boolean(isOpen(item));
 
   const versionedHref = (href: string) => {
     if (!browser) {
@@ -103,6 +120,8 @@
 
     <WikiVersionControl />
 
+    <WikiSearch {items} version={(browser ? wikiVersionFromSearch(page.url.searchParams) : defaultWikiVersion).value} hrefFor={versionedHref} onselect={closeMobileNav} />
+
     <div class="new-user-card">
       <span>New here?</span>
       <p>Start with install, then config. Use IPC only once Halley is running.</p>
@@ -112,17 +131,17 @@
     <a class="sidebar-title" href={versionedHref("/wiki")} onclick={closeMobileNav}>Wiki</a>
 
     <nav class="sidebar-nav">
-      {#each items as item}
+      {#each items as item, itemIndex}
         <section class="nav-group">
           {#if item.children?.length}
-            <details name="wiki-sidebar-section" open={isOpen(item)}>
-              <summary class="nav-link parent">{item.label}</summary>
+            <WikiNavGroup label={item.label} id={`wiki-nav-${itemIndex}`} open={topLevelIsOpen(item)}
+              ontoggle={() => openTopLevel = topLevelIsOpen(item) ? null : item.href}>
 
               <div class="subnav" aria-label={`${item.label} pages`}>
-              {#each item.children as child}
+              {#each item.children as child, childIndex}
                 {#if child.children?.length}
-                  <details class="nested-group" open={isOpen(child)}>
-                    <summary class="nav-link child nested-parent">{child.label}</summary>
+                  <WikiNavGroup label={child.label} id={`wiki-nav-${itemIndex}-${childIndex}`} nested open={nestedIsOpen(child)}
+                    ontoggle={() => nestedOpen[child.href] = !nestedIsOpen(child)}>
 
                     <div class="subnav nested-subnav" aria-label={`${child.label} pages`}>
                       <a class:active={isActive(child.href)} class="nav-link child" href={versionedHref(child.href)} onclick={closeMobileNav}>Overview</a>
@@ -130,13 +149,13 @@
                         <a class:active={isActive(nestedChild.href)} class="nav-link child" href={versionedHref(nestedChild.href)} onclick={closeMobileNav}>{nestedChild.label}</a>
                       {/each}
                     </div>
-                  </details>
+                  </WikiNavGroup>
                 {:else}
                   <a class:active={isActive(child.href)} class="nav-link child" href={versionedHref(child.href)} onclick={closeMobileNav}>{child.label}</a>
                 {/if}
               {/each}
               </div>
-            </details>
+            </WikiNavGroup>
           {:else}
             <a class:active={isActive(item.href)} class="nav-link parent" href={versionedHref(item.href)} onclick={closeMobileNav}>{item.label}</a>
           {/if}
@@ -250,13 +269,8 @@
 
   .sidebar-nav,
   .nav-group,
-  .subnav,
-  details {
+  .subnav {
     display: grid;
-  }
-
-  details {
-    gap: 0.3rem;
   }
 
   .sidebar-nav {
@@ -297,41 +311,6 @@
     padding: 0.35rem 0.55rem;
     color: var(--text-1);
     font-weight: 800;
-  }
-
-  summary.parent,
-  summary.child {
-    cursor: pointer;
-    list-style: none;
-  }
-
-  summary.parent::-webkit-details-marker,
-  summary.child::-webkit-details-marker {
-    display: none;
-  }
-
-  summary.parent::after {
-    flex: 0 0 auto;
-    margin-left: auto;
-    color: var(--text-3);
-    content: "+";
-    font-weight: 800;
-  }
-
-  details[open] > summary.parent::after {
-    content: "-";
-  }
-
-  .nested-parent::after {
-    flex: 0 0 auto;
-    margin-left: auto;
-    color: var(--text-3);
-    content: "+";
-    font-weight: 800;
-  }
-
-  .nested-group[open] > .nested-parent::after {
-    content: "-";
   }
 
   .subnav {

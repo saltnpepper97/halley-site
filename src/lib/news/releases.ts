@@ -35,6 +35,123 @@ export type NewsPost = {
 };
 
 export const newsPosts: NewsPost[] = [
+{
+  "slug": "v0-8-0-field-first",
+  "title": "The Field comes first",
+  "version": "v0.8.0",
+  "date": "2026-10-05",
+  "eyebrow": "Release News",
+  "summary": "Halley 0.8 makes the Field the starting point, adds reversible window arrangements, improves screenshot and desktop integration, and gives Lift an independent home built on Halley UI.",
+  "intro": [
+    "A fresh Halley session starts on an empty Field. Open your applications, move them into place, and keep the windows you need within reach. Clusters are optional named contexts that you create when they help, rather than workspaces you must navigate before starting.",
+    "This release adds a reversible arrangement for visible windows, clearer onboarding, richer screenshot previews, and better integration with taskbars, docks, portals, and input methods. Lift now lives in its own repository and uses Halley UI for components, layout, text, icons, and software rendering."
+  ],
+  "featureSections": [
+    {
+      "eyebrow": "Spatial workflow",
+      "title": "Start with the Field",
+      "features": [
+        {
+          "title": "A simpler first session",
+          "description": "Fresh configurations start without predefined clusters. A non-modal basics card shown once per Halley version introduces Lift, moving, arranging, collapsing, and Apogee. Reopen it with halleyctl basics or Lift's action provider."
+        },
+        {
+          "title": "Arrange, then restore",
+          "description": "Mod+A arranges visible windows into a monitor-local mosaic. An untouched arrangement restores its saved geometry on the next press, including during animation. Moving, resizing, or closing a participant ends that saved arrangement, so the next press creates a fresh layout. Automatic decay pauses while the arrangement remains active."
+        },
+        {
+          "title": "Context when you want it",
+          "description": "Optional autostart cluster declarations create named cores with explicit members, layout, and output. An empty active cluster shows its configured close shortcut: press it twice deliberately to delete the cluster and return to the Field, or Escape to cancel. Populated workspace deletion confirms before returning windows to the Field."
+        },
+        {
+          "title": "More time before decay",
+          "description": "Fresh configurations wait 10 minutes outside the focus ring and 90 minutes inside it. Existing configurations retain their values; omitted decay settings keep the built-in timings. A one-time notice explains the first automatic collapse."
+        }
+      ]
+    },
+    {
+      "eyebrow": "Everyday interaction",
+      "title": "Move, capture, and retrieve",
+      "features": [
+        {
+          "title": "Directional navigation and transfers",
+          "description": "Directional Field focus reaches windows, nodes, and cluster cores. Mod+Alt+Shift+Arrow transfers the focused Field window between monitors, and halleyctl exposes directional Field panning."
+        },
+        {
+          "title": "Grabbed-window Field panning",
+          "description": "Mod+Shift+left-drag carries a grabbed window through its output's Field when it dwells at an edge, keeping this separate from monitor transfer."
+        },
+        {
+          "title": "Useful screenshot previews",
+          "description": "Native captures show a preview with Copy and Open controls. Hover keeps the card visible, and copied PNG contents remain available to Wayland and XWayland applications after the card expires."
+        },
+        {
+          "title": "Independent Lift",
+          "description": "Lift keeps its providers, cluster drafts, configuration, shortcuts, worker-based icons, and public client API while moving to its own repository. Halley UI supplies shared components, Taffy layout, Unicode text editing, and direct software drawing."
+        }
+      ]
+    },
+    {
+      "eyebrow": "Desktop integration",
+      "title": "Fit the surrounding desktop",
+      "features": [
+        {
+          "title": "Taskbars and docks",
+          "description": "Foreign-toplevel protocols expose window lists and controls. ext-workspace-v1 exposes clusters per output and applies activation requests atomically."
+        },
+        {
+          "title": "Native input methods",
+          "description": "Upstream text-input-v3 and input-method-v2 support native Wayland IMEs. Screen locking disconnects IME clients; reconnect or restart the input method after unlocking."
+        },
+        {
+          "title": "Cursor and client compatibility",
+          "description": "Native outputs can use hardware cursor planes. A reloadable disable-hardware-cursor option provides a driver workaround, while cross-GPU outputs keep cursor composition. Content-type, toplevel-icon, and single-pixel-buffer protocols are also advertised."
+        },
+        {
+          "title": "Session and portal reliability",
+          "description": "Session targets, direct-session shutdown, persistent autostart logs, portal authentication, executable identity checks, and bounded IPC/capture resources receive focused reliability fixes."
+        }
+      ]
+    },
+    {
+      "eyebrow": "Appearance",
+      "title": "Keep control of presentation",
+      "features": [
+        {
+          "title": "Custom opening and closing shaders",
+          "description": "Optional fragment shaders work with the configured geometry animation and fall back if loading fails. Matching wave open/close examples and setup instructions are included."
+        },
+        {
+          "title": "Independent details",
+          "description": "Titlebar text can use its own size, notifications accept signed anchor offsets, and client opacity leaves compositor decorations and shadows opaque."
+        },
+        {
+          "title": "Shared UI foundations",
+          "description": "Halley uses the published Halley UI crate for text services and measured notification layout. Its GPU rendering, damage policy, Wayland buffers, and required upstream Smithay pin remain in the compositor."
+        }
+      ]
+    }
+  ],
+  "install": {
+    "aur": [
+      "yay -S halley-full",
+      "yay -S halley"
+    ],
+    "aurDev": [
+      "yay -S halley-git"
+    ],
+    "source": "git clone https://github.com/saltnpepper97/halley\ncd halley\ngit checkout v0.8.0\ncargo build --release --workspace"
+  },
+  "notes": [
+    "Configurations remain user-owned. Halley no longer includes config migrate or automatic migration/backup code. Edit compatibility changes manually and run halleyctl config verify before reloading.",
+    "Fresh defaults do not rewrite existing configurations. Add the new launcher, arrangement, and transfer bindings yourself if you want them.",
+    "Lift is built and released separately from Halley. Its version and the library/portal versions follow their own changes rather than matching the compositor's version number.",
+    "Halley retains the blur-capable upstream Smithay revision. Blur and local animation use conservative full-output repaints; this release does not claim selective-repaint or whole-compositor performance parity.",
+    "A basic upstream IME path replaces Halley's former patched lifecycle behavior. Validate your particular IME and screen-lock workflow."
+  ],
+  "thanks": [],
+  "closing": "Start on the Field, arrange what is visible, and create named context when it helps. The 0.8 wiki describes the current workflow and the exact configuration changes."
+},
   {
     slug: "v0-7-0-cluster-composer",
     title: "Compose the Field",
