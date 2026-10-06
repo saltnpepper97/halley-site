@@ -9,15 +9,17 @@
   <h2>Five operations to start with</h2>
   <ul><li><strong>Mod+D:</strong> open Lift to launch apps or retrieve nodes, clusters, actions, and configuration.</li>
     <li><strong>Mod+left-drag:</strong> move a window across the Field.</li>
-    <li><strong>Mod+A:</strong> arrange visible windows into a monitor-local mosaic; press it again to restore their exact saved geometry.</li>
+    <li><strong>Mod+A:</strong> arrange visible windows into a monitor-local mosaic; press it again to restore the saved geometry while the arrangement is untouched.</li>
     <li><strong>Mod+N:</strong> collapse or restore a window as a node.</li>
     <li><strong>Mod+O:</strong> open Apogee for an overview.</li></ul>
   <p>The generated configuration uses these bindings. Existing configurations retain their bindings. The non-modal basics card appears on the first native launch of each Halley version, including with an existing configuration, and stays dismissed for that version. Reopen it using Lift's action provider or <code>halleyctl basics</code>.</p>
   <h2>Attention, nodes, and retrieval</h2>
+  <p>Moving, resizing, transferring, or closing a participating window ends that output's saved arrangement. Its current positions become ordinary Field geometry, and the next Mod+A arranges the current windows afresh. A stationary click or focus change preserves undo, including the immediate and mid-animation toggle.</p>
   <p>Nodes preserve windows as readable landmarks. Directional Field focus reaches expanded windows, nodes, and collapsed cluster cores. Automatic decay pauses for arranged windows and begins a fresh timer when the arrangement is undone.</p>
   <p>Fresh configurations wait 600 seconds outside the focus ring and 5,400 seconds inside it before decay. Existing explicit values stay unchanged; omitting the decay section retains the built-in 180 and 1,800 second values. A one-time notice explains the first automatic collapse.</p>
   <h2>Clusters when context helps</h2>
   <p>Create clusters deliberately through the Cluster Composer or Lift's cluster drafts. In a cluster search, Space stages apps or running nodes, then Ctrl+Enter hands the draft to Halley's naming and confirmation prompt. Empty named cores remain available after the last member closes.</p>
+  <p>Inside an empty cluster, a centered non-modal hint shows the configured close shortcut. Press that shortcut once to arm deletion, release it, then press it again to delete the cluster and return to the Field. Escape cancels. Holding the shortcut cannot confirm. Opening a launcher or interactive overlay hides the hint and clears confirmation; it returns unarmed if the cluster is still empty afterward. A new member or leaving the cluster also clears confirmation, and windows outside the cluster are never closed by this action.</p>
   <p>Startup clusters are optional. This declaration creates a named empty context without launching applications:</p>
   <CodeBlock code={`autostart:
   cluster:

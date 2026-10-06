@@ -57,11 +57,11 @@ export const newsPosts: NewsPost[] = [
         },
         {
           "title": "Arrange, then restore",
-          "description": "Mod+A arranges visible windows into a monitor-local mosaic. Press it again to restore their saved geometry, including during animation. Arranged windows stay independent, and automatic decay pauses while the arrangement is active."
+          "description": "Mod+A arranges visible windows into a monitor-local mosaic. An untouched arrangement restores its saved geometry on the next press, including during animation. Moving, resizing, or closing a participant ends that saved arrangement, so the next press creates a fresh layout. Automatic decay pauses while the arrangement remains active."
         },
         {
           "title": "Context when you want it",
-          "description": "Optional autostart cluster declarations create named cores with explicit members, layout, and output. Empty clusters retain their identity, and populated workspace deletion confirms before returning windows to the Field."
+          "description": "Optional autostart cluster declarations create named cores with explicit members, layout, and output. An empty active cluster shows its configured close shortcut: press it twice deliberately to delete the cluster and return to the Field, or Escape to cancel. Populated workspace deletion confirms before returning windows to the Field."
         },
         {
           "title": "More time before decay",

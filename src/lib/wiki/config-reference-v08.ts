@@ -47,7 +47,8 @@ export const configPageV08Override = (base: ConfigPage): ConfigPage => {
       }
     }
     if (section.slug === "keybinds-actions") add(
-      option("arrange-visible", "action", "Mod+A", "Toggle a reversible, monitor-local Field mosaic. A second invocation restores the same windows' saved geometry, including during animation."),
+      option("close-focused", "action", "Mod+Q", "Close the focused window. In an empty active cluster, two released presses delete only the cluster; Escape cancels, and launchers or new members clear confirmation."),
+      option("arrange-visible", "action", "Mod+A", "Toggle a reversible, monitor-local Field mosaic. An untouched arrangement restores its saved geometry, including during animation. Moving, resizing, transferring or closing a participant ends that snapshot; the next invocation arranges the current windows."),
       option("window-transfer <direction>", "action", "Mod+Alt+Shift+Arrow", "Transfer the focused Field window to the neighboring monitor."),
       option("pan-field <direction>", "action", "unbound", "Pan the Field through an optional keyboard action."),
       option("drag-pan", "pointer action", "Mod+Shift+left-drag", "Carry a grabbed window through its output's Field by dwelling at the output edge."));
