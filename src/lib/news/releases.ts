@@ -154,8 +154,7 @@ export const newsPosts: NewsPost[] = [
     "Package versions follow their own changes: halleyctl and halley-config are 0.9.0, halley-core and halley-ipc 0.8.0, halley-api 0.5.0, and halley-portal 0.3.0."
   ],
   "thanks": [
-    "Thanks to Ketari-G for contributing the pan-field-always action, and to pirate-boop for fixing the accessibility supervisor test under Nix builds.",
-    "Thanks also to Tosensyu, phoebesomething, and Ketari-G for the reports behind panning from anywhere, Ctrl+Alt function-key shortcuts, display scaling, Apogee dimming, lock-key behaviour, and captured-cursor fixes in this release."
+    "Thanks to Ketari-G for contributing the pan-field-always action, and to pirate-boop for fixing the accessibility supervisor test under Nix builds."
   ]
 },
 {
@@ -272,10 +271,7 @@ export const newsPosts: NewsPost[] = [
     "Halley retains the blur-capable upstream Smithay revision. Blur and local animation use conservative full-output repaints; this release does not claim selective-repaint or whole-compositor performance parity.",
     "A basic upstream IME path replaces Halley's former patched lifecycle behavior. Validate your particular IME and screen-lock workflow."
   ],
-  "thanks": [
-    "Thanks to phoebesomething and Ketari-G for detailed reports on portal screen capture and hybrid iGPU/dGPU setups, which led to this release's capture startup and GPU fallback fixes.",
-    "Thanks as well to everyone who tried the Field-first workflow early and shared what felt clear and what did not."
-  ]
+  "thanks": []
 },
   {
     slug: "v0-7-0-cluster-composer",
