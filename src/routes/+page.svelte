@@ -19,7 +19,6 @@
   <main class="home-shell" aria-labelledby="home-title">
     <section class="hero-section">
       <div class="hero-copy">
-        <p class="eyebrow">Wayland compositor</p>
         <h1 id="home-title">Periodic. <span class="title-accent">Precise.</span> Returning.</h1>
         <p class="lede">
           Windows as nodes, displays as fields, clusters as deliberate workspaces.
