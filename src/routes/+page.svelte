@@ -20,7 +20,7 @@
     <section class="hero-section">
       <div class="hero-copy">
         <p class="eyebrow">Wayland compositor</p>
-        <h1 id="home-title">Periodic. Precise. Returning.</h1>
+        <h1 id="home-title">Periodic. <span class="title-accent">Precise.</span> Returning.</h1>
         <p class="lede">
           Windows as nodes, displays as fields, clusters as deliberate workspaces.
         </p>
@@ -188,9 +188,14 @@
 
   h1 {
     max-width: 12ch;
-    font-size: clamp(2.75rem, 5.6vw, 4.6rem);
-    letter-spacing: -0.035em;
+    font-size: clamp(2.9rem, 6vw, 5rem);
+    line-height: 1.02;
+    letter-spacing: -0.04em;
     text-wrap: balance;
+  }
+
+  .title-accent {
+    color: var(--accent);
   }
 
   .lede {
@@ -264,10 +269,23 @@
   }
 
   .hero-scene {
+    position: relative;
+    isolation: isolate;
     display: grid;
     gap: 0.75rem;
     margin: 0;
     min-width: 0;
+  }
+
+  /* A single soft bloom behind the diagram, so the hero has some warmth. */
+  .hero-scene::before {
+    position: absolute;
+    inset: -12% -8% 0;
+    z-index: -1;
+    pointer-events: none;
+    content: "";
+    background: radial-gradient(closest-side, rgba(var(--accent-rgb), 0.16), transparent);
+    filter: blur(24px);
   }
 
   .demo-field {
@@ -291,8 +309,11 @@
     top: 22%;
     width: 56%;
     height: 44%;
-    border: 1.5px solid rgba(var(--accent-rgb), 0.7);
+    border: 1.5px solid rgba(var(--accent-rgb), 0.8);
     border-radius: 50%;
+    box-shadow:
+      0 0 28px rgba(var(--accent-rgb), 0.22),
+      inset 0 0 24px rgba(var(--accent-rgb), 0.08);
   }
 
   .demo-window,
@@ -314,8 +335,13 @@
     border-bottom: 1px solid var(--border-1);
   }
 
-  .window-a { left: 24%; top: 30%; width: 27%; height: 22%; }
-  .window-b { left: 48%; top: 50%; width: 22%; height: 18%; }
+  .window-a { left: 24%; top: 30%; width: 27%; height: 22%; animation: window-drift 7s ease-in-out infinite; }
+  .window-b { left: 48%; top: 50%; width: 22%; height: 18%; animation: window-drift 8s ease-in-out -3s infinite reverse; }
+
+  @keyframes window-drift {
+    0%, 100% { transform: translate3d(0, 0, 0); }
+    50% { transform: translate3d(0.3rem, -0.35rem, 0); }
+  }
 
   .demo-node,
   .art-node {
@@ -327,7 +353,12 @@
     border-radius: var(--radius-sm);
   }
 
-  .node-a { left: 78%; top: 22%; }
+  .node-a { left: 78%; top: 22%; animation: node-fade 6s ease-in-out infinite; }
+
+  @keyframes node-fade {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.55; }
+  }
   .node-b { left: 10%; top: 72%; opacity: 0.6; }
 
   .demo-bearing {
@@ -503,11 +534,37 @@
     .feature-row.reverse .feature-copy {
       order: 2;
     }
+
+    .hero-section {
+      gap: 2.5rem;
+    }
+
+    .hero-copy {
+      gap: 1rem;
+    }
+
+    h1 {
+      max-width: none;
+    }
   }
 
   @media (max-width: 560px) {
     h1 {
-      font-size: clamp(2.3rem, 11vw, 3rem);
+      font-size: clamp(2.4rem, 12vw, 3.1rem);
+    }
+
+    .hero-actions {
+      width: 100%;
+    }
+
+    .primary-action,
+    .secondary-action {
+      flex: 1 1 0;
+      white-space: nowrap;
+    }
+
+    .demo-field {
+      aspect-ratio: 4 / 3;
     }
 
     .demo-node,
@@ -518,6 +575,14 @@
 
     .demo-bearing {
       font-size: 0.64rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .window-a,
+    .window-b,
+    .node-a {
+      animation: none;
     }
   }
 </style>
