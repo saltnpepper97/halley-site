@@ -36,6 +36,126 @@ export type NewsPost = {
 
 export const newsPosts: NewsPost[] = [
 {
+  "slug": "v0-9-0-steadier-field",
+  "title": "A steadier Field",
+  "version": "v0.9.0",
+  "date": "2026-10-30",
+  "eyebrow": "Release News",
+  "summary": "Halley 0.9 adds per-window screencast privacy, fractional display scaling, precise frame pacing and window placement, an initial accessibility tree, and a Nix flake, alongside the deepest fullscreen, XWayland, and game reliability pass yet.",
+  "intro": [
+    "Halley 0.9 is about trust in the desktop you already have: what you share, what you see, and how windows behave when they change state. Screen sharing can now hide individual windows, each monitor can use its own fractional scale, and fullscreen applications and games keep to their monitors when you navigate.",
+    "This release also widens protocol support for capture, frame pacing, dialogs, and power management, exposes initial accessibility information through AccessKit, and ships a pinned Nix flake with a NixOS session module."
+  ],
+  "featureSections": [
+    {
+      "eyebrow": "Privacy and capture",
+      "title": "Share exactly what you mean to",
+      "features": [
+        {
+          "title": "Screencast privacy rules",
+          "description": "Portal privacy rules can block individual windows and layer surfaces from screen shares. Monitor shares show the content behind a blocked window, and a blocked window that uses backdrop blur no longer hides the rest of the monitor."
+        },
+        {
+          "title": "Shared-window indicator",
+          "description": "Windows that are being shared directly show a local indicator, so you can see what leaves your screen. The portal source selector is keyboard navigable across visible, shareable windows and monitors."
+        },
+        {
+          "title": "Standard output capture",
+          "description": "Authorized tools can capture outputs through ext-image-capture-source-v1 and ext-image-copy-capture-v1 on native and nested backends. Capture stops on lock, suspend, or output loss."
+        },
+        {
+          "title": "Direct captures",
+          "description": "halleyctl and the SDK capture an explicit output, node, or region without opening the selection overlay. Saved captures show the usual preview unless --silent is requested."
+        }
+      ]
+    },
+    {
+      "eyebrow": "Displays and motion",
+      "title": "Scale, pacing, and placement",
+      "features": [
+        {
+          "title": "Per-monitor scaling",
+          "description": "view.output.scale accepts numeric and fractional values with live reload. Applications, compositor UI, pointer coordinates, and native-resolution captures scale together, and halleyctl outputs reports the effective scale."
+        },
+        {
+          "title": "Frame pacing",
+          "description": "commit-timing-v1 and fifo-v1 let clients schedule frames precisely on native and nested backends without blocking input, rendering, or unrelated clients."
+        },
+        {
+          "title": "Animated, exact movement",
+          "description": "CLI and keyboard window moves animate with their own animations.window-move easing or spring. halleyctl node move to X Y places a window exactly, and --distance moves it a chosen number of Field units."
+        },
+        {
+          "title": "Across monitors",
+          "description": "The cursor and dragged windows cross gaps between configured monitors, and the selected monitor follows a focused window that moves to another output."
+        }
+      ]
+    },
+    {
+      "eyebrow": "Reliability",
+      "title": "Fullscreen and games you can rely on",
+      "features": [
+        {
+          "title": "Monitor-aware navigation",
+          "description": "Alt+Tab, Apogee, and centered navigation keep fullscreen games presenting on their own monitor. Ordinary applications leave fullscreen cleanly when you navigate away, and identified games park as before."
+        },
+        {
+          "title": "Steadier XWayland",
+          "description": "XWayland fullscreen, game mode, minimize, and restore keep client state, geometry, and animations consistent, including when the underlying surface is replaced."
+        },
+        {
+          "title": "Smoother transitions",
+          "description": "Fullscreen, maximize, and windowed transitions keep both client images within one rounded, animated bounds, and compositor chrome fades back in as fullscreen exits."
+        },
+        {
+          "title": "Keyboard correctness",
+          "description": "Keys and lock-key modifiers follow Wayland event order, held keys survive extra keyboards, and Caps, Num, and Scroll Lock indicators stay in sync across devices."
+        }
+      ]
+    },
+    {
+      "eyebrow": "Desktop integration",
+      "title": "Fit more of the desktop",
+      "features": [
+        {
+          "title": "Dialogs that stay with their parents",
+          "description": "xdg-dialog-v1 and xdg-foreign-v2 let applications and portal dialogs, including Firefox's Save As, declare their parents and stay above them."
+        },
+        {
+          "title": "Accessibility",
+          "description": "Initial compositor accessibility information is exposed through AccessKit, with opt-in supervision of a trusted Orca executable across restarts."
+        },
+        {
+          "title": "Power and idle",
+          "description": "wlr-output-power-management lets approved tools control individual displays on the native backend, and the org.freedesktop.ScreenSaver service handles GTK's idle-inhibition fallback."
+        },
+        {
+          "title": "Nix and NixOS",
+          "description": "A pinned Nix flake provides the compositor, companion tools, portal integration, a development shell, an overlay, and a NixOS session module."
+        }
+      ]
+    }
+  ],
+  "install": {
+    "aur": [
+      "yay -S halley-full",
+      "yay -S halley"
+    ],
+    "aurDev": [
+      "yay -S halley-git"
+    ],
+    "source": "git clone https://github.com/saltnpepper97/halley\ncd halley\ngit checkout v0.9.0\ncargo build --release --workspace"
+  },
+  "notes": [
+    "Existing configurations are not rewritten. Omitted settings, including view.output.scale and animations.window-move, use built-in defaults. Run halleyctl config verify before reloading.",
+    "The private IPC protocol is now version 28. Rebuild companion tools such as halleyctl and the portal together with the compositor. The public API remains version 1.",
+    "New bindings such as pan-field-always and node-move distances have no defaults. Add them to your configuration if you want them.",
+    "Package versions follow their own changes: halleyctl and halley-config are 0.9.0, halley-core and halley-ipc 0.8.0, halley-api 0.5.0, and halley-portal 0.3.0."
+  ],
+  "thanks": [],
+  "closing": "Share what you mean to, scale each display the way you want, and expect fullscreen windows to stay where they belong. The full changelog lists every change in this release."
+},
+{
   "slug": "v0-8-0-field-first",
   "title": "The Field comes first",
   "version": "v0.8.0",

@@ -29,9 +29,9 @@
           <a class="secondary-action" href={withBase("/wiki")}>Read the wiki</a>
         </div>
 
-        <a class="release-link" href={withBase("/news/v0-8-0-field-first")}>
-          <span class="release-version">v0.8.0</span>
-          The Field comes first
+        <a class="release-link" href={withBase("/news/v0-9-0-steadier-field")}>
+          <span class="release-version">v0.9.0</span>
+          A steadier Field
           <span aria-hidden="true">→</span>
         </a>
       </div>

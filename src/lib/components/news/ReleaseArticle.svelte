@@ -298,6 +298,7 @@
   .feature-card {
     display: grid;
     gap: 0.45rem;
+    align-content: start;
     padding: 1rem;
     transition:
       border-color 160ms ease,
