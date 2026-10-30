@@ -104,18 +104,22 @@
       </ul>
     </section>
 
-    <section class="thanks-panel" aria-labelledby="thanks-heading">
-      <div>
-        <p class="eyebrow">Thanks</p>
-        <h2 id="thanks-heading">To The Early Field</h2>
-      </div>
+    {#if post.thanks.length || post.closing}
+      <section class="thanks-panel" aria-labelledby="thanks-heading">
+        <div>
+          <p class="eyebrow">Thanks</p>
+          <h2 id="thanks-heading">To The Early Field</h2>
+        </div>
 
-      {#each post.thanks as paragraph}
-        <p>{paragraph}</p>
-      {/each}
+        {#each post.thanks as paragraph}
+          <p>{paragraph}</p>
+        {/each}
 
-      <strong>{post.closing}</strong>
-    </section>
+        {#if post.closing}
+          <strong>{post.closing}</strong>
+        {/if}
+      </section>
+    {/if}
   </section>
 </article>
 

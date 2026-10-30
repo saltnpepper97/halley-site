@@ -31,7 +31,8 @@ export type NewsPost = {
   };
   notes: string[];
   thanks: string[];
-  closing: string;
+  // Older posts end on a large closing line; newer posts leave it out.
+  closing?: string;
 };
 
 export const newsPosts: NewsPost[] = [
@@ -152,8 +153,10 @@ export const newsPosts: NewsPost[] = [
     "New bindings such as pan-field-always and node-move distances have no defaults. Add them to your configuration if you want them.",
     "Package versions follow their own changes: halleyctl and halley-config are 0.9.0, halley-core and halley-ipc 0.8.0, halley-api 0.5.0, and halley-portal 0.3.0."
   ],
-  "thanks": [],
-  "closing": "Share what you mean to, scale each display the way you want, and expect fullscreen windows to stay where they belong. The full changelog lists every change in this release."
+  "thanks": [
+    "Thanks to Ketari-G for contributing the pan-field-always action, and to pirate-boop for fixing the accessibility supervisor test under Nix builds.",
+    "Thanks also to Tosensyu, phoebesomething, and Ketari-G for the reports behind panning from anywhere, Ctrl+Alt function-key shortcuts, display scaling, Apogee dimming, lock-key behaviour, and captured-cursor fixes in this release."
+  ]
 },
 {
   "slug": "v0-8-0-field-first",
@@ -269,8 +272,10 @@ export const newsPosts: NewsPost[] = [
     "Halley retains the blur-capable upstream Smithay revision. Blur and local animation use conservative full-output repaints; this release does not claim selective-repaint or whole-compositor performance parity.",
     "A basic upstream IME path replaces Halley's former patched lifecycle behavior. Validate your particular IME and screen-lock workflow."
   ],
-  "thanks": [],
-  "closing": "Start on the Field, arrange what is visible, and create named context when it helps. The 0.8 wiki describes the current workflow and the exact configuration changes."
+  "thanks": [
+    "Thanks to phoebesomething and Ketari-G for detailed reports on portal screen capture and hybrid iGPU/dGPU setups, which led to this release's capture startup and GPU fallback fixes.",
+    "Thanks as well to everyone who tried the Field-first workflow early and shared what felt clear and what did not."
+  ]
 },
   {
     slug: "v0-7-0-cluster-composer",
