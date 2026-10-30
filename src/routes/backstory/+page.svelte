@@ -17,7 +17,7 @@
     <section class="story-hero surface">
       <div class="story-copy">
         <p class="eyebrow">Backstory</p>
-        <h1>Why Halley <span>Exists</span></h1>
+        <h1>Why Halley exists</h1>
         <p class="lede">A different answer to the old desktop problem: keeping context alive.</p>
       </div>
 
@@ -37,7 +37,7 @@
       </div>
     </section>
 
-    <article class="story-body surface hud-corners">
+    <article class="story-body surface">
       <p>Halley began as a frustration with the traditional desktop.</p>
 
       <p>
@@ -103,19 +103,9 @@
     min-height: clamp(24rem, 48vh, 35rem);
     padding: clamp(1.5rem, 5vw, 4rem);
     background:
-      radial-gradient(circle at 78% 28%, rgba(255, 106, 42, 0.22), transparent 18rem),
-      radial-gradient(circle at 10% 10%, rgba(125, 220, 255, 0.1), transparent 20rem),
       rgba(16, 23, 34, 0.68);
   }
 
-  .story-hero::before {
-    position: absolute;
-    inset: 1rem;
-    pointer-events: none;
-    content: "";
-    border: 1px solid rgba(246, 239, 231, 0.06);
-    border-radius: calc(var(--radius-xl) + 0.25rem);
-  }
 
   .story-copy {
     position: relative;
@@ -126,20 +116,10 @@
   }
 
   h1 {
-    max-width: 11ch;
-    font-size: clamp(3.1rem, 7vw, 6.4rem);
+    max-width: 12ch;
     text-wrap: balance;
   }
 
-  h1 span {
-    display: block;
-    width: max-content;
-    max-width: 100%;
-    color: transparent;
-    background: linear-gradient(105deg, var(--accent-soft), var(--accent), #ffd2b5);
-    background-clip: text;
-    -webkit-background-clip: text;
-  }
 
   .lede {
     max-width: 36rem;
@@ -157,39 +137,19 @@
     background:
       linear-gradient(rgba(125, 220, 255, 0.04) 1px, transparent 1px),
       linear-gradient(90deg, rgba(125, 220, 255, 0.035) 1px, transparent 1px),
-      radial-gradient(circle at 45% 48%, rgba(255, 106, 42, 0.16), transparent 13rem),
       rgba(3, 7, 12, 0.82);
     background-size: 2.2rem 2.2rem, 2.2rem 2.2rem, auto, auto;
-    border: 1px solid rgba(125, 220, 255, 0.2);
-    border-radius: var(--radius-xl);
-    box-shadow:
-      0 32px 76px rgba(0, 0, 0, 0.42),
-      0 0 54px rgba(255, 106, 42, 0.1),
-      inset 0 1px 0 rgba(125, 220, 255, 0.18);
-    transform: rotate(1.5deg);
+    border: 1px solid var(--border-1);
+    border-radius: var(--radius-lg);
   }
 
-  .field-visual::after {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    content: "";
-    background: repeating-linear-gradient(180deg, transparent 0 5px, rgba(255, 255, 255, 0.012) 6px);
-  }
 
   .map-readout {
     position: absolute;
     z-index: 4;
-    padding: 0.22rem 0.45rem;
-    color: var(--ion);
-    background: rgba(125, 220, 255, 0.08);
-    border: 1px solid rgba(125, 220, 255, 0.16);
-    border-radius: var(--radius-sm);
+    color: var(--text-3);
     font-family: var(--font-mono);
-    font-size: 0.58rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    font-size: 0.68rem;
   }
 
   .readout-origin { top: 0.85rem; left: 0.85rem; }
@@ -201,11 +161,8 @@
     top: 27%;
     width: 60%;
     height: 40%;
-    border: 2px solid rgba(255, 155, 84, 0.68);
+    border: 1.5px solid rgba(var(--accent-rgb), 0.7);
     border-radius: 50%;
-    box-shadow:
-      0 0 42px rgba(255, 106, 42, 0.18),
-      inset 0 0 34px rgba(255, 106, 42, 0.08);
     transform: rotate(-8deg);
     animation: map-breathe 6s ease-in-out infinite;
   }
@@ -214,12 +171,12 @@
     position: absolute;
     z-index: 1;
     height: 1px;
-    background: linear-gradient(90deg, rgba(125, 220, 255, 0.68), transparent);
+    background: rgba(var(--ion-rgb), 0.4);
     transform-origin: left center;
   }
 
   .route-one { left: 22%; top: 55%; width: 58%; transform: rotate(-17deg); }
-  .route-two { left: 42%; top: 38%; width: 42%; background: linear-gradient(90deg, rgba(255, 106, 42, 0.62), transparent); transform: rotate(24deg); }
+  .route-two { left: 42%; top: 38%; width: 42%; background: rgba(var(--accent-rgb), 0.45); transform: rotate(24deg); }
 
   .map-window {
     position: absolute;
@@ -233,7 +190,6 @@
       rgba(9, 15, 24, 0.94);
     border: 1px solid rgba(125, 220, 255, 0.22);
     border-radius: var(--radius-sm);
-    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.3);
     font-family: var(--font-mono);
     font-size: 0.55rem;
     letter-spacing: 0.07em;
@@ -253,7 +209,6 @@
     background: rgba(125, 220, 255, 0.14);
     border: 1px solid rgba(125, 220, 255, 0.38);
     border-radius: var(--radius-sm);
-    box-shadow: 0 0 18px rgba(125, 220, 255, 0.14);
   }
 
   .node-one { left: 10%; bottom: 20%; }
@@ -270,10 +225,8 @@
     height: 3.25rem;
     place-items: center;
     color: var(--on-accent);
-    background: linear-gradient(135deg, var(--accent), var(--accent-soft));
-    border: 1px solid rgba(255, 196, 158, 0.54);
+    background: var(--accent);
     border-radius: 999px;
-    box-shadow: 0 0 34px rgba(255, 106, 42, 0.38);
     font-family: var(--font-mono);
     font-size: 0.47rem;
     font-weight: 800;
@@ -301,43 +254,26 @@
     margin: 0.35rem 0;
     padding: 1rem 1.2rem;
     color: var(--text-1);
-    background: rgba(255, 106, 42, 0.1);
-    border-left: 3px solid var(--accent);
-    border-radius: var(--radius-md);
+    border-left: 2px solid var(--accent);
     font-family: var(--font-display);
-    font-weight: 800;
-    letter-spacing: -0.03em;
+    font-weight: 600;
+    letter-spacing: -0.01em;
   }
 
   :global(:root[data-theme="light"]) .story-hero {
     background:
-      radial-gradient(circle at 78% 28%, rgba(184, 63, 17, 0.08), transparent 18rem),
-      radial-gradient(circle at 10% 10%, rgba(40, 95, 115, 0.06), transparent 20rem),
       rgba(255, 250, 244, 0.9);
   }
 
-  :global(:root[data-theme="light"]) .story-hero::before {
-    border-color: rgba(38, 27, 20, 0.11);
-  }
 
-  :global(:root[data-theme="light"]) h1 span {
-    background: linear-gradient(105deg, var(--accent-soft), var(--accent), var(--accent-deep));
-    background-clip: text;
-    -webkit-background-clip: text;
-  }
 
   :global(:root[data-theme="light"]) .field-visual {
     background:
       linear-gradient(rgba(40, 95, 115, 0.06) 1px, transparent 1px),
       linear-gradient(90deg, rgba(40, 95, 115, 0.05) 1px, transparent 1px),
-      radial-gradient(circle at 45% 48%, rgba(184, 63, 17, 0.1), transparent 13rem),
       rgba(255, 255, 255, 0.54);
     background-size: 2.2rem 2.2rem, 2.2rem 2.2rem, auto, auto;
-    border-color: rgba(40, 95, 115, 0.24);
-    box-shadow:
-      0 26px 62px rgba(54, 37, 26, 0.14),
-      0 0 42px rgba(184, 63, 17, 0.07),
-      inset 0 1px 0 rgba(255, 255, 255, 0.78);
+    border-color: var(--border-1);
   }
 
   :global(:root[data-theme="light"]) .map-window {
@@ -368,8 +304,8 @@
     color: var(--text-1);
     font-family: var(--font-display);
     font-size: clamp(1.4rem, 3vw, 2rem) !important;
-    font-weight: 800;
-    letter-spacing: -0.04em;
+    font-weight: 650;
+    letter-spacing: -0.02em;
   }
 
   @keyframes map-breathe {

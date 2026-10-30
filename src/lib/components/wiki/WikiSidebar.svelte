@@ -175,7 +175,6 @@
     overflow: hidden;
     padding: 0;
     background:
-      linear-gradient(135deg, rgba(255, 106, 42, 0.1), transparent 42%),
       rgba(16, 23, 34, 0.74);
     border: 1px solid var(--border-1);
     border-radius: var(--radius-lg);
@@ -235,7 +234,6 @@
     margin-bottom: 1rem;
     padding: 0.85rem;
     background:
-      radial-gradient(circle at 100% 0%, rgba(125, 220, 255, 0.08), transparent 8rem),
       rgba(246, 239, 231, 0.035);
     border: 1px solid rgba(246, 239, 231, 0.08);
     border-radius: var(--radius-md);
@@ -322,7 +320,6 @@
 
   :global(:root[data-theme="light"]) .wiki-sidebar {
     background:
-      linear-gradient(135deg, rgba(184, 63, 17, 0.045), transparent 42%),
       rgba(255, 250, 244, 0.9);
     border-color: rgba(38, 27, 20, 0.14);
     box-shadow: var(--shadow-1), inset 0 1px 0 rgba(255, 255, 255, 0.72);
@@ -379,7 +376,6 @@
       padding: 0;
       color: var(--text-1);
       background:
-        linear-gradient(135deg, rgba(255, 106, 42, 0.12), transparent 48%),
         rgba(16, 23, 34, 0.9);
       border: 1px solid var(--border-1);
       border-radius: var(--radius-lg);
@@ -442,7 +438,6 @@
       overscroll-behavior: contain;
       padding: 4.25rem 0.85rem 0.85rem;
       background:
-        linear-gradient(135deg, rgba(255, 106, 42, 0.1), transparent 42%),
         rgba(16, 23, 34, 0.94);
       border: 1px solid var(--border-1);
       border-radius: var(--radius-lg);
@@ -461,7 +456,6 @@
     :global(:root[data-theme="light"]) .wiki-mobile-toggle {
       color: var(--accent-deep);
       background:
-        linear-gradient(135deg, rgba(184, 63, 17, 0.12), transparent 52%),
         rgba(243, 238, 231, 0.92);
       border-color: rgba(38, 27, 20, 0.18);
       box-shadow:
@@ -484,7 +478,6 @@
 
     :global(:root[data-theme="light"]) .sidebar-scroll {
       background:
-        linear-gradient(135deg, rgba(184, 63, 17, 0.045), transparent 42%),
         rgba(255, 250, 244, 0.94);
       border-color: rgba(38, 27, 20, 0.14);
       box-shadow: var(--shadow-1), inset 0 1px 0 rgba(255, 255, 255, 0.72);

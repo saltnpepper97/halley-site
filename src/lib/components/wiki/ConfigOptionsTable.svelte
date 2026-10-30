@@ -185,7 +185,6 @@
       overflow: hidden;
       padding: 0.9rem;
       background:
-        radial-gradient(circle at 100% 0%, rgba(125, 220, 255, 0.07), transparent 10rem),
         rgba(9, 13, 18, 0.52);
       border: 1px solid rgba(246, 239, 231, 0.085);
       border-radius: var(--radius-md);
@@ -274,7 +273,6 @@
 
     :global(:root[data-theme="light"]) tr {
       background:
-        radial-gradient(circle at 100% 0%, rgba(40, 95, 115, 0.055), transparent 10rem),
         rgba(255, 255, 255, 0.5);
       border-color: rgba(38, 27, 20, 0.12);
       box-shadow:

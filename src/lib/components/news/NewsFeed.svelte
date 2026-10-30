@@ -72,8 +72,6 @@
     min-height: clamp(32rem, 62vh, 46rem);
     padding: clamp(1.4rem, 4vw, 2.6rem);
     background:
-      radial-gradient(circle at 84% 12%, rgba(255, 106, 42, 0.2), transparent 18rem),
-      radial-gradient(circle at 8% 88%, rgba(125, 220, 255, 0.1), transparent 20rem),
       rgba(16, 23, 34, 0.72);
   }
 
@@ -154,7 +152,6 @@
     color: var(--text-1);
     border-color: var(--border-2);
     box-shadow: var(--glow-1);
-    transform: translateY(-2px);
   }
 
   .card-top {
@@ -259,8 +256,6 @@
 
   :global(:root[data-theme="light"]) .news-feed {
     background:
-      radial-gradient(circle at 84% 12%, rgba(184, 63, 17, 0.08), transparent 18rem),
-      radial-gradient(circle at 8% 88%, rgba(40, 95, 115, 0.06), transparent 20rem),
       rgba(255, 250, 244, 0.9);
   }
 

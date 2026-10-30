@@ -159,8 +159,6 @@ paru -S halley-lift`;
     padding: clamp(1.5rem, 5vw, 3.5rem);
     overflow: hidden;
     background:
-      radial-gradient(circle at 82% 18%, rgba(143, 181, 255, 0.18), transparent 18rem),
-      linear-gradient(135deg, rgba(246, 239, 231, 0.07), transparent 35%),
       rgba(16, 23, 34, 0.72);
   }
 
@@ -265,8 +263,6 @@ paru -S halley-lift`;
 
   :global(:root[data-theme="light"]) .lift-hero {
     background:
-      radial-gradient(circle at 82% 18%, rgba(40, 95, 115, 0.1), transparent 18rem),
-      linear-gradient(135deg, rgba(184, 63, 17, 0.045), transparent 35%),
       rgba(255, 250, 244, 0.9);
   }
 

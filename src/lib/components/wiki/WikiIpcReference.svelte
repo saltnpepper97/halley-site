@@ -201,7 +201,6 @@ halleyctl cluster info current --json`;
     align-items: start;
     gap: clamp(1rem, 3vw, 1.5rem);
     background:
-      radial-gradient(circle at 100% 0%, rgba(125, 220, 255, 0.1), transparent 16rem),
       rgba(9, 13, 18, 0.5);
   }
 

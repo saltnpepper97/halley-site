@@ -139,8 +139,6 @@
     min-height: clamp(22rem, 46vh, 34rem);
     padding: clamp(1.5rem, 5vw, 4rem);
     background:
-      radial-gradient(circle at 80% 18%, rgba(255, 106, 42, 0.24), transparent 18rem),
-      radial-gradient(circle at 12% 90%, rgba(125, 220, 255, 0.11), transparent 20rem),
       rgba(16, 23, 34, 0.7);
   }
 
@@ -235,7 +233,6 @@
     font-weight: 850;
     letter-spacing: -0.065em;
     line-height: 0.95;
-    text-shadow: 0 0 24px rgba(var(--plate-rgb), 0.2);
   }
 
   .plate-preview .plate-version {
@@ -343,7 +340,6 @@
   .feature-card:hover {
     border-color: var(--border-2);
     box-shadow: var(--glow-1);
-    transform: translateY(-2px);
   }
 
   .feature-card h3 {
@@ -373,7 +369,6 @@
     gap: 0.85rem;
     padding: clamp(1rem, 3vw, 1.5rem);
     background:
-      radial-gradient(circle at 88% 20%, rgba(255, 106, 42, 0.15), transparent 16rem),
       rgba(9, 13, 18, 0.52);
   }
 
@@ -386,8 +381,6 @@
 
   :global(:root[data-theme="light"]) .release-hero {
     background:
-      radial-gradient(circle at 80% 18%, rgba(184, 63, 17, 0.08), transparent 18rem),
-      radial-gradient(circle at 12% 90%, rgba(40, 95, 115, 0.06), transparent 20rem),
       rgba(255, 250, 244, 0.9);
   }
 
@@ -404,7 +397,6 @@
 
   :global(:root[data-theme="light"]) .thanks-panel {
     background:
-      radial-gradient(circle at 88% 20%, rgba(184, 63, 17, 0.07), transparent 16rem),
       rgba(255, 255, 255, 0.46);
   }
 

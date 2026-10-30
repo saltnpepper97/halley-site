@@ -31,7 +31,7 @@
           <HandHeartIcon color="currentColor" weight="bold" size={22} />
           <span>Support on GitHub Sponsors</span>
         </a>
-        <a class="primary-action" href="https://github.com/saltnpepper97/halley" rel="noreferrer">
+        <a class="secondary-action" href="https://github.com/saltnpepper97/halley" rel="noreferrer">
           <GithubLogoIcon color="currentColor" weight="regular" size={22} />
           <span>Follow on GitHub</span>
         </a>
@@ -43,28 +43,28 @@
     </section>
 
     <section class="support-grid">
-      <article class="support-card sponsor-card surface hud-corners">
+      <article class="support-card sponsor-card surface">
         <span class="coord" aria-hidden="true">01 · Sponsor</span>
         <h2>Sponsor it</h2>
         <p>If Halley is useful or you want to help it keep moving, GitHub Sponsors is the direct support route.</p>
         <a class="link-comet" href="https://github.com/sponsors/saltnpepper97" rel="noreferrer">GitHub Sponsors</a>
       </article>
 
-      <article class="support-card surface hud-corners">
+      <article class="support-card surface">
         <span class="coord" aria-hidden="true">02 · Try</span>
         <h2>Try it</h2>
         <p>Install a release, run it on real hardware, and report where the model breaks down.</p>
         <a class="link-comet" href={withBase("/wiki/install")}>Install guide</a>
       </article>
 
-      <article class="support-card surface hud-corners">
+      <article class="support-card surface">
         <span class="coord" aria-hidden="true">03 · Feedback</span>
         <h2>Give feedback</h2>
         <p>Open issues for bugs, rough edges, confusing docs, or workflows Halley should handle better.</p>
         <a class="link-comet" href="https://github.com/saltnpepper97/halley/issues" rel="noreferrer">GitHub issues</a>
       </article>
 
-      <article class="support-card surface hud-corners">
+      <article class="support-card surface">
         <span class="coord" aria-hidden="true">04 · Share</span>
         <h2>Share it</h2>
         <p>If the project resonates, point other Wayland and desktop-environment people at it.</p>
@@ -95,14 +95,11 @@
     padding: clamp(1.5rem, 5vw, 4rem);
     overflow: hidden;
     background:
-      radial-gradient(circle at 82% 18%, rgba(255, 106, 42, 0.22), transparent 18rem),
-      linear-gradient(135deg, rgba(246, 239, 231, 0.07), transparent 35%),
       rgba(16, 23, 34, 0.72);
   }
 
   h1 {
-    max-width: 11ch;
-    font-size: clamp(3rem, 7vw, 6rem);
+    max-width: 14ch;
   }
 
   .lede {
@@ -126,51 +123,35 @@
     min-height: 2.9rem;
     padding: 0.65rem 1rem;
     font-family: var(--font-display);
-    font-weight: 800;
-    border-radius: var(--radius-xl);
+    font-weight: 600;
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+    transition:
+      background 160ms ease,
+      border-color 160ms ease,
+      color 160ms ease;
   }
 
   .primary-action {
     color: var(--on-accent);
-    background: linear-gradient(135deg, var(--accent), var(--accent-soft));
+    background: var(--accent);
   }
 
-  .sponsor-action {
-    position: relative;
-    isolation: isolate;
-    min-height: 3.15rem;
-    padding-inline: 1.15rem;
-    background:
-      linear-gradient(135deg, var(--accent), var(--accent-soft));
-    box-shadow:
-      0 0 0 1px rgba(255, 155, 84, 0.22),
-      0 0 34px rgba(255, 106, 42, 0.28);
-  }
-
-  .sponsor-action::after {
-    position: absolute;
-    inset: -0.32rem;
-    z-index: -1;
-    pointer-events: none;
-    content: "";
-    background: radial-gradient(circle, rgba(255, 106, 42, 0.28), transparent 68%);
-    border-radius: inherit;
-  }
 
   .primary-action:hover {
     color: var(--on-accent);
-    box-shadow: var(--glow-1);
+    background: var(--accent-soft);
   }
 
   .secondary-action {
     color: var(--text-1);
-    background: rgba(246, 239, 231, 0.06);
-    border: 1px solid var(--border-1);
+    background: var(--chip-base);
+    border-color: var(--border-1);
   }
 
   .secondary-action:hover {
-    color: var(--accent-soft);
-    border-color: var(--border-2);
+    color: var(--text-1);
+    border-color: var(--text-3);
   }
 
   .support-grid {
@@ -192,11 +173,7 @@
   }
 
   .sponsor-card {
-    border-color: rgba(255, 106, 42, 0.24);
-    background:
-      radial-gradient(circle at 100% 0%, rgba(255, 106, 42, 0.14), transparent 13rem),
-      rgba(16, 23, 34, 0.82);
-    box-shadow: var(--shadow-1), 0 0 36px rgba(255, 106, 42, 0.16);
+    border-color: var(--border-2);
   }
 
   .support-card h2 {
@@ -204,9 +181,9 @@
   }
 
   .support-card a {
-    color: var(--accent-soft);
-    font-family: var(--font-display);
-    font-weight: 800;
+    margin-top: auto;
+    color: var(--accent);
+    font-weight: 600;
   }
 
   @media (max-width: 760px) {
