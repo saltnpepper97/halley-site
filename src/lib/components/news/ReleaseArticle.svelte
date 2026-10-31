@@ -35,6 +35,9 @@
       {#each post.intro as paragraph}
         <p>{paragraph}</p>
       {/each}
+      {#if post.releaseUrl}
+        <p><a href={post.releaseUrl}>Read the full release notes on GitHub →</a></p>
+      {/if}
     </div>
 
     {#if post.featureSections}
@@ -84,8 +87,15 @@
         </div>
 
         <div class="install-grid">
-          <InstallCard title="AUR" label="AUR" commands={post.install.aur} />
-          <InstallCard title="Development Version" label="dev package" commands={post.install.aurDev} />
+          {#if post.install.cargo}
+            <InstallCard title="Cargo" label="Cargo install" code={post.install.cargo} wide />
+          {/if}
+          {#if post.install.aur?.length}
+            <InstallCard title="AUR" label="AUR" commands={post.install.aur} />
+          {/if}
+          {#if post.install.aurDev?.length}
+            <InstallCard title="Development Version" label="dev package" commands={post.install.aurDev} />
+          {/if}
           <InstallCard title="From Source" label="source build" code={post.install.source} wide />
         </div>
       </section>

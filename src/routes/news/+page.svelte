@@ -8,7 +8,7 @@
   <title>News | Halley</title>
   <meta
     name="description"
-    content="Halley news and release announcements, including the v0.9.0 privacy, display scaling, and fullscreen reliability release."
+    content="Halley news and release announcements, including Halley 0.9 and Halley Lift 0.4."
   />
 </svelte:head>
 

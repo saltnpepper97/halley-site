@@ -24,9 +24,11 @@ export type NewsPost = {
   intro: string[];
   features?: NewsFeature[];
   featureSections?: NewsFeatureSection[];
+  releaseUrl?: string;
   install?: {
-    aur: string[];
-    aurDev: string[];
+    cargo?: string;
+    aur?: string[];
+    aurDev?: string[];
     source: string;
   };
   notes: string[];
@@ -36,6 +38,55 @@ export type NewsPost = {
 };
 
 export const newsPosts: NewsPost[] = [
+  {
+    slug: "lift-v0-4-0",
+    title: "Halley Lift 0.4: smoother search, sharper results",
+    version: "v0.4.0",
+    date: "2026-10-30",
+    eyebrow: "Lift Release News",
+    summary: "Halley Lift 0.4 adds scrolling result text, sharper application icons, familiar keyboard editing, and more control over layout and appearance, with fixes throughout discovery, launching, and live updates.",
+    intro: [
+      "Lift 0.4 makes the command palette easier to read and use. Long titles and descriptions scroll in place when you highlight a result, application icons stay sharp at your chosen size, and familiar editing shortcuts help you change a query without leaving the keyboard.",
+      "Lift is released independently of the compositor. This update also improves live window titles, cluster staging, application launching, and behavior on small or scaled displays."
+    ],
+    features: [
+      {
+        title: "Read the whole result",
+        description: "Highlighted titles and descriptions gently reveal and scroll back and forth, whether selected by mouse or keyboard. Delay, speed, pauses, and easing are configurable; icons, shortcut hints, and activation targets stay fixed."
+      },
+      {
+        title: "Sharper icons and shaped blur",
+        description: "SVG icons render at the requested size, while bitmap selection and downsampling preserve detail. Where the compositor supports it, backdrop blur follows rounded corners and leaves transparent dropdown gaps clear."
+      },
+      {
+        title: "Edit from the keyboard",
+        description: "Ctrl+A/E move to line boundaries, Ctrl+U/K delete to those boundaries, and Ctrl+W or Ctrl+Backspace delete the previous word. Ctrl+Arrow word movement and Shift selection keep editing Unicode-safe."
+      },
+      {
+        title: "Make room for your preferences",
+        description: "Focused configuration sections expose layout, spacing, typography, colors, and text scrolling. Zero padding and gaps are supported, with matching 12px corner radii in fresh defaults."
+      },
+      {
+        title: "Keep live results steady",
+        description: "Window titles keep updating when subscriptions are unavailable, selection survives live updates, and connections recover after disconnects. Visible shortcut hints and mouse activation stay tied to the results actually painted."
+      },
+      {
+        title: "More reliable everyday actions",
+        description: "App discovery respects XDG precedence and hidden entries, launching preserves argument boundaries, and Space stages cluster members even with an empty search. Action errors remain visible, small displays show complete rows, and Escape no longer carries through to the window underneath."
+      }
+    ],
+    releaseUrl: "https://github.com/saltnpepper97/halley-lift/releases/tag/v0.4.0",
+    install: {
+      cargo: "cargo install halley-lift --version 0.4.0 --locked",
+      source: "git clone https://github.com/saltnpepper97/halley-lift\ncd halley-lift\ngit checkout v0.4.0\ncargo build --release --locked"
+    },
+    notes: [
+      "Existing lift: configuration paths remain supported and files are not rewritten. New top-level paths take precedence when both forms are present; gathered themes should use the same paths as the settings they override.",
+      "Halley 0.8 is the intended companion for this release. Lift needs a running Halley session, Wayland layer-shell support, a system font, and the native Wayland, Fontconfig, and xkbcommon build dependencies.",
+      "Rounded backdrop blur requires compositor support for ext-background-effect-v1 and permission under Halley's layer rules."
+    ],
+    thanks: []
+  },
 {
   "slug": "v0-9-0-steadier-field",
   "title": "A steadier Field",
