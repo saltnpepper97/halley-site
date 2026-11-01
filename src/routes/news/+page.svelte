@@ -8,7 +8,7 @@
   <title>News | Halley</title>
   <meta
     name="description"
-    content="Halley news and release announcements, including Halley 0.9 and Halley Lift 0.4."
+    content="Halley news and release announcements, including a preview of the upcoming Halley 0.9 release and Halley Lift 0.4."
   />
 </svelte:head>
 

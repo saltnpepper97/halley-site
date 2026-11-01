@@ -30,7 +30,7 @@
         </div>
 
         <a class="release-link" href={withBase("/news/v0-9-0-steadier-field")}>
-          <span class="release-version">v0.9.0</span>
+          <span class="release-version">Upcoming 0.9</span>
           A steadier Field
           <span aria-hidden="true">→</span>
         </a>

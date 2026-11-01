@@ -91,12 +91,13 @@ export const newsPosts: NewsPost[] = [
   "slug": "v0-9-0-steadier-field",
   "title": "A steadier Field",
   "version": "v0.9.0",
-  "date": "2026-10-30",
-  "eyebrow": "Release News",
-  "summary": "Halley 0.9 adds per-window screencast privacy, fractional display scaling, precise frame pacing and window placement, an initial accessibility tree, and a Nix flake, alongside the deepest fullscreen, XWayland, and game reliability pass yet.",
+  "date": "2026-11-01",
+  "eyebrow": "Upcoming Release",
+  "kind": "preview",
+  "summary": "A preview of Halley 0.9: expanded window rules, separate screenshot and screencast privacy, fractional display scaling, new blur choices, and fixes for fullscreen, XWayland, input methods, and pinned windows.",
   "intro": [
-    "Halley 0.9 is about trust in the desktop you already have: what you share, what you see, and how windows behave when they change state. Screen sharing can now hide individual windows, each monitor can use its own fractional scale, and fullscreen applications and games keep to their monitors when you navigate.",
-    "This release also widens protocol support for capture, frame pacing, dialogs, and power management, exposes initial accessibility information through AccessKit, and ships a pinned Nix flake with a NixOS session module."
+    "Halley 0.9 is in preparation. The changes below are already in the development tree: more control over how windows open and appear, what captures include, how each monitor scales, and how applications behave when you navigate.",
+    "The upcoming release also widens protocol support for capture, frame pacing, dialogs, and power management, exposes initial accessibility information through AccessKit, and adds a pinned Nix flake with a NixOS session module. Halley 0.8 remains the current compositor release."
   ],
   "featureSections": [
     {
@@ -118,6 +119,32 @@ export const newsPosts: NewsPost[] = [
         {
           "title": "Direct captures",
           "description": "halleyctl and the SDK capture an explicit output, node, or region without opening the selection overlay. Saved captures show the usual preview unless --silent is requested."
+        },
+        {
+          "title": "Separate screenshot privacy",
+          "description": "block-screenshot omits matching windows and their popups from Halley's built-in screen and region screenshots, revealing the content behind them. Direct screenshots of protected windows fail. This is separate from portal screencast privacy and does not cover third-party capture tools or direct capture protocols."
+        }
+      ]
+    },
+    {
+      "eyebrow": "Rules and appearance",
+      "title": "Choose how windows open and look",
+      "features": [
+        {
+          "title": "Window rules that work together",
+          "description": "Match groups and exclusions can select windows by application, title, parent relationship, startup period, keyboard focus, or individual-window screencast status. Opt into window-rule-mode compose to combine matching rules, with later explicit properties taking precedence; existing rules keep their first-match behavior."
+        },
+        {
+          "title": "Opening behavior and decoration controls",
+          "description": "Rules can choose an initial output, Field position, focus, fullscreen, or maximized state, and control borders, shadows, and content corner radius. Appearance and privacy rules reload for existing windows; opening settings apply when a window first maps."
+        },
+        {
+          "title": "More blur choices",
+          "description": "Gaussian and box backdrop blur join the default Dual Kawase method. Switch methods with a configuration reload while retaining existing blur activation, rounded clipping, and client-requested regions."
+        },
+        {
+          "title": "A continuous window frame",
+          "description": "Compositor titlebars meet window content without a visible seam, including with backdrop blur. Rule-enabled window blur follows the displayed client rectangle through fullscreen and maximize transitions."
         }
       ]
     },
@@ -149,7 +176,7 @@ export const newsPosts: NewsPost[] = [
       "features": [
         {
           "title": "Monitor-aware navigation",
-          "description": "Alt+Tab, Apogee, and centered navigation keep fullscreen games presenting on their own monitor. Ordinary applications leave fullscreen cleanly when you navigate away, and identified games park as before."
+          "description": "Alt+Tab, Apogee, and centered navigation preserve every application's fullscreen state when selecting a window on another monitor. On the same monitor, ordinary applications leave fullscreen cleanly and identified games park until resumed."
         },
         {
           "title": "Steadier XWayland",
@@ -157,11 +184,19 @@ export const newsPosts: NewsPost[] = [
         },
         {
           "title": "Smoother transitions",
-          "description": "Fullscreen, maximize, and windowed transitions keep both client images within one rounded, animated bounds, and compositor chrome fades back in as fullscreen exits."
+          "description": "Fullscreen, maximize, and windowed transitions keep both client images within the same rounded, animated bounds. Transitions follow client acceptance, keep outgoing content live while waiting, and fade compositor chrome back in as fullscreen exits."
         },
         {
           "title": "Keyboard correctness",
           "description": "Keys and lock-key modifiers follow Wayland event order, held keys survive extra keyboards, and Caps, Num, and Scroll Lock indicators stay in sync across devices."
+        },
+        {
+          "title": "Pinned windows stay open",
+          "description": "Pinned windows are exempt from automatic decay. You can still collapse them manually, and unpinning starts a fresh decay timer."
+        },
+        {
+          "title": "Retrieve the window you selected",
+          "description": "Running-window selections through Lift and the API select the correct monitor and workspace, reveal stack and overflow members, restore collapsed windows, and center Field targets."
         }
       ]
     },
@@ -171,7 +206,11 @@ export const newsPosts: NewsPost[] = [
       "features": [
         {
           "title": "Dialogs that stay with their parents",
-          "description": "xdg-dialog-v1 and xdg-foreign-v2 let applications and portal dialogs, including Firefox's Save As, declare their parents and stay above them."
+          "description": "xdg-dialog-v1 and xdg-foreign-v2 let applications and portal dialogs, including Firefox's Save As, declare their parents and stay above them. Closing a focused Field dialog returns focus to its nearest eligible parent."
+        },
+        {
+          "title": "Input methods survive locking",
+          "description": "Native Wayland input methods stay connected across screen lock and resume after unlocking. Composition and keyboard grabs are suspended during the lock, lock-screen input stays isolated, and unfinished composition is discarded at the lock boundary."
         },
         {
           "title": "Accessibility",
@@ -188,21 +227,13 @@ export const newsPosts: NewsPost[] = [
       ]
     }
   ],
-  "install": {
-    "aur": [
-      "yay -S halley-full",
-      "yay -S halley"
-    ],
-    "aurDev": [
-      "yay -S halley-git"
-    ],
-    "source": "git clone https://github.com/saltnpepper97/halley\ncd halley\ngit checkout v0.9.0\ncargo build --release --workspace"
-  },
   "notes": [
+    "This is a preview of the unreleased development tree, not a release announcement. The release date and final package versions have not been set.",
     "Existing configurations are not rewritten. Omitted settings, including view.output.scale and animations.window-move, use built-in defaults. Run halleyctl config verify before reloading.",
     "The private IPC protocol is now version 28. Rebuild companion tools such as halleyctl and the portal together with the compositor. The public API remains version 1.",
     "New bindings such as pan-field-always and node-move distances have no defaults. Add them to your configuration if you want them.",
-    "Package versions follow their own changes: halleyctl and halley-config are 0.9.0, halley-core and halley-ipc 0.8.0, halley-api 0.5.0, and halley-portal 0.3.0."
+    "Screencast and built-in screenshot privacy are separate controls. Configure each for the capture paths you use; neither blocks third-party direct capture protocols.",
+    "The development tree also reorganizes scene, input, fullscreen, configuration reload, and session code by responsibility. Pull requests run Rust, Nix, and headless XWayland checks, with local testing guidance documented in the repository."
   ],
   "thanks": [
     "Thanks to Ketari-G for contributing the pan-field-always action, and to pirate-boop for fixing the accessibility supervisor test under Nix builds."
