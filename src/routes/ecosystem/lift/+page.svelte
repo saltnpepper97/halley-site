@@ -58,9 +58,9 @@ paru -S halley-lift`;
       </div>
       <CodeBlock code={aurLift} label="lift package" />
       <p>Run it with no arguments, or seed an initial query to open straight into a mode.</p>
-      <p>Lift is independently versioned and uses Halley UI for its components, Taffy layout, Unicode text editing, icons, and direct software drawing. <a class="inline-link" href={withBase("/news/lift-v0-4-0")}>See what's new in Lift 0.4 →</a></p>
+      <p>Lift is independently versioned and uses Halley UI for its components, Taffy layout, Unicode text editing, icons, and direct software drawing. <a class="inline-link" href={withBase("/news/lift-v0-4-0")}>See what's new in Lift 0.4 →</a> Use <a class="inline-link" href={withBase("/news/lift-v0-4-1")}>Lift 0.4.1 with Halley 0.9</a>.</p>
       <p><a href="https://github.com/saltnpepper97/halley-lift">Source and complete configuration guide</a> · <a href="https://crates.io/crates/halley-lift">Cargo package</a></p>
-      <CodeBlock code="cargo install halley-lift --version 0.4.0 --locked" label="Cargo install" />
+      <CodeBlock code="cargo install halley-lift --version 0.4.1 --locked" label="Cargo install" />
       <CodeBlock code={runLift} label="run" />
       <CodeBlock code={seedLift} label="seeded query" />
     </article>

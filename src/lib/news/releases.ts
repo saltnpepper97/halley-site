@@ -250,6 +250,7 @@ export const newsPosts: NewsPost[] = [
     "Existing configurations are not rewritten. Omitted settings, including view.output.scale and animations.window-move, use built-in defaults. Run halleyctl config verify before reloading.",
     "The private IPC protocol is now version 28. Rebuild companion tools such as halleyctl and the portal together with the compositor. The public API remains version 1.",
     "The companion portal is now 0.3.0. Upgrade it alongside Halley and halleyctl to keep screen sharing compatible.",
+    "Use Lift 0.4.1 with Halley 0.9. It updates the API dependency so live window and cluster subscriptions decode the current snapshots.",
     "New bindings such as pan-field-always and node-move distances have no defaults. Add them to your configuration if you want them.",
     "Screencast and built-in screenshot privacy are separate controls. Configure each for the capture paths you use; neither blocks third-party direct capture protocols.",
     "Scene, input, fullscreen, configuration reload, and session code now have clearer ownership. Pull requests run Rust, Nix, and headless XWayland checks; local testing guidance is documented in the repository."
@@ -270,6 +271,31 @@ export const newsPosts: NewsPost[] = [
     ],
     "source": "git clone https://github.com/saltnpepper97/halley\ncd halley\ngit checkout v0.9.0\ncargo build --locked --release --workspace"
   }
+},
+{
+  "slug": "lift-v0-4-1",
+  "title": "Halley Lift 0.4.1: ready for Halley 0.9",
+  "version": "v0.4.1",
+  "date": "2026-11-01",
+  "eyebrow": "Lift Release News",
+  "summary": "Lift 0.4.1 updates the Halley API dependency for Halley 0.9, restoring streamed window and cluster updates with private IPC 28.",
+  "intro": [
+    "Lift 0.4.1 is the companion update for Halley 0.9. Its updated API dependency decodes the current subscription snapshots, so live window and cluster updates use the event stream instead of falling back to polling.",
+    "Search, launching, keyboard editing, appearance and configuration retain the 0.4.0 behavior. Existing configuration files are preserved."
+  ],
+  "releaseUrl": "https://github.com/saltnpepper97/halley-lift/releases/tag/v0.4.1",
+  "install": {
+    "cargo": "cargo install halley-lift --version 0.4.1 --locked",
+    "aur": [
+      "yay -S halley-lift",
+      "paru -S halley-lift"
+    ],
+    "source": "git clone https://github.com/saltnpepper97/halley-lift\ncd halley-lift\ngit checkout v0.4.1\ncargo build --release --locked"
+  },
+  "notes": [
+    "Install Lift 0.4.1 alongside Halley 0.9. Lift and the compositor remain independently versioned."
+  ],
+  "thanks": []
 },
 {
   "slug": "v0-8-0-field-first",
