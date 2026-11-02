@@ -29,9 +29,9 @@
           <a class="secondary-action" href={withBase("/wiki")}>Read the wiki</a>
         </div>
 
-        <a class="release-link" href={withBase("/news/v0-9-0-steadier-experience")}>
-          <span class="release-version">Halley 0.9.0</span>
-          A Steadier Experience
+        <a class="release-link" href={withBase("/news/v0-9-1")}>
+          <span class="release-version">Halley 0.9.1</span>
+          Upstream Smithay and secure IME recovery
           <span aria-hidden="true">→</span>
         </a>
       </div>

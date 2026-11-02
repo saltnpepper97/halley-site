@@ -40,6 +40,19 @@ export type NewsPost = {
 
 export const newsPosts: NewsPost[] = [
   {
+    slug: "v0-9-1",
+    title: "Halley 0.9.1",
+    version: "v0.9.1",
+    date: "2026-11-01",
+    eyebrow: "Release News",
+    kind: "release",
+    summary: "Use unmodified upstream Smithay and keep IME lock isolation, stale-composition rejection, and post-unlock recovery in Halley.",
+    intro: [],
+    releaseUrl: "https://github.com/saltnpepper97/halley/releases/tag/v0.9.1",
+    notes: [],
+    thanks: []
+  },
+  {
     slug: "lift-v0-4-0",
     title: "Halley Lift 0.4: smoother search, sharper results",
     version: "v0.4.0",
