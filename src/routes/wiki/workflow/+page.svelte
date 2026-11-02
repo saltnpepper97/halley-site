@@ -38,7 +38,7 @@ end`} label="optional startup context" />
   <p>Halley does not rewrite or back up your configuration. The former config migrate command is removed. Edit the bindings or defaults you want, verify them, then reload:</p>
   <CodeBlock code={`halleyctl config verify
 halleyctl reload`} label="verify and reload" />
-  <p><a href={`${base}/wiki/config?version=0.9.0`}>Use the 0.9 configuration reference</a> for exact options and generated examples. The version picker retains older references.</p>
+  <p><a href={`${base}/wiki/config?version=0.9.1`}>Use the 0.9 configuration reference</a> for exact options and generated examples. The version picker retains older references.</p>
   <h2>Desktop integration notes</h2>
   <p>Taskbars and docks can list windows through foreign-toplevel protocols and enumerate clusters through ext-workspace-v1. Native input methods use upstream text-input-v3 and input-method-v2; input methods stay connected across locking, with composition and keyboard grabs suspended until unlock. Unfinished composition is discarded.</p>
   <p>Hardware cursor planes are enabled where supported. Set cursor.disable-hardware-cursor to true and reload if your driver shows cursor artifacts. Blur and local animations retain conservative full-output repaints.</p>

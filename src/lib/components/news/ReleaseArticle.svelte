@@ -104,6 +104,7 @@
       </section>
     {/if}
 
+    {#if post.notes.length}
     <section class="news-section notes-section" aria-labelledby="notes-heading">
       <div>
         <p class="eyebrow">Notes</p>
@@ -116,6 +117,8 @@
         {/each}
       </ul>
     </section>
+
+    {/if}
 
     {#if post.thanks.length || post.closing}
       <section class="thanks-panel" aria-labelledby="thanks-heading">
