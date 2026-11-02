@@ -59,7 +59,9 @@ export const ipcGroups: IpcGroup[] = [
       { command: "halleyctl capture menu [-o OUTPUT]", description: "Open the native capture menu, optionally on an exact output.", addedIn: "0.6.0" },
       { command: "halleyctl capture region [-o OUTPUT]", description: "Start region capture." },
       { command: "halleyctl capture screen [-o OUTPUT]", description: "Capture an output." },
-      { command: "halleyctl capture window [-o OUTPUT]", description: "Start window capture." }
+      { command: "halleyctl capture window [-o OUTPUT]", description: "Start window capture.", removedIn: "0.9.0" },
+      { command: "halleyctl capture window NODE_ID [--silent]", description: "Capture the selected window directly.", addedIn: "0.9.0" },
+      { command: "halleyctl capture region -o OUTPUT --rect X Y WIDTH HEIGHT [--silent]", description: "Capture an explicit output-relative rectangle in logical pixels.", addedIn: "0.9.0" }
     ]
   },
   {
@@ -77,7 +79,9 @@ export const ipcGroups: IpcGroup[] = [
       { command: "halleyctl node list [-o OUTPUT] [--json]", description: "List nodes by output.", json: true },
       { command: "halleyctl node info [SELECTOR] [-o OUTPUT] [--json]", description: "Inspect a selected node.", json: true },
       { command: "halleyctl node focus [SELECTOR] [-o OUTPUT]", description: "Focus a selected node." },
-      { command: "halleyctl node move left|right|up|down [SELECTOR] [-o OUTPUT]", description: "Move a node in field space." },
+      { command: "halleyctl node move left|right|up|down [SELECTOR] [-o OUTPUT]", description: "Move a node in field space.", removedIn: "0.9.0" },
+      { command: "halleyctl node move left|right|up|down [SELECTOR] [-o OUTPUT] [--distance UNITS]", description: "Move a node with optional exact distance and landmark obstruction handling.", addedIn: "0.9.0" },
+      { command: "halleyctl node move to X Y [SELECTOR] [-o OUTPUT]", description: "Place a node at signed coordinates relative to the target output Field origin.", addedIn: "0.9.0" },
       { command: "halleyctl node collapse [SELECTOR] [-o OUTPUT]", description: "Collapse a selected surface into a node.", addedIn: "0.6.0" },
       { command: "halleyctl node restore [SELECTOR] [-o OUTPUT]", description: "Restore a collapsed node to a live surface.", addedIn: "0.6.0" },
       { command: "halleyctl node toggle [SELECTOR] [-o OUTPUT]", description: "Toggle a selected surface between live and collapsed states.", addedIn: "0.6.0" },

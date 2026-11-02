@@ -1,6 +1,7 @@
 export type NewsFeature = {
   title: string;
   description: string;
+  credit?: { name: string; url: string; pullRequest: string };
 };
 
 export type NewsFeatureSection = {
@@ -88,16 +89,16 @@ export const newsPosts: NewsPost[] = [
     thanks: []
   },
 {
-  "slug": "v0-9-0-steadier-field",
+  "slug": "v0-9-0-steadier-experience",
   "title": "A Steadier Experience",
   "version": "v0.9.0",
   "date": "2026-11-01",
-  "eyebrow": "Upcoming Release",
-  "kind": "preview",
-  "summary": "A preview of Halley 0.9: expanded window rules, separate screenshot and screencast privacy, fractional display scaling, new blur choices, and fixes for fullscreen, XWayland, input methods, and pinned windows.",
+  "eyebrow": "Release News",
+  "kind": "release",
+  "summary": "Halley 0.9 makes everyday work steadier with reliable fullscreen and XWayland behavior, fractional display scaling, expressive window rules, and separate screenshot and screencast privacy.",
   "intro": [
-    "Halley 0.9 is in preparation. The changes below are already in the development tree: more control over how windows open and appear, what captures include, how each monitor scales, and how applications behave when you navigate.",
-    "The upcoming release also widens protocol support for capture, frame pacing, dialogs, and power management, exposes initial accessibility information through AccessKit, and adds a pinned Nix flake with a NixOS session module. Halley 0.8 remains the current compositor release."
+    "Halley 0.9 brings more dependable fullscreen navigation, cleaner game mode changes, input methods that resume after locking, and pinned windows that stay open. It also gives you more control over how windows open, what you share, and how each monitor scales.",
+    "Existing configurations are preserved. Choose the new rules, blur methods, capture commands, and movement actions that suit your workflow, then verify and reload."
   ],
   "featureSections": [
     {
@@ -167,6 +168,15 @@ export const newsPosts: NewsPost[] = [
         {
           "title": "Across monitors",
           "description": "The cursor and dragged windows cross gaps between configured monitors, and the selected monitor follows a focused window that moves to another output."
+        },
+        {
+          "title": "Pan from anywhere",
+          "description": "Bind pan-field-always to start a camera drag over windows, titlebars, nodes, or wallpaper. It respects fullscreen, camera owners, shell overlays, and pointer constraints. Pans end with the button that started them.",
+          "credit": {
+            "name": "Ketari-G",
+            "url": "https://github.com/Ketari-G",
+            "pullRequest": "https://github.com/saltnpepper97/halley/pull/187"
+          }
         }
       ]
     },
@@ -197,6 +207,10 @@ export const newsPosts: NewsPost[] = [
         {
           "title": "Retrieve the window you selected",
           "description": "Running-window selections through Lift and the API select the correct monitor and workspace, reveal stack and overflow members, restore collapsed windows, and center Field targets."
+        },
+        {
+          "title": "Empty clusters keep their controls",
+          "description": "Moving the last window to another monitor preserves the close-binding hint. Hints remain visible across monitor focus changes, while two-press deletion stays scoped to the selected monitor."
         }
       ]
     },
@@ -222,22 +236,40 @@ export const newsPosts: NewsPost[] = [
         },
         {
           "title": "Nix and NixOS",
-          "description": "A pinned Nix flake provides the compositor, companion tools, portal integration, a development shell, an overlay, and a NixOS session module."
+          "description": "A pinned Nix flake provides the compositor, companion tools, portal integration, a development shell, an overlay, and a NixOS session module. The accessibility supervisor test uses the Nix-provided executable path.",
+          "credit": {
+            "name": "pirate-boop",
+            "url": "https://github.com/pirate-boop",
+            "pullRequest": "https://github.com/saltnpepper97/halley/pull/251"
+          }
         }
       ]
     }
   ],
   "notes": [
-    "This is a preview of the unreleased development tree, not a release announcement. The release date and final package versions have not been set.",
     "Existing configurations are not rewritten. Omitted settings, including view.output.scale and animations.window-move, use built-in defaults. Run halleyctl config verify before reloading.",
     "The private IPC protocol is now version 28. Rebuild companion tools such as halleyctl and the portal together with the compositor. The public API remains version 1.",
+    "The companion portal is now 0.3.0. Upgrade it alongside Halley and halleyctl to keep screen sharing compatible.",
     "New bindings such as pan-field-always and node-move distances have no defaults. Add them to your configuration if you want them.",
     "Screencast and built-in screenshot privacy are separate controls. Configure each for the capture paths you use; neither blocks third-party direct capture protocols.",
-    "The development tree also reorganizes scene, input, fullscreen, configuration reload, and session code by responsibility. Pull requests run Rust, Nix, and headless XWayland checks, with local testing guidance documented in the repository."
+    "Scene, input, fullscreen, configuration reload, and session code now have clearer ownership. Pull requests run Rust, Nix, and headless XWayland checks; local testing guidance is documented in the repository."
   ],
   "thanks": [
-    "Thanks to Ketari-G for contributing the pan-field-always action, and to pirate-boop for fixing the accessibility supervisor test under Nix builds."
-  ]
+    "Thank you to Ketari-G for contributing pan-field-always, and to pirate-boop for fixing the accessibility supervisor test under Nix builds.",
+    "Thank you to everyone testing Halley in daily use and reporting the issues that shaped this release."
+  ],
+  "releaseUrl": "https://github.com/saltnpepper97/halley/releases/tag/v0.9.0",
+  "install": {
+    "aur": [
+      "yay -S halley xdg-desktop-portal-halley",
+      "paru -S halley xdg-desktop-portal-halley"
+    ],
+    "aurDev": [
+      "yay -S halley-git",
+      "paru -S halley-git"
+    ],
+    "source": "git clone https://github.com/saltnpepper97/halley\ncd halley\ngit checkout v0.9.0\ncargo build --locked --release --workspace"
+  }
 },
 {
   "slug": "v0-8-0-field-first",

@@ -56,6 +56,9 @@
               <div class="feature-card">
                 <h3>{feature.title}</h3>
                 <p>{feature.description}</p>
+                {#if feature.credit}
+                  <p>Contributed by <a href={feature.credit.url}>@{feature.credit.name}</a> · <a href={feature.credit.pullRequest}>Pull request</a></p>
+                {/if}
               </div>
             {/each}
           </div>
@@ -118,7 +121,7 @@
       <section class="thanks-panel" aria-labelledby="thanks-heading">
         <div>
           <p class="eyebrow">Thanks</p>
-          <h2 id="thanks-heading">To The Early Field</h2>
+          <h2 id="thanks-heading">Thank you</h2>
         </div>
 
         {#each post.thanks as paragraph}
