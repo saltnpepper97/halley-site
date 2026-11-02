@@ -89,7 +89,7 @@ export const newsPosts: NewsPost[] = [
   },
 {
   "slug": "v0-9-0-steadier-field",
-  "title": "A steadier Field",
+  "title": "A Steadier Experience",
   "version": "v0.9.0",
   "date": "2026-11-01",
   "eyebrow": "Upcoming Release",
