@@ -40,6 +40,19 @@ export type NewsPost = {
 
 export const newsPosts: NewsPost[] = [
   {
+    slug: "v0-9-2",
+    title: "Halley 0.9.2",
+    version: "v0.9.2",
+    date: "2026-11-02",
+    eyebrow: "Release News",
+    kind: "release",
+    summary: "Remove the node of a collapsed X11 window that answers a close request by withdrawing instead of exiting, such as Steam keeping its window for the tray.",
+    intro: [],
+    releaseUrl: "https://github.com/saltnpepper97/halley/releases/tag/v0.9.2",
+    notes: [],
+    thanks: []
+  },
+  {
     slug: "v0-9-1",
     title: "Halley 0.9.1",
     version: "v0.9.1",

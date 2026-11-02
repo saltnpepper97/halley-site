@@ -29,9 +29,9 @@
           <a class="secondary-action" href={withBase("/wiki")}>Read the wiki</a>
         </div>
 
-        <a class="release-link" href={withBase("/news/v0-9-1")}>
-          <span class="release-version">Halley 0.9.1</span>
-          Upstream Smithay and secure IME recovery
+        <a class="release-link" href={withBase("/news/v0-9-2")}>
+          <span class="release-version">Halley 0.9.2</span>
+          Collapsed apps close cleanly
           <span aria-hidden="true">→</span>
         </a>
       </div>
