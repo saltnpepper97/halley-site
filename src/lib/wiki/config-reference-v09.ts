@@ -57,7 +57,8 @@ export const configPageV09Override = (base: ConfigPage): ConfigPage => {
     if (section.slug === "keybinds-actions") add(
       option("pan-field-always", "pointer action", "unbound", "Pan from over applications, titlebars, nodes or wallpaper. Use a modified pointer chord. Respects camera owners, overlays and pointer constraints."),
       option("node-move <direction> <distance>", "action", "unbound", "Move by a chosen number of Field units, stopping at landmark obstructions. Ordinary movement bindings retain their default distance."));
-    return { ...section, options };
+    const summary = section.slug === "effects-blur" ? "Dual Kawase, Gaussian or box blur for opted-in overlays, windows and layer surfaces." : section.summary;
+    return { ...section, summary, options };
   });
   if (base.slug === "animations") sections.push({
     slug: "animations-window-move", name: "animations.window-move", title: "Window movement", summary: "Independent keyboard and CLI movement; pointer drags remain direct.", addedIn: "0.9.0",
