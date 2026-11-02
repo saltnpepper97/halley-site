@@ -79,36 +79,13 @@
     gap: clamp(1.5rem, 4vw, 3rem);
     padding: clamp(1.25rem, 3vw, 2rem);
     background:
-      radial-gradient(circle at 9% 8%, rgba(255, 106, 42, 0.16), transparent 18rem),
       rgba(11, 17, 27, 0.92);
     border: 1px solid var(--border-1);
-    border-top-color: var(--hud-line-faint);
-    border-radius: var(--radius-xl);
-    box-shadow: var(--shadow-1), inset 0 1px 0 var(--hud-line-soft);
-    backdrop-filter: blur(6px) saturate(120%);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-1);
+    backdrop-filter: blur(6px);
   }
 
-  .footer-card::before {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    content: "";
-    background: linear-gradient(90deg, transparent, rgba(255, 106, 42, 0.58), rgba(125, 220, 255, 0.2), transparent);
-    height: 1px;
-    opacity: 0.62;
-  }
-
-  .footer-card::after {
-    position: absolute;
-    right: -7rem;
-    bottom: -9rem;
-    width: 19rem;
-    height: 19rem;
-    pointer-events: none;
-    content: "";
-    background: radial-gradient(circle, rgba(125, 220, 255, 0.14), transparent 68%);
-    border-radius: 999px;
-  }
 
   .footer-brand,
   .footer-nav {

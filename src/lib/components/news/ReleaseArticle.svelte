@@ -15,30 +15,29 @@
       <p class="eyebrow">{post.eyebrow}</p>
       <h1>{post.title}</h1>
       <p class="summary">{post.summary}</p>
-      <p class="hero-date"><time datetime={post.date}>{formattedDate}</time></p>
     </div>
 
-    <aside
-      class="release-plate plate-{kindLabel.toLowerCase()}"
-      aria-label={`${kindLabel}: ${isPreview ? "Upcoming" : post.version}, published ${formattedDate}`}
-    >
-      <div class="plate-readout">
-        <span class="plate-label">{isPreview ? "Release status" : "Version"}</span>
-        <span class="plate-version">{isPreview ? "Upcoming" : post.version}</span>
+    <aside class="release-plate plate-{kindLabel.toLowerCase()}" aria-label="Release details">
+      <div class="plate-head">
+        <span class="plate-label">{isPreview ? "Status" : "Version"}</span>
+        <span class="plate-kind">{kindLabel}</span>
       </div>
-
-      <div class="plate-footer">
-        <span>Published</span>
-        <time class="plate-date" datetime={post.date}>{formattedDate}</time>
-      </div>
+      <p class="plate-version">{isPreview ? "Upcoming" : post.version}</p>
+      <p class="plate-date">
+        <span class="plate-label">Published</span>
+        <time datetime={post.date}>{formattedDate}</time>
+      </p>
     </aside>
   </section>
 
-  <section class="release-body surface hud-corners">
+  <section class="release-body surface">
     <div class="intro-copy">
       {#each post.intro as paragraph}
         <p>{paragraph}</p>
       {/each}
+      {#if post.releaseUrl}
+        <p><a href={post.releaseUrl}>Read the full release notes on GitHub →</a></p>
+      {/if}
     </div>
 
     {#if post.featureSections}
@@ -57,6 +56,9 @@
               <div class="feature-card">
                 <h3>{feature.title}</h3>
                 <p>{feature.description}</p>
+                {#if feature.credit}
+                  <p>Contributed by <a href={feature.credit.url}>@{feature.credit.name}</a> · <a href={feature.credit.pullRequest}>Pull request</a></p>
+                {/if}
               </div>
             {/each}
           </div>
@@ -88,8 +90,15 @@
         </div>
 
         <div class="install-grid">
-          <InstallCard title="AUR" label="AUR" commands={post.install.aur} />
-          <InstallCard title="Development Version" label="dev package" commands={post.install.aurDev} />
+          {#if post.install.cargo}
+            <InstallCard title="Cargo" label="Cargo install" code={post.install.cargo} wide />
+          {/if}
+          {#if post.install.aur?.length}
+            <InstallCard title="AUR" label="AUR" commands={post.install.aur} />
+          {/if}
+          {#if post.install.aurDev?.length}
+            <InstallCard title="Development Version" label="dev package" commands={post.install.aurDev} />
+          {/if}
           <InstallCard title="From Source" label="source build" code={post.install.source} wide />
         </div>
       </section>
@@ -108,18 +117,22 @@
       </ul>
     </section>
 
-    <section class="thanks-panel" aria-labelledby="thanks-heading">
-      <div>
-        <p class="eyebrow">Thanks</p>
-        <h2 id="thanks-heading">To The Early Field</h2>
-      </div>
+    {#if post.thanks.length || post.closing}
+      <section class="thanks-panel" aria-labelledby="thanks-heading">
+        <div>
+          <p class="eyebrow">Thanks</p>
+          <h2 id="thanks-heading">Thank you</h2>
+        </div>
 
-      {#each post.thanks as paragraph}
-        <p>{paragraph}</p>
-      {/each}
+        {#each post.thanks as paragraph}
+          <p>{paragraph}</p>
+        {/each}
 
-      <strong>{post.closing}</strong>
-    </section>
+        {#if post.closing}
+          <strong>{post.closing}</strong>
+        {/if}
+      </section>
+    {/if}
   </section>
 </article>
 
@@ -133,25 +146,14 @@
     position: relative;
     overflow: hidden;
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(14rem, 0.36fr);
-    align-items: center;
+    grid-template-columns: minmax(0, 1fr) minmax(15rem, 17rem);
+    align-items: start;
     gap: clamp(2rem, 6vw, 4rem);
-    min-height: clamp(22rem, 46vh, 34rem);
     padding: clamp(1.5rem, 5vw, 4rem);
     background:
-      radial-gradient(circle at 80% 18%, rgba(255, 106, 42, 0.24), transparent 18rem),
-      radial-gradient(circle at 12% 90%, rgba(125, 220, 255, 0.11), transparent 20rem),
       rgba(16, 23, 34, 0.7);
   }
 
-  .release-hero::before {
-    position: absolute;
-    inset: 1rem;
-    pointer-events: none;
-    content: "";
-    border: 1px solid rgba(246, 239, 231, 0.06);
-    border-radius: calc(var(--radius-xl) + 0.25rem);
-  }
 
   .hero-copy {
     position: relative;
@@ -161,113 +163,93 @@
   }
 
   h1 {
-    font-size: clamp(3rem, 8vw, 7rem);
-    letter-spacing: -0.065em;
+    max-width: 14ch;
+    text-wrap: balance;
   }
 
   .summary {
-    max-width: 32rem;
-    color: var(--text-1);
-    font-size: clamp(1.25rem, 2.2vw, 1.7rem);
-    font-weight: 750;
-    line-height: 1.35;
+    max-width: 40rem;
+    font-size: clamp(1.05rem, 1.6vw, 1.2rem);
+    line-height: 1.6;
   }
 
-  .hero-date {
-    color: var(--text-2);
-    font-family: var(--font-mono);
-    font-size: 0.86rem;
-    font-weight: 700;
-    letter-spacing: 0.03em;
-    text-transform: uppercase;
-  }
 
   /*
-    Release plate. The identity is carried by --plate-rgb and the numeral; the
-    box stays quiet. This previously stacked eight decoration layers (grid
-    lines, a radial bloom, an outer border, a second inset border, a glowing
-    underline, and a coloured outer glow) on one 17rem object.
+    Release details. Version is the headline; the kind tag is the only
+    coloured element, keyed off --plate-rgb.
   */
   .release-plate {
     --plate-rgb: var(--accent-rgb);
     position: relative;
     z-index: 1;
     align-self: start;
-    justify-self: end;
-    overflow: hidden;
     display: grid;
-    width: min(17rem, 100%);
-    background: rgba(var(--plate-rgb), 0.06);
-    border: 1px solid rgba(var(--plate-rgb), 0.34);
+    gap: 0.35rem;
+    width: 100%;
+    padding: 1.1rem 1.2rem 0;
+    background: var(--chip-base);
+    border: 1px solid var(--border-1);
     border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-1);
   }
 
   .plate-patch {
     --plate-rgb: var(--ion-rgb);
   }
 
-  /* Nothing has shipped yet, so the box stays provisional. */
-  .plate-preview {
-    border-style: dashed;
-  }
-
-  .plate-readout {
-    display: grid;
-    gap: 0.34rem;
-    padding: clamp(1.25rem, 4vw, 1.8rem) 1rem 1.25rem;
-    text-align: center;
+  .plate-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
   }
 
   .plate-label {
-    color: var(--text-2);
-    font-family: var(--font-mono);
-    font-size: 0.68rem;
-    font-weight: 800;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
+    color: var(--text-3);
+    font-size: 0.8rem;
   }
 
   .plate-version {
     color: var(--text-1);
-    font-family: var(--font-mono);
-    font-size: clamp(2.25rem, 5vw, 3.2rem);
-    font-weight: 850;
-    letter-spacing: -0.065em;
-    line-height: 0.95;
-    text-shadow: 0 0 24px rgba(var(--plate-rgb), 0.2);
+    font-family: var(--font-display);
+    font-size: clamp(1.9rem, 3vw, 2.4rem);
+    font-weight: 650;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
   }
 
   .plate-preview .plate-version {
-    font-size: clamp(1.45rem, 3.6vw, 2rem);
-    letter-spacing: -0.035em;
-  }
-
-  .plate-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.75rem;
-    padding: 0.68rem 0.9rem 0.78rem;
-    background: rgba(var(--plate-rgb), 0.05);
-    border-top: 1px solid rgba(var(--plate-rgb), 0.18);
-  }
-
-  .plate-footer > span {
-    color: var(--text-2);
-    font-family: var(--font-mono);
-    font-size: 0.66rem;
-    font-weight: 800;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    font-size: 1.6rem;
   }
 
   .plate-date {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin: 0.65rem -1.2rem 0;
+    padding: 0.75rem 1.2rem;
+    color: var(--text-1);
+    font-size: 0.88rem;
+    border-top: 1px solid var(--border-1);
+  }
+
+  .plate-kind {
+    display: inline-block;
+    padding: 0.15rem 0.55rem;
+    color: rgb(var(--plate-rgb));
+    background: rgba(var(--plate-rgb), 0.1);
+    border: 1px solid rgba(var(--plate-rgb), 0.3);
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+
+  /* Nothing has shipped yet, so the tag stays provisional. */
+  .plate-preview .plate-kind {
     color: var(--text-2);
-    font-family: var(--font-mono);
-    font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 0.03em;
+    background: transparent;
+    border: 1px dashed var(--border-1);
   }
 
   .release-body {
@@ -309,7 +291,7 @@
 
   h2 {
     font-size: clamp(1.8rem, 4vw, 3rem);
-    letter-spacing: -0.045em;
+    letter-spacing: -0.03em;
   }
 
   h3 {
@@ -333,6 +315,7 @@
   .feature-card {
     display: grid;
     gap: 0.45rem;
+    align-content: start;
     padding: 1rem;
     transition:
       border-color 160ms ease,
@@ -343,7 +326,6 @@
   .feature-card:hover {
     border-color: var(--border-2);
     box-shadow: var(--glow-1);
-    transform: translateY(-2px);
   }
 
   .feature-card h3 {
@@ -373,7 +355,6 @@
     gap: 0.85rem;
     padding: clamp(1rem, 3vw, 1.5rem);
     background:
-      radial-gradient(circle at 88% 20%, rgba(255, 106, 42, 0.15), transparent 16rem),
       rgba(9, 13, 18, 0.52);
   }
 
@@ -386,14 +367,9 @@
 
   :global(:root[data-theme="light"]) .release-hero {
     background:
-      radial-gradient(circle at 80% 18%, rgba(184, 63, 17, 0.08), transparent 18rem),
-      radial-gradient(circle at 12% 90%, rgba(40, 95, 115, 0.06), transparent 20rem),
       rgba(255, 250, 244, 0.9);
   }
 
-  :global(:root[data-theme="light"]) .release-hero::before {
-    border-color: rgba(38, 27, 20, 0.11);
-  }
 
   :global(:root[data-theme="light"]) .release-body,
   :global(:root[data-theme="light"]) .feature-card,
@@ -404,7 +380,6 @@
 
   :global(:root[data-theme="light"]) .thanks-panel {
     background:
-      radial-gradient(circle at 88% 20%, rgba(184, 63, 17, 0.07), transparent 16rem),
       rgba(255, 255, 255, 0.46);
   }
 
@@ -414,10 +389,40 @@
       min-height: auto;
     }
 
+    /* Compact strip above the title: version, kind, date on one line. */
     .release-plate {
       order: -1;
-      justify-self: start;
-      width: min(22rem, 100%);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.5rem 0.75rem;
+      padding: 0.6rem 0.9rem;
+      border-radius: var(--radius-md);
+    }
+
+    .plate-head {
+      order: 2;
+    }
+
+    .plate-label {
+      display: none;
+    }
+
+    .plate-version {
+      order: 1;
+      font-size: 1.15rem;
+    }
+
+    .plate-preview .plate-version {
+      font-size: 1.05rem;
+    }
+
+    .plate-date {
+      order: 3;
+      margin: 0 0 0 auto;
+      padding: 0;
+      color: var(--text-2);
+      border: 0;
     }
 
     .install-grid {
@@ -433,16 +438,13 @@
     }
 
     h1 {
-      font-size: clamp(2.35rem, 14vw, 3.4rem);
+      font-size: clamp(2.1rem, 10vw, 2.8rem);
     }
 
     .summary {
-      font-size: 1.08rem;
+      font-size: 1rem;
     }
 
-    .release-plate {
-      width: 100%;
-    }
 
     .feature-grid {
       grid-template-columns: 1fr;

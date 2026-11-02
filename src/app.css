@@ -51,9 +51,9 @@
   /* Borders / effects */
   --border-1: rgba(210, 229, 240, 0.12);
   --border-2: rgba(255, 106, 42, 0.34);
-  --shadow-1: 0 24px 70px rgba(0, 0, 0, 0.5);
-  --glow-1: 0 0 40px rgba(255, 106, 42, 0.28);
-  --glow-ion: 0 0 44px rgba(125, 220, 255, 0.16);
+  --shadow-1: 0 12px 32px rgba(0, 0, 0, 0.32);
+  --glow-1: 0 0 0 1px rgba(255, 106, 42, 0.35);
+  --glow-ion: none;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 
   /* Layout */
@@ -68,16 +68,10 @@
     live field. Override --panel-tint alone to make a single panel more or
     less transparent.
   */
-  --panel-tint: rgba(9, 15, 25, 0.84);
-  --panel-sheen: linear-gradient(158deg, rgba(125, 220, 255, 0.05), transparent 46%);
-  --panel-blur: blur(14px) saturate(118%);
-  --panel-hairline: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 106, 42, 0.55),
-    rgba(125, 220, 255, 0.18),
-    transparent
-  );
+  --panel-tint: rgba(10, 14, 21, 0.86);
+  --panel-sheen: none;
+  --panel-blur: blur(12px);
+  --panel-hairline: none;
 
   --page-max-width: 1180px;
   --header-height: 4.25rem;
@@ -121,19 +115,13 @@
 
   --border-1: rgba(38, 27, 20, 0.16);
   --border-2: rgba(184, 63, 17, 0.34);
-  --shadow-1: 0 20px 52px rgba(54, 37, 26, 0.16);
-  --glow-1: 0 0 32px rgba(184, 63, 17, 0.16);
-  --glow-ion: 0 0 32px rgba(40, 95, 115, 0.12);
+  --shadow-1: 0 10px 28px rgba(54, 37, 26, 0.1);
+  --glow-1: 0 0 0 1px rgba(184, 63, 17, 0.3);
+  --glow-ion: none;
 
-  --panel-tint: rgba(253, 249, 243, 0.9);
-  --panel-sheen: linear-gradient(158deg, rgba(40, 95, 115, 0.05), transparent 44%);
-  --panel-hairline: linear-gradient(
-    90deg,
-    transparent,
-    rgba(184, 63, 17, 0.45),
-    rgba(40, 95, 115, 0.2),
-    transparent
-  );
+  --panel-tint: rgba(253, 249, 243, 0.92);
+  --panel-sheen: none;
+  --panel-hairline: none;
 
   background: var(--bg-1);
   color: var(--text-1);
@@ -234,17 +222,17 @@ h5,
 h6 {
   margin: 0;
   color: var(--text-1);
-  font-weight: 700;
-  line-height: 1.08;
-  letter-spacing: -0.045em;
+  font-weight: 650;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
 }
 
 h1 {
-  font-size: clamp(3rem, 7vw, 6.5rem);
+  font-size: clamp(2.6rem, 5.5vw, 4.5rem);
 }
 
 h2 {
-  font-size: clamp(2.25rem, 4vw, 4rem);
+  font-size: clamp(1.9rem, 3.4vw, 3rem);
 }
 
 h3 {
@@ -327,25 +315,10 @@ canvas {
   min-width: 0;
   background: var(--panel-sheen), var(--panel-tint);
   border: 1px solid var(--border-1);
-  border-top-color: var(--hud-line-faint);
   border-radius: var(--radius-lg);
-  box-shadow:
-    var(--shadow-1),
-    inset 0 1px 0 var(--hud-line-soft),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.25);
+  box-shadow: var(--shadow-1);
   backdrop-filter: var(--panel-blur);
   -webkit-backdrop-filter: var(--panel-blur);
-}
-
-/* Instrument header bar — a single accent line across the top of each card. */
-.surface::after {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto;
-  height: 2px;
-  pointer-events: none;
-  background: var(--panel-hairline);
-  opacity: 0.82;
 }
 
 :root[data-theme="light"] .topnav,
@@ -353,8 +326,6 @@ canvas {
 :root[data-theme="light"] .wiki-sidebar,
 :root[data-theme="light"] .sidebar-scroll,
 :root[data-theme="light"] .footer-card,
-:root[data-theme="light"] .hero-section,
-:root[data-theme="light"] .feature-row,
 :root[data-theme="light"] .news-feed,
 :root[data-theme="light"] .release-hero,
 :root[data-theme="light"] .release-body,
@@ -373,7 +344,7 @@ canvas {
 :root[data-theme="light"] .sponsor-action,
 :root[data-theme="light"] .button-primary {
   color: var(--on-accent);
-  background: linear-gradient(135deg, #8f2f0c, #b83f11);
+  background: var(--accent);
 }
 
 :root[data-theme="light"] .primary-action:hover,
@@ -384,7 +355,6 @@ canvas {
 }
 
 :root[data-theme="light"] .secondary-action,
-:root[data-theme="light"] .feature-copy a,
 :root[data-theme="light"] .theme-toggle,
 :root[data-theme="light"] .github,
 :root[data-theme="light"] .mobile-home-link,
@@ -403,7 +373,6 @@ canvas {
 :root[data-theme="light"] .requirements-card,
 :root[data-theme="light"] .install-card,
 :root[data-theme="light"] .portal-panel,
-:root[data-theme="light"] .feature-card,
 :root[data-theme="light"] .table-wrap,
 :root[data-theme="light"] .version-list {
   background: rgba(255, 255, 255, 0.42);
@@ -421,15 +390,6 @@ canvas {
   color: var(--text-1);
   border-color: rgba(38, 27, 20, 0.16);
   box-shadow: var(--shadow-1), inset 0 1px 0 rgba(255, 255, 255, 0.68);
-}
-
-:root[data-theme="light"] .feature-art,
-:root[data-theme="light"] .demo-field {
-  background:
-    linear-gradient(rgba(38, 27, 20, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(38, 27, 20, 0.03) 1px, transparent 1px),
-    rgba(235, 226, 216, 0.68);
-  border-color: rgba(38, 27, 20, 0.14);
 }
 
 .surface-strong {
@@ -459,20 +419,12 @@ canvas {
   align-items: center;
   gap: 0.5em;
   color: var(--accent);
-  font-family: var(--font-mono);
-  font-size: 0.74rem;
-  font-weight: 750;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
   line-height: 1.2;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-}
-
-.eyebrow::before {
-  content: "";
-  width: 1.35rem;
-  height: 2px;
-  background: linear-gradient(90deg, var(--accent), transparent);
-  box-shadow: 0 0 10px rgba(255, 106, 42, 0.55);
 }
 
 /* Buttons */
@@ -485,27 +437,21 @@ canvas {
   padding: 0.7rem 1.1rem;
   border: 1px solid transparent;
   border-radius: var(--radius-md);
-  background: linear-gradient(135deg, var(--accent), var(--accent-soft));
+  background: var(--accent);
   color: var(--on-accent);
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1;
-  transition:
-    transform 240ms var(--ease-out),
-    background 160ms ease,
-    box-shadow 160ms ease;
+  transition: background 160ms ease;
 }
 
 .button-primary:hover {
-  background: linear-gradient(135deg, var(--accent-soft), var(--accent));
+  background: var(--accent-soft);
   color: var(--on-accent);
-  box-shadow: var(--glow-1);
-  transform: translateY(-2px);
 }
 
 .button-primary:active {
   background: var(--accent-deep);
   color: var(--on-accent-deep);
-  transform: translateY(0);
 }
 
 .button-secondary {
@@ -514,11 +460,11 @@ canvas {
   justify-content: center;
   min-height: 2.75rem;
   padding: 0.7rem 1.1rem;
-  border: 1px solid var(--border-2);
+  border: 1px solid var(--border-1);
   border-radius: var(--radius-md);
   background: var(--bg-2);
   color: var(--text-1);
-  font-weight: 650;
+  font-weight: 600;
   line-height: 1;
   transition:
     border-color 160ms ease,
@@ -534,36 +480,9 @@ canvas {
 
 /* Spatial HUD motif */
 
-/* Corner brackets — additive overlay, does not affect layout or background.
-   Add alongside any card/panel to give it instrument framing. */
+/* Corner brackets were retired; the class stays so markup using it is inert. */
 .hud-corners {
   position: relative;
-}
-
-.hud-corners::before {
-  content: "";
-  position: absolute;
-  inset: 0.4rem;
-  z-index: 1;
-  pointer-events: none;
-  --c: var(--hud-line-soft);
-  --w: 12px; /* arm length */
-  --t: 1px; /* arm thickness */
-  background:
-    linear-gradient(var(--c) 0 0) 0 0 / var(--w) var(--t),
-    linear-gradient(var(--c) 0 0) 0 0 / var(--t) var(--w),
-    linear-gradient(var(--c) 0 0) 100% 0 / var(--w) var(--t),
-    linear-gradient(var(--c) 0 0) 100% 0 / var(--t) var(--w),
-    linear-gradient(var(--c) 0 0) 0 100% / var(--w) var(--t),
-    linear-gradient(var(--c) 0 0) 0 100% / var(--t) var(--w),
-    linear-gradient(var(--c) 0 0) 100% 100% / var(--w) var(--t),
-    linear-gradient(var(--c) 0 0) 100% 100% / var(--t) var(--w);
-  background-repeat: no-repeat;
-  transition: background 200ms ease;
-}
-
-.hud-corners:hover::before {
-  --c: var(--hud-line);
 }
 
 /* Sharp HUD instrument panel (flat + brackets + spatial hover). */
@@ -571,11 +490,8 @@ canvas {
   position: relative;
   background: var(--panel-sheen), var(--panel-tint);
   border: 1px solid var(--border-1);
-  border-top-color: var(--hud-line-faint);
   border-radius: var(--radius-lg);
-  box-shadow:
-    var(--shadow-1),
-    inset 0 1px 0 var(--hud-line-soft);
+  box-shadow: var(--shadow-1);
   backdrop-filter: var(--panel-blur);
   -webkit-backdrop-filter: var(--panel-blur);
   transition:
@@ -586,11 +502,6 @@ canvas {
 
 .panel-hud:hover {
   border-color: var(--border-2);
-  box-shadow:
-    var(--shadow-1),
-    inset 0 1px 0 var(--hud-line-soft),
-    var(--glow-ion);
-  transform: translateY(-2px);
 }
 
 /* Coordinate / bearing readout chip — instrument chrome. */
@@ -598,17 +509,12 @@ canvas {
   display: inline-flex;
   align-items: center;
   gap: 0.4em;
-  padding: 0.18rem 0.5rem;
-  color: var(--coord);
-  background: var(--hud-grid);
-  border: 1px solid var(--hud-line-faint);
-  border-radius: var(--radius-sm);
+  color: var(--text-3);
   font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-weight: 600;
-  line-height: 1;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  font-size: 0.74rem;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
 }
 
 /* Section divider with a centered label. */
@@ -618,7 +524,7 @@ canvas {
   gap: 1rem;
   width: 100%;
   margin-block: clamp(2.5rem, 6vw, 4.5rem);
-  color: var(--coord);
+  color: var(--text-3);
 }
 
 .hud-divider::before,
@@ -626,11 +532,7 @@ canvas {
   content: "";
   height: 1px;
   flex: 1;
-  background: linear-gradient(90deg, transparent, var(--hud-line-faint));
-}
-
-.hud-divider::after {
-  background: linear-gradient(90deg, var(--hud-line-faint), transparent);
+  background: var(--border-1);
 }
 
 .hud-divider > span {
@@ -658,8 +560,8 @@ canvas {
   left: 0;
   right: 0;
   bottom: -2px;
-  height: 1.5px;
-  background: linear-gradient(90deg, var(--accent), var(--accent-soft) 35%, transparent);
+  height: 1px;
+  background: currentColor;
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 240ms cubic-bezier(0.22, 0.61, 0.36, 1);
@@ -676,7 +578,7 @@ canvas {
 /* Accessibility */
 
 :focus-visible {
-  outline: 3px solid rgba(255, 106, 42, 0.5);
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
 

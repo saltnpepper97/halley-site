@@ -23,7 +23,7 @@
   });
 </script>
 
-<section class="news-feed surface hud-corners">
+<section class="news-feed surface">
   <div class="feed-heading">
     <p class="eyebrow">News</p>
     <h1>Latest Signals</h1>
@@ -72,8 +72,6 @@
     min-height: clamp(32rem, 62vh, 46rem);
     padding: clamp(1.4rem, 4vw, 2.6rem);
     background:
-      radial-gradient(circle at 84% 12%, rgba(255, 106, 42, 0.2), transparent 18rem),
-      radial-gradient(circle at 8% 88%, rgba(125, 220, 255, 0.1), transparent 20rem),
       rgba(16, 23, 34, 0.72);
   }
 
@@ -84,8 +82,7 @@
   }
 
   h1 {
-    font-size: clamp(2.8rem, 7vw, 6rem);
-    letter-spacing: -0.065em;
+    letter-spacing: -0.035em;
   }
 
   .feed-heading p:not(.eyebrow) {
@@ -118,11 +115,8 @@
 
   .day-date {
     color: var(--text-2);
-    font-family: var(--font-mono);
-    font-size: 0.82rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
+    font-size: 0.85rem;
+    font-weight: 600;
     white-space: nowrap;
   }
 
@@ -154,68 +148,57 @@
     color: var(--text-1);
     border-color: var(--border-2);
     box-shadow: var(--glow-1);
-    transform: translateY(-2px);
   }
 
   .card-top {
     display: flex;
     flex-wrap: wrap;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-between;
     gap: 0.65rem 1rem;
   }
 
   /*
-    Metadata chips. One object with one type ramp and one box; the kind carries
-    a tinted fill, the version an outline, and --chip-rgb is the only thing that
-    varies between them. Previously these were a round pill and a sharp
-    rectangle stacked with four decorations each, which read as two unrelated
-    widgets sharing a row.
+    Metadata. The kind is a small tinted tag keyed off --chip-rgb; the version
+    is plain text beside it.
   */
-  .kind,
-  .version {
+  .kind {
     --chip-rgb: var(--accent-rgb);
     display: inline-flex;
     align-items: center;
-    gap: 0.4rem;
-    height: 1.75rem;
-    padding: 0 0.6rem;
-    border: 1px solid rgba(var(--chip-rgb), 0.34);
-    border-radius: var(--radius-sm);
-    font-family: var(--font-mono);
-    font-size: 0.68rem;
-    font-weight: 800;
-    line-height: 1;
-    text-transform: uppercase;
-  }
-
-  .kind {
+    padding: 0.15rem 0.55rem;
     color: rgb(var(--chip-rgb));
-    background: rgba(var(--chip-rgb), 0.08);
-    letter-spacing: 0.11em;
+    background: rgba(var(--chip-rgb), 0.1);
+    border: 1px solid rgba(var(--chip-rgb), 0.3);
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
   }
 
   .version {
     margin-left: auto;
-    color: var(--text-1);
-    background: transparent;
-    letter-spacing: 0.04em;
+    color: var(--text-2);
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    font-weight: 600;
   }
 
-  .kind-patch,
-  .version-patch {
+  .kind-patch {
     --chip-rgb: var(--ion-rgb);
   }
 
-  /* Nothing has shipped yet, so the box stays provisional. */
-  .kind-preview,
-  .version-preview {
+  /* Nothing has shipped yet, so the tag stays provisional. */
+  .kind-preview {
+    color: var(--text-2);
+    background: transparent;
     border-style: dashed;
+    border-color: var(--border-1);
   }
 
   h2 {
     font-size: clamp(1.45rem, 3vw, 2.2rem);
-    letter-spacing: -0.045em;
+    letter-spacing: -0.03em;
   }
 
   .summary {
@@ -236,18 +219,14 @@
   }
 
   .card-foot time {
-    color: var(--text-3, var(--text-2));
-    font-family: var(--font-mono);
-    font-size: 0.8rem;
-    letter-spacing: 0.02em;
+    color: var(--text-3);
+    font-size: 0.85rem;
   }
 
   .read {
-    color: var(--coord);
-    font-family: var(--font-mono);
-    font-size: 0.82rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
+    color: var(--accent);
+    font-size: 0.88rem;
+    font-weight: 600;
     transition: transform 160ms ease;
   }
 
@@ -259,8 +238,6 @@
 
   :global(:root[data-theme="light"]) .news-feed {
     background:
-      radial-gradient(circle at 84% 12%, rgba(184, 63, 17, 0.08), transparent 18rem),
-      radial-gradient(circle at 8% 88%, rgba(40, 95, 115, 0.06), transparent 20rem),
       rgba(255, 250, 244, 0.9);
   }
 

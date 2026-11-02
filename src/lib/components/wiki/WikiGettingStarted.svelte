@@ -27,7 +27,7 @@
   ];
 
   const commonTasks = [
-    { label: "Learn the 0.8 Field workflow", href: "/wiki/workflow" },
+    { label: "Learn the Field workflow", href: "/wiki/workflow" },
     { label: "Install on Arch", href: "/wiki/install#install-arch" },
     { label: "Build from source", href: "/wiki/install#install-source" },
     { label: "Launch from a display manager", href: "/wiki/install#install-session" },
@@ -134,7 +134,6 @@
     min-width: 0;
     padding: clamp(1rem, 3vw, 1.35rem);
     background:
-      radial-gradient(circle at 100% 0%, rgba(125, 220, 255, 0.09), transparent 16rem),
       rgba(9, 13, 18, 0.5);
     border: 1px solid var(--border-1);
     border-radius: var(--radius-lg);
@@ -180,7 +179,6 @@
     color: var(--text-1);
     border-color: var(--border-2);
     background: rgba(255, 106, 42, 0.08);
-    transform: translateY(-2px);
   }
 
   .setup-path span {
@@ -235,7 +233,6 @@
     color: var(--text-1);
     border-color: var(--border-2);
     box-shadow: var(--glow-1);
-    transform: translateY(-2px);
   }
 
   .quick-card span {

@@ -178,15 +178,11 @@
     margin-inline: auto;
     padding: 0.7rem 0.85rem 0.7rem 1.25rem;
     background:
-      radial-gradient(circle at 8% 0%, rgba(255, 106, 42, 0.17), transparent 18rem),
-      linear-gradient(135deg, rgba(125, 220, 255, 0.055), transparent 42%),
       rgba(9, 15, 25, 0.84);
     border: 1px solid var(--border-1);
     border-radius: var(--radius-xl);
-    box-shadow:
-      0 18px 54px rgba(0, 0, 0, 0.42),
-      inset 0 1px 0 rgba(246, 239, 231, 0.1);
-    backdrop-filter: blur(22px) saturate(145%);
+    box-shadow: var(--shadow-1);
+    backdrop-filter: blur(16px);
   }
 
   .nav-menu {
@@ -199,15 +195,6 @@
     display: none;
   }
 
-  .topnav::before {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    content: "";
-    background: linear-gradient(90deg, transparent, rgba(255, 106, 42, 0.6), rgba(125, 220, 255, 0.2), transparent);
-    height: 2px;
-    opacity: 0.78;
-  }
 
   .nav-left {
     justify-self: start;
@@ -228,46 +215,24 @@
     padding: 0.5rem 0.7rem;
     color: var(--text-2);
     font-size: 0.92rem;
-    font-weight: 700;
-    letter-spacing: -0.015em;
+    font-weight: 500;
     border-radius: var(--radius-sm);
     transition:
       color 160ms ease,
-      background 160ms ease,
-      transform 160ms ease;
+      background 160ms ease;
   }
 
-  .links::after {
-    position: absolute;
-    right: 0.7rem;
-    bottom: 0.22rem;
-    left: 0.7rem;
-    height: 1px;
-    content: "";
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
-    box-shadow: 0 0 10px rgba(255, 106, 42, 0.5);
-    opacity: 0;
-    transform: scaleX(0.35);
-    transition:
-      opacity 180ms ease,
-      transform 240ms var(--ease-out);
-  }
 
   .links:hover {
     color: var(--text-1);
     background: rgba(246, 239, 231, 0.06);
-    transform: translateY(-1px);
   }
 
   .links.active {
     color: var(--text-1);
-    background: linear-gradient(180deg, rgba(255, 106, 42, 0.12), rgba(255, 106, 42, 0.04));
+    background: rgba(246, 239, 231, 0.08);
   }
 
-  .links.active::after {
-    opacity: 1;
-    transform: scaleX(1);
-  }
 
   :global(:root[data-theme="light"]) .links {
     color: var(--text-2);
@@ -281,7 +246,7 @@
 
   :global(:root[data-theme="light"]) .links.active {
     color: var(--text-1);
-    background: linear-gradient(180deg, rgba(184, 63, 17, 0.11), rgba(184, 63, 17, 0.035));
+    background: rgba(38, 27, 20, 0.08);
   }
 
   :global(:root[data-theme="light"]) .links:hover {
@@ -356,10 +321,9 @@
     min-height: 2.65rem;
     padding: 0.55rem 0.95rem;
     color: var(--on-accent);
-    font-weight: 800;
-    background: linear-gradient(135deg, var(--accent), var(--accent-soft));
-    border-radius: var(--radius-xl);
-    box-shadow: 0 0 24px rgba(var(--accent-rgb), 0.2);
+    font-weight: 600;
+    background: var(--accent);
+    border-radius: var(--radius-md);
     transition:
       box-shadow 160ms ease,
       transform 160ms ease,
@@ -368,9 +332,7 @@
 
   .support:hover {
       color: var(--on-accent);
-      box-shadow: var(--glow-1);
-      filter: brightness(1.06);
-      transform: translateY(-1px);
+      background: var(--accent-soft);
   }
 
   @media (max-width: 880px) {
@@ -420,7 +382,6 @@
       padding: 0;
       color: var(--text-1);
       background:
-        linear-gradient(135deg, rgba(255, 106, 42, 0.12), transparent 48%),
         rgba(16, 23, 34, 0.9);
       border: 1px solid var(--border-1);
       border-radius: var(--radius-lg);
@@ -442,7 +403,6 @@
     :global(:root[data-theme="light"]) .menu-toggle {
       color: var(--accent-deep);
       background:
-        linear-gradient(135deg, rgba(184, 63, 17, 0.12), transparent 52%),
         rgba(243, 238, 231, 0.92);
       border-color: rgba(38, 27, 20, 0.18);
       box-shadow:
@@ -452,8 +412,7 @@
 
     :global(:root[data-theme="light"]) .menu-toggle:hover {
       color: var(--on-accent);
-      background:
-        linear-gradient(135deg, rgba(184, 63, 17, 0.92), rgba(143, 47, 12, 0.88));
+      background: var(--accent);
       border-color: rgba(94, 31, 9, 0.32);
       box-shadow:
         0 14px 34px rgba(54, 37, 26, 0.18),
@@ -484,7 +443,6 @@
       padding: 1rem;
       overflow-y: auto;
       background:
-        radial-gradient(circle at 10% 0%, rgba(255, 106, 42, 0.16), transparent 15rem),
         rgba(16, 23, 34, 0.94);
       border: 1px solid var(--border-1);
       border-radius: var(--radius-xl);
@@ -507,7 +465,6 @@
 
     :global(:root[data-theme="light"]) .nav-menu {
       background:
-        radial-gradient(circle at 10% 0%, rgba(184, 63, 17, 0.08), transparent 15rem),
         rgba(243, 238, 231, 0.96);
       border-color: rgba(38, 27, 20, 0.16);
       box-shadow:
@@ -570,7 +527,7 @@
     }
 
     :global(:root[data-theme="light"]) .links.active {
-      background: linear-gradient(90deg, rgba(184, 63, 17, 0.12), rgba(40, 95, 115, 0.04));
+      background: rgba(184, 63, 17, 0.08);
       border-color: rgba(184, 63, 17, 0.28);
     }
 
@@ -580,7 +537,7 @@
 
     .links.active {
       border-color: var(--border-2);
-      background: linear-gradient(90deg, rgba(255, 106, 42, 0.12), rgba(125, 220, 255, 0.035));
+      background: rgba(255, 106, 42, 0.08);
     }
 
     .nav-right {

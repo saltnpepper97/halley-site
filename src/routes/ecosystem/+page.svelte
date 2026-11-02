@@ -96,8 +96,6 @@ paru -S halley-full`;
     padding: clamp(1.5rem, 5vw, 4rem);
     overflow: hidden;
     background:
-      radial-gradient(circle at 82% 18%, rgba(125, 220, 255, 0.16), transparent 18rem),
-      linear-gradient(135deg, rgba(246, 239, 231, 0.07), transparent 35%),
       rgba(16, 23, 34, 0.72);
   }
 
@@ -138,7 +136,6 @@ paru -S halley-full`;
 
   a.app-card.available:hover {
     border-color: var(--border-2);
-    transform: translateY(-2px);
     box-shadow: var(--shadow-1), var(--glow-1);
   }
 
@@ -167,8 +164,7 @@ paru -S halley-full`;
 
   .status-available {
     color: var(--on-accent);
-    background: linear-gradient(135deg, var(--accent-soft), var(--accent));
-    box-shadow: 0 0 18px rgba(255, 106, 42, 0.35);
+    background: var(--accent);
   }
 
   .app-card h2 {
@@ -185,9 +181,8 @@ paru -S halley-full`;
     align-items: center;
     gap: 0.4rem;
     margin-top: 0.2rem;
-    color: var(--accent-soft);
-    font-family: var(--font-display);
-    font-weight: 800;
+    color: var(--accent);
+    font-weight: 600;
   }
 
   .bundle-card {
@@ -195,7 +190,6 @@ paru -S halley-full`;
     gap: 1rem;
     padding: clamp(1.25rem, 3vw, 1.75rem);
     background:
-      radial-gradient(circle at 100% 0%, rgba(255, 106, 42, 0.1), transparent 14rem),
       rgba(9, 13, 18, 0.5);
   }
 
@@ -221,9 +215,8 @@ paru -S halley-full`;
 
   .bundle-card .link-comet {
     justify-self: start;
-    color: var(--accent-soft);
-    font-family: var(--font-display);
-    font-weight: 800;
+    color: var(--accent);
+    font-weight: 600;
   }
 
   code {
@@ -240,21 +233,17 @@ paru -S halley-full`;
 
   :global(:root[data-theme="light"]) .ecosystem-hero {
     background:
-      radial-gradient(circle at 82% 18%, rgba(40, 95, 115, 0.1), transparent 18rem),
-      linear-gradient(135deg, rgba(184, 63, 17, 0.045), transparent 35%),
       rgba(255, 250, 244, 0.9);
   }
 
   :global(:root[data-theme="light"]) .app-card {
     background:
-      radial-gradient(circle at 0 0, rgba(184, 63, 17, 0.07), transparent 15rem),
       rgba(255, 255, 255, 0.48);
     border-color: rgba(38, 27, 20, 0.14);
   }
 
   :global(:root[data-theme="light"]) .bundle-card {
     background:
-      radial-gradient(circle at 100% 0%, rgba(184, 63, 17, 0.08), transparent 14rem),
       rgba(255, 255, 255, 0.44);
     border-color: rgba(38, 27, 20, 0.14);
   }

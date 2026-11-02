@@ -137,7 +137,6 @@
     color: var(--text-1);
     border-color: var(--border-2);
     box-shadow: var(--glow-1);
-    transform: translateY(-2px);
   }
 
   .section-card:hover .card-accent {

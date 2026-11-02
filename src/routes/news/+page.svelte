@@ -8,7 +8,7 @@
   <title>News | Halley</title>
   <meta
     name="description"
-    content="Halley news and release announcements, including the v0.8.0 Field workflow, ecosystem, and desktop integration release."
+    content="Halley news and release announcements, including Halley 0.9 and Halley Lift 0.4."
   />
 </svelte:head>
 

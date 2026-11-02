@@ -58,9 +58,9 @@ paru -S halley-lift`;
       </div>
       <CodeBlock code={aurLift} label="lift package" />
       <p>Run it with no arguments, or seed an initial query to open straight into a mode.</p>
-      <p>Lift 0.3 is independently versioned and uses Halley UI for its components, Taffy layout, Unicode text editing, icons, and direct software drawing.</p>
+      <p>Lift is independently versioned and uses Halley UI for its components, Taffy layout, Unicode text editing, icons, and direct software drawing. <a class="inline-link" href={withBase("/news/lift-v0-4-0")}>See what's new in Lift 0.4 →</a> Use <a class="inline-link" href={withBase("/news/lift-v0-4-1")}>Lift 0.4.1 with Halley 0.9</a>.</p>
       <p><a href="https://github.com/saltnpepper97/halley-lift">Source and complete configuration guide</a> · <a href="https://crates.io/crates/halley-lift">Cargo package</a></p>
-      <CodeBlock code="cargo install halley-lift --locked" label="Cargo install" />
+      <CodeBlock code="cargo install halley-lift --version 0.4.1 --locked" label="Cargo install" />
       <CodeBlock code={runLift} label="run" />
       <CodeBlock code={seedLift} label="seeded query" />
     </article>
@@ -159,8 +159,6 @@ paru -S halley-lift`;
     padding: clamp(1.5rem, 5vw, 3.5rem);
     overflow: hidden;
     background:
-      radial-gradient(circle at 82% 18%, rgba(143, 181, 255, 0.18), transparent 18rem),
-      linear-gradient(135deg, rgba(246, 239, 231, 0.07), transparent 35%),
       rgba(16, 23, 34, 0.72);
   }
 
@@ -265,8 +263,6 @@ paru -S halley-lift`;
 
   :global(:root[data-theme="light"]) .lift-hero {
     background:
-      radial-gradient(circle at 82% 18%, rgba(40, 95, 115, 0.1), transparent 18rem),
-      linear-gradient(135deg, rgba(184, 63, 17, 0.045), transparent 35%),
       rgba(255, 250, 244, 0.9);
   }
 

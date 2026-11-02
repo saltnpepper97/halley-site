@@ -2,9 +2,9 @@
   import CodeBlock from "$lib/components/CodeBlock.svelte";
   import { base } from "$app/paths";
 </script>
-<svelte:head><title>The Field workflow | Halley 0.8</title><meta name="description" content="The Halley 0.8 Field workflow: launch, arrange, collapse, retrieve, and optionally create clusters." /></svelte:head>
+<svelte:head><title>The Field workflow | Halley 0.9</title><meta name="description" content="The Halley 0.9 Field workflow: launch, arrange, collapse, retrieve, and optionally create clusters." /></svelte:head>
 <article class="workflow surface hud-corners">
-  <p class="eyebrow">Halley 0.8</p><h1>The Field comes first</h1>
+  <p class="eyebrow">Halley 0.9</p><h1>The Field comes first</h1>
   <p>A fresh session starts with an empty Field. Open applications there, move them freely, and keep work visible. A cluster is an optional named context, not a prerequisite for using the desktop.</p>
   <h2>Five operations to start with</h2>
   <ul><li><strong>Mod+D:</strong> open Lift to launch apps or retrieve nodes, clusters, actions, and configuration.</li>
@@ -15,7 +15,7 @@
   <p>The generated configuration uses these bindings. Existing configurations retain their bindings. The non-modal basics card appears on the first native launch of each Halley version, including with an existing configuration, and stays dismissed for that version. Reopen it using Lift's action provider or <code>halleyctl basics</code>.</p>
   <h2>Attention, nodes, and retrieval</h2>
   <p>Moving, resizing, transferring, or closing a participating window ends that output's saved arrangement. Its current positions become ordinary Field geometry, and the next Mod+A arranges the current windows afresh. A stationary click or focus change preserves undo, including the immediate and mid-animation toggle.</p>
-  <p>Nodes preserve windows as readable landmarks. Directional Field focus reaches expanded windows, nodes, and collapsed cluster cores. Automatic decay pauses for arranged windows and begins a fresh timer when the arrangement is undone.</p>
+  <p>Nodes preserve windows as readable landmarks. Directional Field focus reaches expanded windows, nodes, and collapsed cluster cores. Pinned windows are exempt from automatic decay; manual collapse remains available. Automatic decay pauses for arranged windows and begins a fresh timer when the arrangement is undone.</p>
   <p>Fresh configurations wait 600 seconds outside the focus ring and 5,400 seconds inside it before decay. Existing explicit values stay unchanged; omitting the decay section retains the built-in 180 and 1,800 second values. A one-time notice explains the first automatic collapse.</p>
   <h2>Clusters when context helps</h2>
   <p>Create clusters deliberately through the Cluster Composer or Lift's cluster drafts. In a cluster search, Space stages apps or running nodes, then Ctrl+Enter hands the draft to Halley's naming and confirmation prompt. Empty named cores remain available after the last member closes.</p>
@@ -30,15 +30,17 @@ end`} label="optional startup context" />
   <p>Declarations can also specify layout, output, and application members. Launch attribution groups matching new windows into the declared context. Fresh configurations contain no active cluster declarations.</p>
   <h2>Moving across and through outputs</h2>
   <p>Mod+Alt+Shift+Arrow transfers the focused Field window to a neighboring monitor. Mod+Shift+left-drag instead pans a grabbed window through its current output's Field when it dwells at an edge. Directional Field panning also has an optional keyboard action and <code>halleyctl pan</code> commands.</p>
+  <p>In 0.9, per-output <code>view.output.scale</code> supports fractional scaling. Use <code>halleyctl node move to X Y</code> for exact placement, <code>--distance</code> for a chosen directional distance, or bind <code>pan-field-always</code> for camera drags starting over applications.</p>
   <h2>Screenshots and overlays</h2>
   <p>A native screenshot presents Copy and Open controls. Hover keeps its preview visible, and copied PNG contents survive the preview. Notification offsets are signed values relative to the chosen anchor. Custom opening/closing shaders preserve the configured geometry path and fall back when unavailable.</p>
+  <p>Use separate <code>block-screenshot</code> and <code>block-screencast</code> window rules for built-in screenshots and portal screen shares. They do not restrict third-party direct capture protocols.</p>
   <h2>Updating an existing configuration</h2>
   <p>Halley does not rewrite or back up your configuration. The former config migrate command is removed. Edit the bindings or defaults you want, verify them, then reload:</p>
   <CodeBlock code={`halleyctl config verify
 halleyctl reload`} label="verify and reload" />
-  <p><a href={`${base}/wiki/config?version=0.8.0`}>Use the 0.8 configuration reference</a> for exact options and generated examples. The version picker retains older references.</p>
+  <p><a href={`${base}/wiki/config?version=0.9.0`}>Use the 0.9 configuration reference</a> for exact options and generated examples. The version picker retains older references.</p>
   <h2>Desktop integration notes</h2>
-  <p>Taskbars and docks can list windows through foreign-toplevel protocols and enumerate clusters through ext-workspace-v1. Native input methods use upstream text-input-v3 and input-method-v2; locking disconnects IME clients, so reconnect or restart your IME after unlock.</p>
+  <p>Taskbars and docks can list windows through foreign-toplevel protocols and enumerate clusters through ext-workspace-v1. Native input methods use upstream text-input-v3 and input-method-v2; input methods stay connected across locking, with composition and keyboard grabs suspended until unlock. Unfinished composition is discarded.</p>
   <p>Hardware cursor planes are enabled where supported. Set cursor.disable-hardware-cursor to true and reload if your driver shows cursor artifacts. Blur and local animations retain conservative full-output repaints.</p>
   <h2>Independent ecosystem versions</h2>
   <p>Lift and Halley UI live in separate repositories and follow their own release versions. The compositor workspace builds Halley, halleyctl, and its portal backend. Install Lift separately or use the halley-full ecosystem package.</p>

@@ -484,8 +484,8 @@ void main() {
   */
   .veil {
     background:
-      radial-gradient(ellipse 60rem 40rem at 12% -6%, rgba(255, 106, 42, 0.20), transparent 70%),
-      radial-gradient(ellipse 52rem 38rem at 88% 12%, rgba(125, 220, 255, 0.10), transparent 72%),
+      radial-gradient(ellipse 60rem 40rem at 12% -6%, rgba(255, 106, 42, 0.08), transparent 70%),
+      radial-gradient(ellipse 52rem 38rem at 88% 12%, rgba(125, 220, 255, 0.05), transparent 72%),
       linear-gradient(180deg, rgba(4, 7, 13, 0.30) 0%, rgba(4, 7, 13, 0.58) 55%, rgba(4, 7, 13, 0.74) 100%);
   }
 

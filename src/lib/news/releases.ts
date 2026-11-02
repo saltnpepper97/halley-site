@@ -1,6 +1,7 @@
 export type NewsFeature = {
   title: string;
   description: string;
+  credit?: { name: string; url: string; pullRequest: string };
 };
 
 export type NewsFeatureSection = {
@@ -24,17 +25,278 @@ export type NewsPost = {
   intro: string[];
   features?: NewsFeature[];
   featureSections?: NewsFeatureSection[];
+  releaseUrl?: string;
   install?: {
-    aur: string[];
-    aurDev: string[];
+    cargo?: string;
+    aur?: string[];
+    aurDev?: string[];
     source: string;
   };
   notes: string[];
   thanks: string[];
-  closing: string;
+  // Older posts end on a large closing line; newer posts leave it out.
+  closing?: string;
 };
 
 export const newsPosts: NewsPost[] = [
+  {
+    slug: "lift-v0-4-0",
+    title: "Halley Lift 0.4: smoother search, sharper results",
+    version: "v0.4.0",
+    date: "2026-10-30",
+    eyebrow: "Lift Release News",
+    summary: "Halley Lift 0.4 adds scrolling result text, sharper application icons, familiar keyboard editing, and more control over layout and appearance, with fixes throughout discovery, launching, and live updates.",
+    intro: [
+      "Lift 0.4 makes the command palette easier to read and use. Long titles and descriptions scroll in place when you highlight a result, application icons stay sharp at your chosen size, and familiar editing shortcuts help you change a query without leaving the keyboard.",
+      "Lift is released independently of the compositor. This update also improves live window titles, cluster staging, application launching, and behavior on small or scaled displays."
+    ],
+    features: [
+      {
+        title: "Read the whole result",
+        description: "Highlighted titles and descriptions gently reveal and scroll back and forth, whether selected by mouse or keyboard. Delay, speed, pauses, and easing are configurable; icons, shortcut hints, and activation targets stay fixed."
+      },
+      {
+        title: "Sharper icons and shaped blur",
+        description: "SVG icons render at the requested size, while bitmap selection and downsampling preserve detail. Where the compositor supports it, backdrop blur follows rounded corners and leaves transparent dropdown gaps clear."
+      },
+      {
+        title: "Edit from the keyboard",
+        description: "Ctrl+A/E move to line boundaries, Ctrl+U/K delete to those boundaries, and Ctrl+W or Ctrl+Backspace delete the previous word. Ctrl+Arrow word movement and Shift selection keep editing Unicode-safe."
+      },
+      {
+        title: "Make room for your preferences",
+        description: "Focused configuration sections expose layout, spacing, typography, colors, and text scrolling. Zero padding and gaps are supported, with matching 12px corner radii in fresh defaults."
+      },
+      {
+        title: "Keep live results steady",
+        description: "Window titles keep updating when subscriptions are unavailable, selection survives live updates, and connections recover after disconnects. Visible shortcut hints and mouse activation stay tied to the results actually painted."
+      },
+      {
+        title: "More reliable everyday actions",
+        description: "App discovery respects XDG precedence and hidden entries, launching preserves argument boundaries, and Space stages cluster members even with an empty search. Action errors remain visible, small displays show complete rows, and Escape no longer carries through to the window underneath."
+      }
+    ],
+    releaseUrl: "https://github.com/saltnpepper97/halley-lift/releases/tag/v0.4.0",
+    install: {
+      cargo: "cargo install halley-lift --version 0.4.0 --locked",
+      source: "git clone https://github.com/saltnpepper97/halley-lift\ncd halley-lift\ngit checkout v0.4.0\ncargo build --release --locked"
+    },
+    notes: [
+      "Existing lift: configuration paths remain supported and files are not rewritten. New top-level paths take precedence when both forms are present; gathered themes should use the same paths as the settings they override.",
+      "Halley 0.8 is the intended companion for this release. Lift needs a running Halley session, Wayland layer-shell support, a system font, and the native Wayland, Fontconfig, and xkbcommon build dependencies.",
+      "Rounded backdrop blur requires compositor support for ext-background-effect-v1 and permission under Halley's layer rules."
+    ],
+    thanks: []
+  },
+{
+  "slug": "v0-9-0-steadier-experience",
+  "title": "A Steadier Experience",
+  "version": "v0.9.0",
+  "date": "2026-11-01",
+  "eyebrow": "Release News",
+  "kind": "release",
+  "summary": "Halley 0.9 makes everyday work steadier with reliable fullscreen and XWayland behavior, fractional display scaling, expressive window rules, and separate screenshot and screencast privacy.",
+  "intro": [
+    "Halley 0.9 brings more dependable fullscreen navigation, cleaner game mode changes, input methods that resume after locking, and pinned windows that stay open. It also gives you more control over how windows open, what you share, and how each monitor scales.",
+    "Existing configurations are preserved. Choose the new rules, blur methods, capture commands, and movement actions that suit your workflow, then verify and reload."
+  ],
+  "featureSections": [
+    {
+      "eyebrow": "Privacy and capture",
+      "title": "Share exactly what you mean to",
+      "features": [
+        {
+          "title": "Screencast privacy rules",
+          "description": "Portal privacy rules can block individual windows and layer surfaces from screen shares. Monitor shares show the content behind a blocked window, and a blocked window that uses backdrop blur no longer hides the rest of the monitor."
+        },
+        {
+          "title": "Shared-window indicator",
+          "description": "Windows that are being shared directly show a local indicator, so you can see what leaves your screen. The portal source selector is keyboard navigable across visible, shareable windows and monitors."
+        },
+        {
+          "title": "Standard output capture",
+          "description": "Authorized tools can capture outputs through ext-image-capture-source-v1 and ext-image-copy-capture-v1 on native and nested backends. Capture stops on lock, suspend, or output loss."
+        },
+        {
+          "title": "Direct captures",
+          "description": "halleyctl and the SDK capture an explicit output, node, or region without opening the selection overlay. Saved captures show the usual preview unless --silent is requested."
+        },
+        {
+          "title": "Separate screenshot privacy",
+          "description": "block-screenshot omits matching windows and their popups from Halley's built-in screen and region screenshots, revealing the content behind them. Direct screenshots of protected windows fail. This is separate from portal screencast privacy and does not cover third-party capture tools or direct capture protocols."
+        }
+      ]
+    },
+    {
+      "eyebrow": "Rules and appearance",
+      "title": "Choose how windows open and look",
+      "features": [
+        {
+          "title": "Window rules that work together",
+          "description": "Match groups and exclusions can select windows by application, title, parent relationship, startup period, keyboard focus, or individual-window screencast status. Opt into window-rule-mode compose to combine matching rules, with later explicit properties taking precedence; existing rules keep their first-match behavior."
+        },
+        {
+          "title": "Opening behavior and decoration controls",
+          "description": "Rules can choose an initial output, Field position, focus, fullscreen, or maximized state, and control borders, shadows, and content corner radius. Appearance and privacy rules reload for existing windows; opening settings apply when a window first maps."
+        },
+        {
+          "title": "More blur choices",
+          "description": "Gaussian and box backdrop blur join the default Dual Kawase method. Switch methods with a configuration reload while retaining existing blur activation, rounded clipping, and client-requested regions."
+        },
+        {
+          "title": "A continuous window frame",
+          "description": "Compositor titlebars meet window content without a visible seam, including with backdrop blur. Rule-enabled window blur follows the displayed client rectangle through fullscreen and maximize transitions."
+        }
+      ]
+    },
+    {
+      "eyebrow": "Displays and motion",
+      "title": "Scale, pacing, and placement",
+      "features": [
+        {
+          "title": "Per-monitor scaling",
+          "description": "view.output.scale accepts numeric and fractional values with live reload. Applications, compositor UI, pointer coordinates, and native-resolution captures scale together, and halleyctl outputs reports the effective scale."
+        },
+        {
+          "title": "Frame pacing",
+          "description": "commit-timing-v1 and fifo-v1 let clients schedule frames precisely on native and nested backends without blocking input, rendering, or unrelated clients."
+        },
+        {
+          "title": "Animated, exact movement",
+          "description": "CLI and keyboard window moves animate with their own animations.window-move easing or spring. halleyctl node move to X Y places a window exactly, and --distance moves it a chosen number of Field units."
+        },
+        {
+          "title": "Across monitors",
+          "description": "The cursor and dragged windows cross gaps between configured monitors, and the selected monitor follows a focused window that moves to another output."
+        },
+        {
+          "title": "Pan from anywhere",
+          "description": "Bind pan-field-always to start a camera drag over windows, titlebars, nodes, or wallpaper. It respects fullscreen, camera owners, shell overlays, and pointer constraints. Pans end with the button that started them.",
+          "credit": {
+            "name": "Ketari-G",
+            "url": "https://github.com/Ketari-G",
+            "pullRequest": "https://github.com/saltnpepper97/halley/pull/187"
+          }
+        }
+      ]
+    },
+    {
+      "eyebrow": "Reliability",
+      "title": "Fullscreen and games you can rely on",
+      "features": [
+        {
+          "title": "Monitor-aware navigation",
+          "description": "Alt+Tab, Apogee, and centered navigation preserve every application's fullscreen state when selecting a window on another monitor. On the same monitor, ordinary applications leave fullscreen cleanly and identified games park until resumed."
+        },
+        {
+          "title": "Steadier XWayland",
+          "description": "XWayland fullscreen, game mode, minimize, and restore keep client state, geometry, and animations consistent, including when the underlying surface is replaced."
+        },
+        {
+          "title": "Smoother transitions",
+          "description": "Fullscreen, maximize, and windowed transitions keep both client images within the same rounded, animated bounds. Transitions follow client acceptance, keep outgoing content live while waiting, and fade compositor chrome back in as fullscreen exits."
+        },
+        {
+          "title": "Keyboard correctness",
+          "description": "Keys and lock-key modifiers follow Wayland event order, held keys survive extra keyboards, and Caps, Num, and Scroll Lock indicators stay in sync across devices."
+        },
+        {
+          "title": "Pinned windows stay open",
+          "description": "Pinned windows are exempt from automatic decay. You can still collapse them manually, and unpinning starts a fresh decay timer."
+        },
+        {
+          "title": "Retrieve the window you selected",
+          "description": "Running-window selections through Lift and the API select the correct monitor and workspace, reveal stack and overflow members, restore collapsed windows, and center Field targets."
+        },
+        {
+          "title": "Empty clusters keep their controls",
+          "description": "Moving the last window to another monitor preserves the close-binding hint. Hints remain visible across monitor focus changes, while two-press deletion stays scoped to the selected monitor."
+        }
+      ]
+    },
+    {
+      "eyebrow": "Desktop integration",
+      "title": "Fit more of the desktop",
+      "features": [
+        {
+          "title": "Dialogs that stay with their parents",
+          "description": "xdg-dialog-v1 and xdg-foreign-v2 let applications and portal dialogs, including Firefox's Save As, declare their parents and stay above them. Closing a focused Field dialog returns focus to its nearest eligible parent."
+        },
+        {
+          "title": "Input methods survive locking",
+          "description": "Native Wayland input methods stay connected across screen lock and resume after unlocking. Composition and keyboard grabs are suspended during the lock, lock-screen input stays isolated, and unfinished composition is discarded at the lock boundary."
+        },
+        {
+          "title": "Accessibility",
+          "description": "Initial compositor accessibility information is exposed through AccessKit, with opt-in supervision of a trusted Orca executable across restarts."
+        },
+        {
+          "title": "Power and idle",
+          "description": "wlr-output-power-management lets approved tools control individual displays on the native backend, and the org.freedesktop.ScreenSaver service handles GTK's idle-inhibition fallback."
+        },
+        {
+          "title": "Nix and NixOS",
+          "description": "A pinned Nix flake provides the compositor, companion tools, portal integration, a development shell, an overlay, and a NixOS session module. The accessibility supervisor test uses the Nix-provided executable path.",
+          "credit": {
+            "name": "pirate-boop",
+            "url": "https://github.com/pirate-boop",
+            "pullRequest": "https://github.com/saltnpepper97/halley/pull/251"
+          }
+        }
+      ]
+    }
+  ],
+  "notes": [
+    "Existing configurations are not rewritten. Omitted settings, including view.output.scale and animations.window-move, use built-in defaults. Run halleyctl config verify before reloading.",
+    "The private IPC protocol is now version 28. Rebuild companion tools such as halleyctl and the portal together with the compositor. The public API remains version 1.",
+    "The companion portal is now 0.3.0. Upgrade it alongside Halley and halleyctl to keep screen sharing compatible.",
+    "Use Lift 0.4.1 with Halley 0.9. It updates the API dependency so live window and cluster subscriptions decode the current snapshots.",
+    "New bindings such as pan-field-always and node-move distances have no defaults. Add them to your configuration if you want them.",
+    "Screencast and built-in screenshot privacy are separate controls. Configure each for the capture paths you use; neither blocks third-party direct capture protocols.",
+    "Scene, input, fullscreen, configuration reload, and session code now have clearer ownership. Pull requests run Rust, Nix, and headless XWayland checks; local testing guidance is documented in the repository."
+  ],
+  "thanks": [
+    "Thank you to Ketari-G for contributing pan-field-always, and to pirate-boop for fixing the accessibility supervisor test under Nix builds.",
+    "Thank you to everyone testing Halley in daily use and reporting the issues that shaped this release."
+  ],
+  "releaseUrl": "https://github.com/saltnpepper97/halley/releases/tag/v0.9.0",
+  "install": {
+    "aur": [
+      "yay -S halley xdg-desktop-portal-halley",
+      "paru -S halley xdg-desktop-portal-halley"
+    ],
+    "aurDev": [
+      "yay -S halley-git",
+      "paru -S halley-git"
+    ],
+    "source": "git clone https://github.com/saltnpepper97/halley\ncd halley\ngit checkout v0.9.0\ncargo build --locked --release --workspace"
+  }
+},
+{
+  "slug": "lift-v0-4-1",
+  "title": "Halley Lift 0.4.1: ready for Halley 0.9",
+  "version": "v0.4.1",
+  "date": "2026-11-01",
+  "eyebrow": "Lift Release News",
+  "summary": "Lift 0.4.1 updates the Halley API dependency for Halley 0.9, restoring streamed window and cluster updates with private IPC 28.",
+  "intro": [
+    "Lift 0.4.1 is the companion update for Halley 0.9. Its updated API dependency decodes the current subscription snapshots, so live window and cluster updates use the event stream instead of falling back to polling.",
+    "Search, launching, keyboard editing, appearance and configuration retain the 0.4.0 behavior. Existing configuration files are preserved."
+  ],
+  "releaseUrl": "https://github.com/saltnpepper97/halley-lift/releases/tag/v0.4.1",
+  "install": {
+    "cargo": "cargo install halley-lift --version 0.4.1 --locked",
+    "aur": [
+      "yay -S halley-lift",
+      "paru -S halley-lift"
+    ],
+    "source": "git clone https://github.com/saltnpepper97/halley-lift\ncd halley-lift\ngit checkout v0.4.1\ncargo build --release --locked"
+  },
+  "notes": [
+    "Install Lift 0.4.1 alongside Halley 0.9. Lift and the compositor remain independently versioned."
+  ],
+  "thanks": []
+},
 {
   "slug": "v0-8-0-field-first",
   "title": "The Field comes first",
@@ -149,8 +411,7 @@ export const newsPosts: NewsPost[] = [
     "Halley retains the blur-capable upstream Smithay revision. Blur and local animation use conservative full-output repaints; this release does not claim selective-repaint or whole-compositor performance parity.",
     "A basic upstream IME path replaces Halley's former patched lifecycle behavior. Validate your particular IME and screen-lock workflow."
   ],
-  "thanks": [],
-  "closing": "Start on the Field, arrange what is visible, and create named context when it helps. The 0.8 wiki describes the current workflow and the exact configuration changes."
+  "thanks": []
 },
   {
     slug: "v0-7-0-cluster-composer",

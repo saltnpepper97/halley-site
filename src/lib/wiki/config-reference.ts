@@ -1,3 +1,4 @@
+import { configPageV09Override, configExamplesV09 } from "$lib/wiki/config-reference-v09";
 import { configPageV08Override, configExamplesV08 } from "$lib/wiki/config-reference-v08";
 import { configPageV06Override } from "$lib/wiki/config-reference-v06";
 import { configPageV07Override } from "$lib/wiki/config-reference-v07";
@@ -1945,7 +1946,9 @@ const availableInVersion = (item: { addedIn?: string; removedIn?: string }, vers
   (!item.addedIn || version >= item.addedIn) && (!item.removedIn || version < item.removedIn);
 
 export const configPageForVersion = (page: ConfigPage, version: string): ConfigPage => {
-  const versionPage = version >= "0.8.0"
+  const versionPage = version >= "0.9.0"
+    ? configPageV09Override(configPageV08Override(configPageV07Override(page.slug) ?? page))
+    : version >= "0.8.0"
     ? configPageV08Override(configPageV07Override(page.slug) ?? page)
     : version >= "0.7.0"
     ? (configPageV07Override(page.slug) ?? page)
@@ -1969,6 +1972,7 @@ export const configPageForVersion = (page: ConfigPage, version: string): ConfigP
 };
 
 export const configExampleForVersion = (slug: string, version: string) => {
+  if (version >= "0.9.0") return configExamplesV09[slug] ?? configExamplesV08[slug] ?? configExamples[slug] ?? `${slug}:\nend`;
   if (version >= "0.8.0") return configExamplesV08[slug] ?? configExamples[slug] ?? `${slug}:\nend`;
   if (version >= "0.7.0") {
     return configPageV07Override(slug)?.example ?? configExamplesV06[slug] ?? configExamples[slug] ?? `${slug}:

@@ -83,7 +83,6 @@
     cursor: pointer;
     list-style: none;
     background:
-      linear-gradient(135deg, rgba(255, 106, 42, 0.16), transparent 58%),
       rgba(246, 239, 231, 0.045);
     border: 1px solid rgba(255, 106, 42, 0.2);
     border-radius: var(--radius-md);
@@ -160,7 +159,6 @@
 
   :global(:root[data-theme="light"]) summary {
     background:
-      linear-gradient(135deg, rgba(184, 63, 17, 0.08), transparent 58%),
       rgba(255, 255, 255, 0.42);
     border-color: rgba(184, 63, 17, 0.24);
   }
